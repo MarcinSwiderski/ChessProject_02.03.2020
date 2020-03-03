@@ -18,12 +18,8 @@ public class Bishop extends Figure implements IMovePerpendicular {
         if (!IMovePerpendicular.super.canMove(position, target))
             return IMovePerpendicular.super.canMove(position, target);
 
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+
+        return false;
     }
 
     @Override

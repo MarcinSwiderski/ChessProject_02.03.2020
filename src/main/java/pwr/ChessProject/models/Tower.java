@@ -18,12 +18,8 @@ public class Tower extends Figure implements IMoveDiagonal {
         if (!IMoveDiagonal.super.canMove(position, target))
             return IMoveDiagonal.super.canMove(position, target);
 
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+
+        return false;
     }
 
     @Override

@@ -17,12 +17,8 @@ public class Knight extends Figure implements IMoveable {
     public boolean canMove(int position, int target) {
         if (!IMoveable.super.canMove(position, target))
             return IMoveable.super.canMove(position, target);
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+
+        return false;
     }
 
     @Override
