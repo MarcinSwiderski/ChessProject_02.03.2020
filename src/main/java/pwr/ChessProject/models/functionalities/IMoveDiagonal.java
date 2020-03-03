@@ -1,6 +1,6 @@
 package pwr.ChessProject.models.functionalities;
 
-public interface IMovePerpendicular extends IMoveable {
+public interface IMoveDiagonal extends IMoveable {
 
     @Override
     default boolean canMove(int target, int position) {

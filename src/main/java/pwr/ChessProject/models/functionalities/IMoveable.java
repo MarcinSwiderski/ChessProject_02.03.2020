@@ -3,7 +3,7 @@ package pwr.ChessProject.models.functionalities;
 /**
  * Default figure movement check functionality
  */
-public interface IMovable {
+public interface IMoveable {
     /**
      * Checks if target position is even in the board
      * @param position The Figure current position

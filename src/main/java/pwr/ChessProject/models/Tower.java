@@ -1,11 +1,11 @@
 package pwr.ChessProject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveable;
+import pwr.ChessProject.models.functionalities.IMoveDiagonal;
 
-public class Pawn extends Figure implements IMoveable {
-    public Pawn(Player player) {
+public class Tower extends Figure implements IMoveDiagonal {
+    public Tower(Player player) {
         super(player);
-        this.figureType = FigureType.Pawn;
+        this.figureType = FigureType.Tower;
     }
 
     /**
@@ -15,8 +15,9 @@ public class Pawn extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMoveable.super.canMove(position, target))
-            return false;
+        if (!IMoveDiagonal.super.canMove(position, target))
+            return IMoveDiagonal.super.canMove(position, target);
+
         if (player == Player.Top) {
             return position+8 == target || position+16 == target;
         }
@@ -27,7 +28,7 @@ public class Pawn extends Figure implements IMoveable {
 
     @Override
     public String toString() {
-        return "Pawn{" +
+        return "Tower{" +
                 "player=" + player +
                 '}';
     }
