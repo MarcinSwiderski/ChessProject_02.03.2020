@@ -2,6 +2,7 @@ package pwr.ChessProject.Frame;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.Icon;
 import java.awt.event.*;
 
 /**
@@ -21,6 +22,7 @@ public class  Frame extends JFrame {
         this.setDefaultCloseOperation(3); // Dla głównego okienka najlepiej 3, Dla komponentów 2
         this.setTitle("ChessProject");
         initComponentsLayout(); // funkcja z ułożonymi guzikamiw
+        //this.add(labelImage);
         bDecline.addActionListener(e -> {
             this.hide();
         });
@@ -63,7 +65,7 @@ public class  Frame extends JFrame {
 
                         )
                         .addGroup(
-                                layout.createParallelGroup().addComponent(labelFromYAxis, 10 , 200, 300).addComponent(yAxisFromTextField, 10 , 15, 40).addComponent(labelToYAxis, 10 , 200, 300).addComponent(yAxisToTextField, 10 , 15, 40) // dodawanie guzika (nazwa, minimalna szerokość, szerokość podczas stworzenia, maksymalna wielkość)
+                                layout.createParallelGroup().addComponent(labelFromYAxis, 10 , 200, 300).addComponent(yAxisFromTextField, 10 , 15, 40).addComponent(labelToYAxis, 10 , 200, 300).addComponent(yAxisToTextField, 10 , 15, 40)// dodawanie guzika (nazwa, minimalna szerokość, szerokość podczas stworzenia, maksymalna wielkość)
 
                         )
                         .addGroup(
@@ -116,10 +118,11 @@ public class  Frame extends JFrame {
      //JLabel labelToFigureName = new JLabel("TO below figure short-name!");
     JLabel labelToXAxis = new JLabel("TO below XAxis of position");
     JLabel labelToYAxis = new JLabel("TO below YAxis of position");
-
+/*
     // Image
-    ImageIcon icon = new ImageIcon("");
-
+    ImageIcon image = new ImageIcon(getClass().getResource("plansza.jpg"));
+    JLabel labelImage = new JLabel(image);
+*/
 
 
 }
