@@ -3,7 +3,7 @@ package pwr.ChessProject.models.functionalities;
 /**
  * Default figure movement check functionality
  */
-public interface IMovable {
+public interface IMoveable {
     /**
      * Checks if target position is even in the board
      * @param position The Figure current position
@@ -11,6 +11,6 @@ public interface IMovable {
      * @return Value indicating if target position is in board range
      */
     default boolean canMove(int position, int target) {
-        return target >= 0 && target <= 63;
+        return target >= 0 && target <= 63 && target != position;
     }
 }

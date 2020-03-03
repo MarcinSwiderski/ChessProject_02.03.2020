@@ -1,8 +1,8 @@
 package pwr.ChessProject.models;
 
-import pwr.ChessProject.models.functionalities.IMovable;
+import pwr.ChessProject.models.functionalities.IMoveable;
 
-public class Pawn extends Figure implements IMovable {
+public class Pawn extends Figure implements IMoveable {
     public Pawn(Player player) {
         super(player);
         this.figureType = FigureType.Pawn;
@@ -15,7 +15,7 @@ public class Pawn extends Figure implements IMovable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMovable.super.canMove(position, target))
+        if (!IMoveable.super.canMove(position, target))
             return false;
         if (player == Player.Top) {
             return position+8 == target || position+16 == target;
