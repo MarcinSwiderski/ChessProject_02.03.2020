@@ -4,7 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.Icon;
 import java.awt.event.*;
-
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 /**
  *  Frame
  */
@@ -22,29 +29,14 @@ public class  Frame extends JFrame {
         this.setDefaultCloseOperation(3); // Dla głównego okienka najlepiej 3, Dla komponentów 2
         this.setTitle("ChessProject");
         initComponentsLayout(); // funkcja z ułożonymi guzikamiw
-        //this.add(labelImage);
         bDecline.addActionListener(e -> {
             this.hide();
         });
-        /*
-        chooseFigureTextField.addActionListener(e -> {
-            if(chooseFigureTextField.getText().toString().length() < 3 )
-            switch(chooseFigureTextField.getText())
-            {
-                case 'P' :
-                    return "A";
-                case 'B' :
-                    return "B";
-                case 'R' :
-                    return "R";
-                case 'Q' :
-                    return "Q";
-
-            }
-        });
-        */
 
 
+        ImagePanel img = new ImagePanel();
+        img.setVisible(true);
+        JLabel imageLabel = new JLabel(new ImageIcon(String.valueOf(img)));
     }
 
     public void initComponentsLayout() {
@@ -94,13 +86,32 @@ public class  Frame extends JFrame {
         pack(); //ustala wielkość okienka co do domyślnych rozmiarów buttonów
 
     }
+
+    public class ImagePanel extends JPanel{
+
+        public ImagePanel() {
+            try {
+                image = ImageIO.read(new File("szachownica.jpg"));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
+        }
+
+    }
+
     // Tworzenie panelu
     JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
     // DEKLAROWANIE
     JButton bAcceptMove = new JButton("Accept!");
     JButton bDecline = new JButton("Decline");
-
+    BufferedImage image;
     // "From" Labels and TextFields
 
     JTextField xAxisFromTextField = new JTextField("A");
@@ -118,11 +129,6 @@ public class  Frame extends JFrame {
      //JLabel labelToFigureName = new JLabel("TO below figure short-name!");
     JLabel labelToXAxis = new JLabel("TO below XAxis of position");
     JLabel labelToYAxis = new JLabel("TO below YAxis of position");
-/*
-    // Image
-    ImageIcon image = new ImageIcon(getClass().getResource("plansza.jpg"));
-    JLabel labelImage = new JLabel(image);
-*/
-
-
 }
+
+
