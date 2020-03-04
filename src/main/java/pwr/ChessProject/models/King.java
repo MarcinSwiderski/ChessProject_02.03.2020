@@ -48,7 +48,7 @@ public class King extends Figure implements IMoveable {
 
     @Override
     public String toString() {
-        return "King{" +
+        return this.getClass().getSimpleName() + "{" +
                 "player=" + player +
                 '}';
     }

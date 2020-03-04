@@ -20,7 +20,7 @@ public class Bishop extends Figure implements IMoveDiagonal {
 
     @Override
     public String toString() {
-        return "Bishop{" +
+        return this.getClass().getSimpleName() + "{" +
                 "player=" + player +
                 '}';
     }

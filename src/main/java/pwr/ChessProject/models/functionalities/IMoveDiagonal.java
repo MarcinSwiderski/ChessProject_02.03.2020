@@ -3,10 +3,19 @@ package pwr.ChessProject.models.functionalities;
 import pwr.ChessProject.board.Board;
 import pwr.ChessProject.models.Figure;
 
+/**
+ * Diagonal figure movement check functionality
+ */
 public interface IMoveDiagonal extends IMoveable {
 
+    /**
+     * Checks if target position is on one of two diagonal lines crossing each other in selected figure position
+     * @param position The Figure current position
+     * @param target The target position to move to
+     * @return Value indicating if such movement is possible
+     */
     @Override
-    default boolean canMove(int target, int position) {
+    default boolean canMove(int position, int target) {
         if (!IMoveable.super.canMove(position, target))
             return false;
         Figure.Player player = Board.Grid[position].player;
@@ -29,16 +38,24 @@ public interface IMoveDiagonal extends IMoveable {
                     position -= 9;
                     if (Board.Grid[position] == null)
                         continue;
-                    else
-                        return false;
+                    else {
+                        if (Board.Grid[position].player == player)
+                            return false;
+                        else
+                            return target == position;
+                    }
                 }
             else // target > position
                 while(target != position) {
                     position += 9;
                     if (Board.Grid[position] == null)
                         continue;
-                    else
-                        return false;
+                    else {
+                        if (Board.Grid[position].player == player)
+                            return false;
+                        else
+                            return target == position;
+                    }
                 }
             return true;
         }
@@ -48,16 +65,24 @@ public interface IMoveDiagonal extends IMoveable {
                     position -= 7;
                     if (Board.Grid[position] == null)
                         continue;
-                    else
-                        return false;
+                    else {
+                        if (Board.Grid[position].player == player)
+                            return false;
+                        else
+                            return target == position;
+                    }
                 }
             else // target > position
                 while(target != position) {
                     position += 7;
                     if (Board.Grid[position] == null)
                         continue;
-                    else
-                        return false;
+                    else {
+                        if (Board.Grid[position].player == player)
+                            return false;
+                        else
+                            return target == position;
+                    }
                 }
             return true;
         }

@@ -21,7 +21,7 @@ public class Queen extends Figure implements IMovePerpendicular, IMoveDiagonal {
 
     @Override
     public String toString() {
-        return "Queen{" +
+        return this.getClass().getSimpleName() + "{" +
                 "player=" + player +
                 '}';
     }

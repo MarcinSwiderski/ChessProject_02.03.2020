@@ -20,7 +20,7 @@ public class Tower extends Figure implements IMovePerpendicular {
 
     @Override
     public String toString() {
-        return "Tower{" +
+        return this.getClass().getSimpleName() + "{" +
                 "player=" + player +
                 '}';
     }

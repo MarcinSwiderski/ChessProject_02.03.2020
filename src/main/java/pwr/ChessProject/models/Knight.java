@@ -56,7 +56,7 @@ public class Knight extends Figure implements IMoveable {
 
     @Override
     public String toString() {
-        return "Knight{" +
+        return this.getClass().getSimpleName() + "{" +
                 "player=" + player +
                 '}';
     }
