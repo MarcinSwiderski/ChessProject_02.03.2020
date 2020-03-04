@@ -16,15 +16,7 @@ public class Queen extends Figure implements IMovePerpendicular, IMoveDiagonal {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMovePerpendicular.super.canMove(position, target) && !IMoveDiagonal.super.canMove(position, target))
-            return IMovePerpendicular.super.canMove(position, target)  || IMoveDiagonal.super.canMove(position, target);
-
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+        return IMovePerpendicular.super.canMove(position, target)  || IMoveDiagonal.super.canMove(position, target);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package pwr.ChessProject.models;
 
-import pwr.ChessProject.models.functionalities.IMovePerpendicular;
+import pwr.ChessProject.models.functionalities.IMoveDiagonal;
 
-public class Bishop extends Figure implements IMovePerpendicular {
+public class Bishop extends Figure implements IMoveDiagonal {
     public Bishop(Player player) {
         super(player);
         this.figureType = FigureType.Bishop;
@@ -15,15 +15,7 @@ public class Bishop extends Figure implements IMovePerpendicular {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMovePerpendicular.super.canMove(position, target))
-            return IMovePerpendicular.super.canMove(position, target);
-
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+        return IMoveDiagonal.super.canMove(position, target);
     }
 
     @Override

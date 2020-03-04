@@ -10,7 +10,7 @@ public interface IMovePerpendicular extends IMoveable {
         if (!IMoveable.super.canMove(position, target))
             return false;
         Figure.Player player = Board.Grid[position].player;
-        if (target % 8 == position % 8)
+        if (target % 8 == position % 8) {
             if(target < position)
                 while(target != position) {
                     position -= 8;
@@ -27,7 +27,9 @@ public interface IMovePerpendicular extends IMoveable {
                     else
                         return false;
                 }
-        if (target / 8 == position / 8)
+            return true;
+        }
+        else if (target / 8 == position / 8) {
             if(target < position)
                 while(target != position) {
                     position -= 1;
@@ -44,6 +46,9 @@ public interface IMovePerpendicular extends IMoveable {
                     else
                         return false;
                 }
-        return true;
+            return true;
+        }
+        else
+            return false;
     }
 }

@@ -1,8 +1,8 @@
 package pwr.ChessProject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveDiagonal;
+import pwr.ChessProject.models.functionalities.IMovePerpendicular;
 
-public class Tower extends Figure implements IMoveDiagonal {
+public class Tower extends Figure implements IMovePerpendicular {
     public Tower(Player player) {
         super(player);
         this.figureType = FigureType.Tower;
@@ -15,15 +15,7 @@ public class Tower extends Figure implements IMoveDiagonal {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMoveDiagonal.super.canMove(position, target))
-            return IMoveDiagonal.super.canMove(position, target);
-
-        if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
-        }
-        else {
-            return position-8 == target || position-16 == target;
-        }
+        return IMovePerpendicular.super.canMove(position, target);
     }
 
     @Override

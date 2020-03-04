@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] p ) {
         Board board = new Board();
         board.writeGrid();
-        IMoveable selectedFigure = (IMoveable)Board.Grid[48];
-        System.out.println(selectedFigure.canMove(48, 31));
+        //IMoveable selectedFigure = (IMoveable)Board.Grid[48];
+        //System.out.println(selectedFigure.canMove(48, 31));
 
     }
 }
