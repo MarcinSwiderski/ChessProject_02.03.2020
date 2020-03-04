@@ -18,6 +18,39 @@ public class Knight extends Figure implements IMoveable {
         if (!IMoveable.super.canMove(position, target))
             return IMoveable.super.canMove(position, target);
 
+        if (position == 0)
+            return position + 10 == target || position + 17 == target;
+
+        if (position == 7)
+            return position + 6 == target || position + 15 == target;
+
+        if (position == 56)
+            return position - 15 == target || position - 6 == target;
+
+        if (position == 63)
+            return position - 10 == target || position - 17 == target;
+        if (position == 1)
+            return position + 15 == target || position + 10 == target || position + 17 == target;
+        if (position > 1 && position < 6)
+            return position + 6 == target || position+ 15 == target || position + 10 == target || position + 17 == target;
+        if (position == 6)
+            return position + 6 == target || position + 15 == target || position + 17 == target;
+
+        if (position == 8)
+            return position + 17 == target || position + 10 == target || position - 6 == target;
+
+        if (position == 15)
+            return position + 15 == target || position + 7 == target || position - 10 == target;
+
+        if (position == 14)
+            return position + 15 == target || position + 17 == target || position + 6 == target || position - 10 == target;
+
+        if (position == 9)
+            return position + 15 == target || position + 17 == target || position - 6 == target || position + 10 == target;
+
+        if (position > 9 && position < 14)
+            return position + 6 == target || position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 10 == target;
+
         return false;
     }
 
