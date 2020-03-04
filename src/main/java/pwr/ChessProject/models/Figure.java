@@ -21,4 +21,6 @@ public abstract class Figure {
     public Figure(Player player) {
         this.player = player;
     }
+
+    // TODO: 04.03.2020 Actual movement and killing actions including king specials 
 }
