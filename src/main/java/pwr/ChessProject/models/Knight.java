@@ -18,41 +18,33 @@ public class Knight extends Figure implements IMoveable {
         if (!IMoveable.super.canMove(position, target))
             return IMoveable.super.canMove(position, target);
 
-        if (position == 0)
-            return position + 10 == target || position + 17 == target;
 
-        if (position == 7)
-            return position + 6 == target || position + 15 == target;
+        // Nie wiem jak zrobiłeś tablicę, nie widzę zmiennej X i Y,
+        // Piszę same komen
+        /*
+        switch(position)
+        {
 
-        if (position == 56)
-            return position - 15 == target || position - 6 == target;
+            case (10):
+                return position + 6 == target || position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 10 == target || position - 15 == target || position - 17 == target;
+            case ( 5 / " X = 1, Y (3,6) "  ):
+                return position - 15 == target || position - 6 == target || position + 10 == target || position + 17 == target;
 
-        if (position == 63)
-            return position - 10 == target || position - 17 == target;
-        if (position == 1)
-            return position + 15 == target || position + 10 == target || position + 17 == target;
-        if (position > 1 && position < 6)
-            return position + 6 == target || position+ 15 == target || position + 10 == target || position + 17 == target;
-        if (position == 6)
-            return position + 6 == target || position + 15 == target || position + 17 == target;
+            case ( 8" X = 2, Y (3,6) "  ):
+                return position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 15 == target || position - 17 == target;
+            break;
+            case ( 7" X = 8 , Y (3,6) "  ):
+                return position + 15 == target || position + 6 == target || position - 10 == target || position - 17 == target;
+            break;
+            case ( 6 " X = 8 " ):
 
-        if (position == 8)
-            return position + 17 == target || position + 10 == target || position - 6 == target;
+                break;
+        }
 
-        if (position == 15)
-            return position + 15 == target || position + 7 == target || position - 10 == target;
-
-        if (position == 14)
-            return position + 15 == target || position + 17 == target || position + 6 == target || position - 10 == target;
-
-        if (position == 9)
-            return position + 15 == target || position + 17 == target || position - 6 == target || position + 10 == target;
-
-        if (position > 9 && position < 14)
-            return position + 6 == target || position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 10 == target;
-
-        return false;
+         */
+        return true;
     }
+
 
     @Override
     public String toString() {
