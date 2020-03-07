@@ -11,6 +11,10 @@ public class Pawn extends Figure implements IMoveable {
         this.figureType = FigureType.Pawn;
     }
 
+    public void afterFirstMove() {
+        this.firstMove = false;
+    }
+
     /**
      * Checks if you can move into target position
      * @param target The target position to move to
