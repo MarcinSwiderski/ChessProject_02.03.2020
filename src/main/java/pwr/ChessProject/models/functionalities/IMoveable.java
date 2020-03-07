@@ -1,5 +1,7 @@
 package pwr.ChessProject.models.functionalities;
 
+import pwr.ChessProject.board.Board;
+
 /**
  * Default figure movement check functionality
  */
@@ -13,4 +15,5 @@ public interface IMoveable {
     default boolean canMove(int position, int target) {
         return target >= 0 && target <= 63 && target != position;
     }
+
 }

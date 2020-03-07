@@ -1,7 +1,8 @@
 package pwr.ChessProject.models.functionalities;
 
-import pwr.ChessProject.board.Board;
 import pwr.ChessProject.models.Figure;
+
+import static pwr.ChessProject.board.Board.*;
 
 /**
  * Diagonal figure movement check functionality
@@ -18,7 +19,7 @@ public interface IMoveDiagonal extends IMoveable {
     default boolean canMove(int position, int target) {
         if (!IMoveable.super.canMove(position, target))
             return false;
-        Figure.Player player = Board.Grid[position].player;
+        Figure.Player player = Grid[position].player;
 
         //P1(x1,y1) and P2(x2,y2) defines a line containing movement vector
         int x1 = position / 8;
@@ -36,10 +37,10 @@ public interface IMoveDiagonal extends IMoveable {
             if(target < position)
                 while(target != position) {
                     position -= 9;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -48,10 +49,10 @@ public interface IMoveDiagonal extends IMoveable {
             else // target > position
                 while(target != position) {
                     position += 9;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -63,10 +64,10 @@ public interface IMoveDiagonal extends IMoveable {
             if(target < position)
                 while(target != position) {
                     position -= 7;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -75,10 +76,10 @@ public interface IMoveDiagonal extends IMoveable {
             else // target > position
                 while(target != position) {
                     position += 7;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;

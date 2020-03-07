@@ -1,7 +1,8 @@
 package pwr.ChessProject.models.functionalities;
 
-import pwr.ChessProject.board.Board;
 import pwr.ChessProject.models.Figure;
+
+import static pwr.ChessProject.board.Board.*;
 
 /**
  * Up and down or left and right figure movement check functionality
@@ -17,15 +18,15 @@ public interface IMovePerpendicular extends IMoveable {
     default boolean canMove(int position, int target) {
         if (!IMoveable.super.canMove(position, target))
             return false;
-        Figure.Player player = Board.Grid[position].player;
+        Figure.Player player = Grid[position].player;
         if (target % 8 == position % 8) {
             if(target < position)
                 while(target != position) {
                     position -= 8;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -34,10 +35,10 @@ public interface IMovePerpendicular extends IMoveable {
             else // target > position
                 while(target != position) {
                     position += 8;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -49,10 +50,10 @@ public interface IMovePerpendicular extends IMoveable {
             if(target < position)
                 while(target != position) {
                     position -= 1;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
@@ -61,10 +62,10 @@ public interface IMovePerpendicular extends IMoveable {
             else // target > position
                 while(target != position) {
                     position += 1;
-                    if (Board.Grid[position] == null)
+                    if (Grid[position] == null)
                         continue;
                     else {
-                        if (Board.Grid[position].player == player)
+                        if (Grid[position].player == player)
                             return false;
                         else
                             return target == position;
