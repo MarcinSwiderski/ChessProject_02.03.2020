@@ -19,8 +19,6 @@ public class Knight extends Figure implements IMoveable {
             return IMoveable.super.canMove(position, target);
 
 
-        // Nie wiem jak zrobiłeś tablicę, nie widzę zmiennej X i Y,
-        // Piszę same komen
         /*
         switch(position)
         {

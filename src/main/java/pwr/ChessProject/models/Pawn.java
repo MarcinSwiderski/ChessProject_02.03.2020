@@ -20,6 +20,7 @@ public class Pawn extends Figure implements IMoveable {
     public boolean canMove(int position, int target) {
         if (!IMoveable.super.canMove(position, target))
             return false;
+        
         if (!firstMove) {
             if (player == Player.Top) {
                 return position+8 == target;
@@ -34,6 +35,7 @@ public class Pawn extends Figure implements IMoveable {
         else {
             return position-8 == target || position-16 == target;
         }
+
     }
 
     @Override
