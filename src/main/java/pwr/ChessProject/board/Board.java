@@ -50,7 +50,7 @@ public final class Board {
 
     private String translateIntCordToString(int cord) {
         char x = (char)(cord % 8 + 63);
-        //byte y = co
+        char y = (char)(cord / 8 + 48);
         throw new NotImplementedException();
     }
 
