@@ -2,7 +2,7 @@ package pwr.ChessProject.models;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
-import pwr.ChessProject.board.Board;
+import org.junit.jupiter.api.extension.ExtendWith;
 import pwr.ChessProject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,19 +10,8 @@ import static pwr.ChessProject.board.Board.Grid;
 import static pwr.ChessProject.models.Figure.Player.Bottom;
 import static pwr.ChessProject.models.Figure.Player.Top;
 
+@ExtendWith(FigureMoveExtension.class)
 class PawnTest {
-
-    private static Board board;
-
-    /*@BeforeAll
-    static void setUpBoard() {
-
-    }
-
-    @AfterEach
-    void clearBoard() {
-        board.clearBoard();
-    }*/
 
     @Test
     void bottomCanMoveOnlyOneOrTwoUpwards() {
@@ -57,7 +46,7 @@ class PawnTest {
     }
 
     @Test
-    void pawnCanNotMoveThroughAlly() {
+    void pawnCanNotMoveThroughObstacles() {
 
         Grid[48] = new Pawn(Bottom);
         Grid[49] = new Pawn(Bottom);
@@ -65,7 +54,7 @@ class PawnTest {
         //obstacles
         Grid[40] = new Pawn(Bottom);
         Grid[32] = new Pawn(Bottom);
-        Grid[41] = new Pawn(Bottom);
+        Grid[41] = new Pawn(Top);
 
         IMoveable pawn1 = (IMoveable)Grid[48];
         IMoveable pawn2 = (IMoveable)Grid[49];
@@ -73,8 +62,7 @@ class PawnTest {
         Assertions.assertAll(
                 () -> assertFalse(pawn1.canMove(48, 40)),
                 () -> assertFalse(pawn1.canMove(48, 32)),
-                () -> assertFalse(pawn2.canMove(49, 33)),
-                () -> assertFalse(pawn2.canMove(49, 41))
+                () -> assertFalse(pawn2.canMove(49, 33))
                 );
     }
 
