@@ -1,12 +1,14 @@
-package pwr.ChessProject.Frame;
+package pwr.chessproject.frame;
+
+import static pwr.chessproject.board.Board.*;
 
 public class TranslateCords {
 
     public static String translateIntCordToString(int cord) throws IllegalArgumentException {
-        if (cord < 0 || cord > 63)
+        if (cord < 0 || cord > AREA - 1)
             throw new IllegalArgumentException("Can not select figure outside of the board");
-        char row = (char)((8-cord/8) + 48);
-        char column = (char)(cord%8 + 65);
+        char row = (char)((ROWS-cord/ ROWS) + 48);
+        char column = (char)(cord%COLUMNS + 65);
         return String.valueOf(column) + row;
     }
 
@@ -16,10 +18,10 @@ public class TranslateCords {
         char[] arrayOfCords = cords.toCharArray();
         int column = arrayOfCords[0] - 65;
         int row = arrayOfCords[1] - 48;
-        if (column < 0 || column > 8)
-            throw new IllegalArgumentException(arrayOfCords[0] + " is not in range A-H");
-        if (row < 0 || row > 8)
-            throw new IllegalArgumentException(arrayOfCords[1] + " is not in range 1-8");
-        return (64 - row*8) + column;
+        if (column < 0 || column > COLUMNS)
+            throw new IllegalArgumentException(arrayOfCords[0] + " is not in range ");
+        if (row < 0 || row > ROWS)
+            throw new IllegalArgumentException(arrayOfCords[1] + " is not in range ");
+        return (AREA - row*ROWS) + column;
     }
 }

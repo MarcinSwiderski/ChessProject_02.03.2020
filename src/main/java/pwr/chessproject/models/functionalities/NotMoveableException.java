@@ -1,7 +1,7 @@
-package pwr.ChessProject.models.functionalities;
+package pwr.chessproject.models.functionalities;
 
-import pwr.ChessProject.Frame.TranslateCords;
-import pwr.ChessProject.models.Figure;
+import pwr.chessproject.frame.TranslateCords;
+import pwr.chessproject.models.Figure;
 
 public class NotMoveableException extends Exception {
     public NotMoveableException() {

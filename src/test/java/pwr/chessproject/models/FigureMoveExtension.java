@@ -1,12 +1,9 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import pwr.ChessProject.board.Board;
-
-import java.util.Optional;
+import pwr.chessproject.board.Board;
 
 public class FigureMoveExtension implements AfterEachCallback, BeforeAllCallback {
     private Board board;

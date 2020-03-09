@@ -1,9 +1,8 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.board.Board;
-import pwr.ChessProject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.IMoveable;
 
-import static pwr.ChessProject.board.Board.Grid;
+import static pwr.chessproject.board.Board.Grid;
 
 public class King extends Figure implements IMoveable {
     public King(Player player) {

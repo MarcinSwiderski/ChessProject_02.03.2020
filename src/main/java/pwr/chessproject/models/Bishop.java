@@ -1,6 +1,6 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveDiagonal;
+import pwr.chessproject.models.functionalities.IMoveDiagonal;
 
 public class Bishop extends Figure implements IMoveDiagonal {
     public Bishop(Player player) {

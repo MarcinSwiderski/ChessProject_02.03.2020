@@ -1,4 +1,4 @@
-package pwr.ChessProject.models.functionalities;
+package pwr.chessproject.models.functionalities;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -6,15 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import pwr.ChessProject.models.*;
+import pwr.chessproject.models.*;
 
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.ChessProject.board.Board.Grid;
-import static pwr.ChessProject.models.Figure.Player.Bottom;
-import static pwr.ChessProject.models.Figure.Player.Top;
+import static pwr.chessproject.board.Board.Grid;
+import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
 class IMovePerpendicularTest {

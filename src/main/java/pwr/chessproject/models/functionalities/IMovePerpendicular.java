@@ -1,16 +1,15 @@
-package pwr.ChessProject.models.functionalities;
+package pwr.chessproject.models.functionalities;
 
-import pwr.ChessProject.models.Figure;
+import pwr.chessproject.models.Figure;
 
-import static pwr.ChessProject.board.Board.*;
+import static pwr.chessproject.board.Board.*;
 
 /**
- * Diagonal figure movement check functionality
+ * Up and down or left and right figure movement check functionality
  */
-public interface IMoveDiagonal extends IMoveable {
-
+public interface IMovePerpendicular extends IMoveable {
     /**
-     * Checks if target position is on one of two diagonal lines crossing each other in selected figure position
+     * Checks if target position is on one of two perpendicular lines crossing each other in selected figure position
      * @param position The Figure current position
      * @param target The target position to move to
      * @return Value indicating if such movement is possible
@@ -20,23 +19,10 @@ public interface IMoveDiagonal extends IMoveable {
         if (!IMoveable.super.canMove(position, target))
             return false;
         Figure.Player player = Grid[position].player;
-
-        //P1(x1,y1) and P2(x2,y2) defines a line containing movement vector
-        int x1 = position / 8;
-        int y1 = position % 8;
-        int x2 = target / 8;
-        int y2 = target % 8;
-        //preventing dividing by '0'
-        if (x1 == x2)
-            return false;
-
-        //calculating 'a', parameter of 'y = ax + b'
-        double a = (double)(y1-y2)/(double)(x1-x2);
-
-        if (a == 1) {
+        if (target % 8 == position % 8) {
             if(target < position)
                 while(target != position) {
-                    position -= 9;
+                    position -= 8;
                     if (Grid[position] == null)
                         continue;
                     else {
@@ -48,7 +34,7 @@ public interface IMoveDiagonal extends IMoveable {
                 }
             else // target > position
                 while(target != position) {
-                    position += 9;
+                    position += 8;
                     if (Grid[position] == null)
                         continue;
                     else {
@@ -60,10 +46,10 @@ public interface IMoveDiagonal extends IMoveable {
                 }
             return true;
         }
-        else if (a == -1) {
+        else if (target / 8 == position / 8) {
             if(target < position)
                 while(target != position) {
-                    position -= 7;
+                    position -= 1;
                     if (Grid[position] == null)
                         continue;
                     else {
@@ -75,7 +61,7 @@ public interface IMoveDiagonal extends IMoveable {
                 }
             else // target > position
                 while(target != position) {
-                    position += 7;
+                    position += 1;
                     if (Grid[position] == null)
                         continue;
                     else {

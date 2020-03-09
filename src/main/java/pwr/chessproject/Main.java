@@ -1,9 +1,8 @@
-package pwr.ChessProject;
+package pwr.chessproject;
 
-import pwr.ChessProject.Frame.TranslateCords;
-import pwr.ChessProject.board.Board;
-import pwr.ChessProject.models.functionalities.IMoveable;
-import pwr.ChessProject.models.functionalities.NotMoveableException;
+import pwr.chessproject.frame.TranslateCords;
+import pwr.chessproject.board.Board;
+import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.util.Scanner;
 

@@ -1,26 +1,27 @@
-package pwr.ChessProject.board;
+package pwr.chessproject.board;
 
-import org.w3c.dom.ranges.RangeException;
-import pwr.ChessProject.Frame.TranslateCords;
-import pwr.ChessProject.models.*;
-import pwr.ChessProject.models.functionalities.IMoveable;
-import pwr.ChessProject.models.functionalities.NotMoveableException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import pwr.chessproject.frame.TranslateCords;
+import pwr.chessproject.models.*;
+import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.NotMoveableException;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public final class Board {
-    public static Figure[] Grid = new Figure[64];
+    public static final int ROWS = 8;
+    public static final int COLUMNS = 8;
+    public static final int AREA = ROWS * COLUMNS;
+
+    public static Figure[] Grid = new Figure[ROWS * COLUMNS];
 
     public Board() {
        constructDefaultBoard();
     }
 
     public void constructCustomBoard(Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
-        if (savedBoard.length != 64 || savedPlayer.length != 64)
+        if (savedBoard.length != AREA || savedPlayer.length != AREA)
             throw new IllegalArgumentException("Specified saved Board is corrupted and can't be loaded");
-        for (int i = 0; i < 64; i++) {
+        for (int i = 0; i < AREA; i++) {
             switch (savedBoard[i]) {
                 case King:
                     Grid[i] = new King(savedPlayer[i]);
@@ -49,10 +50,10 @@ public final class Board {
     public void constructDefaultBoard() {
         int currentPosition;
         Figure.Player player;
-        for (int row = 0; row < 8; row++) {
+        for (int row = 0; row < ROWS; row++) {
             player = row < 4 ? Figure.Player.Top : Figure.Player.Bottom;
-            for (int column = 0; column < 8; column++) {
-                currentPosition = row*8+column;
+            for (int column = 0; column < COLUMNS; column++) {
+                currentPosition = row*ROWS+column;
                 if (row == 1 || row == 6)
                     Grid[currentPosition] = new Pawn(player);
                 else if (currentPosition == 0 || currentPosition == 7 || currentPosition == 56 || currentPosition == 63)
@@ -76,7 +77,7 @@ public final class Board {
     }
 
     public void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
-        if (position < 0 || position > 63)
+        if (position < 0 || position > AREA - 1 )
             throw new IllegalArgumentException("Can not select figure outside of the board");
         if (Board.Grid[position] == null)
             throw new NullPointerException("There is no figure at the selected position: " + TranslateCords.translateIntCordToString(position));
@@ -96,16 +97,16 @@ public final class Board {
     public String toString() {
         StringBuilder grid = new StringBuilder();
         int currentPosition;
-        for (int row = -1; row < 9; row++) {
-            for (int column = -1; column < 9; column++) {
-                if ((row == -1 || row == 8) && column != -1 && column != 8)
+        for (int row = -1; row < ROWS + 1; row++) {
+            for (int column = -1; column < COLUMNS + 1; column++) {
+                if ((row == -1 || row == ROWS) && column != -1 && column != COLUMNS)
                         grid.append("  ").append(((char)(65+column))).append("  ");
-                else if ((column == -1 || column == 8) && row != -1 && row != 8)
-                        grid.append("  ").append(8-row).append("  ");
-                else if (column == -1 || column == 8)
+                else if ((column == -1 || column == COLUMNS) && row != -1 && row != ROWS)
+                        grid.append("  ").append(ROWS-row).append("  ");
+                else if (column == -1 || column == COLUMNS)
                     grid.append("-----");
                 else {
-                    currentPosition = row*8+column;
+                    currentPosition = row*ROWS+column;
                     grid.append(Board.Grid[currentPosition] == null ? "_____" : Board.Grid[currentPosition].getClass().getSimpleName());
                 }
                 grid.append("\t");
@@ -117,9 +118,9 @@ public final class Board {
 
     @Deprecated
     public void writeGridContent() {
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                System.out.print(Grid[row*8+column] + String.valueOf(row) + ":" + column + ":" + (row * 8 + column) + " \t");
+        for (int row = 0; row < ROWS; row++) {
+            for (int column = 0; column < COLUMNS; column++) {
+                System.out.print(Grid[row*ROWS+column] + String.valueOf(row) + ":" + column + ":" + (row * ROWS + column) + " \t");
             }
             System.out.println();
         }

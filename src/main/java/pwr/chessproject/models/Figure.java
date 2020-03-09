@@ -1,4 +1,4 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
 /**
  * Abstract class containing universal information about every figure

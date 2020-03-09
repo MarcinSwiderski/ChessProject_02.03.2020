@@ -1,6 +1,6 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.IMoveable;
 
 public class Knight extends Figure implements IMoveable {
     public Knight(Player player) {

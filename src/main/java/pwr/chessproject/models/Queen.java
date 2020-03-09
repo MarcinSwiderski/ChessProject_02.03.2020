@@ -1,7 +1,7 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveDiagonal;
-import pwr.ChessProject.models.functionalities.IMovePerpendicular;
+import pwr.chessproject.models.functionalities.IMoveDiagonal;
+import pwr.chessproject.models.functionalities.IMovePerpendicular;
 
 public class Queen extends Figure implements IMovePerpendicular, IMoveDiagonal {
     public Queen(Player player) {

@@ -1,6 +1,6 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.models.functionalities.IMovePerpendicular;
+import pwr.chessproject.models.functionalities.IMovePerpendicular;
 
 public class Tower extends Figure implements IMovePerpendicular {
     public Tower(Player player) {

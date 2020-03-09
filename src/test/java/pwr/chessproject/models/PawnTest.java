@@ -1,14 +1,14 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pwr.ChessProject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.ChessProject.board.Board.Grid;
-import static pwr.ChessProject.models.Figure.Player.Bottom;
-import static pwr.ChessProject.models.Figure.Player.Top;
+import static pwr.chessproject.board.Board.Grid;
+import static pwr.chessproject.models.Figure.Player.Bottom;
+import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
 class PawnTest {

@@ -1,6 +1,7 @@
-package pwr.ChessProject.models;
+package pwr.chessproject.models;
 
-import pwr.ChessProject.models.functionalities.IMoveable;
+import static pwr.chessproject.board.Board.*;
+import pwr.chessproject.models.functionalities.IMoveable;
 
 public class Pawn extends Figure implements IMoveable {
 
@@ -27,17 +28,17 @@ public class Pawn extends Figure implements IMoveable {
         
         if (!firstMove) {
             if (player == Player.Top) {
-                return position+8 == target;
+                return position + ROWS == target;
             }
             else {
-                return position-8 == target;
+                return position - ROWS == target;
             }
         }
         if (player == Player.Top) {
-            return position+8 == target || position+16 == target;
+            return position+ ROWS == target || position+ 2*ROWS == target;
         }
         else {
-            return position-8 == target || position-16 == target;
+            return position- ROWS == target || position- 2*ROWS == target;
         }
 
     }
