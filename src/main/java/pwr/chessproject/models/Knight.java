@@ -1,6 +1,7 @@
 package pwr.chessproject.models;
 
 import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.MovingStrategies;
 
 public class Knight extends Figure implements IMoveable {
     public Knight(Player player) {
@@ -15,8 +16,8 @@ public class Knight extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMoveable.super.canMove(position, target))
-            return IMoveable.super.canMove(position, target);
+        if (!MovingStrategies.canMoveInRange(position, target))
+            return false;
 
 
         /*
@@ -41,13 +42,5 @@ public class Knight extends Figure implements IMoveable {
 
          */
         return true;
-    }
-
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "player=" + player +
-                '}';
     }
 }

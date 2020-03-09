@@ -1,9 +1,9 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveDiagonal;
-import pwr.chessproject.models.functionalities.IMovePerpendicular;
+import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.MovingStrategies;
 
-public class Queen extends Figure implements IMovePerpendicular, IMoveDiagonal {
+public class Queen extends Figure implements IMoveable {
     public Queen(Player player) {
         super(player);
         this.figureType = FigureType.Queen;
@@ -16,13 +16,6 @@ public class Queen extends Figure implements IMovePerpendicular, IMoveDiagonal {
      */
     @Override
     public boolean canMove(int position, int target) {
-        return IMovePerpendicular.super.canMove(position, target)  || IMoveDiagonal.super.canMove(position, target);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "player=" + player +
-                '}';
+        return MovingStrategies.canMoveInRange(position, target) && (MovingStrategies.canMovePerpendicular(position, target)  || MovingStrategies.canMoveDiagonal(position, target));
     }
 }

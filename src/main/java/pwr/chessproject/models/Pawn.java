@@ -2,18 +2,22 @@ package pwr.chessproject.models;
 
 import static pwr.chessproject.board.Board.*;
 import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.MovingStrategies;
 
 public class Pawn extends Figure implements IMoveable {
 
-    private boolean firstMove = true;
+    private boolean firstMoveIndicator = true;
 
     public Pawn(Player player) {
         super(player);
         this.figureType = FigureType.Pawn;
     }
 
-    public void afterFirstMove() {
-        this.firstMove = false;
+    public void afterFirstMoveIndicator() {
+        this.firstMoveIndicator = false;
+    }
+    public boolean getFirstMoveIndicator() {
+        return firstMoveIndicator;
     }
 
     /**
@@ -23,30 +27,36 @@ public class Pawn extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!IMoveable.super.canMove(position, target))
+        if (!MovingStrategies.canMoveInRange(position, target))
             return false;
-        
-        if (!firstMove) {
+
             if (player == Player.Top) {
-                return position + ROWS == target;
+                if (position + COLUMNS == target) {
+                    Figure figureAtTarget = Grid[target];
+                    return figureAtTarget == null || figureAtTarget.player == Player.Bottom;
+                }
             }
             else {
-                return position - ROWS == target;
+                if (position - COLUMNS == target) {
+                    Figure figureAtTarget = Grid[target];
+                    return figureAtTarget == null || figureAtTarget.player == Player.Top;
+                }
+            }
+
+        if (firstMoveIndicator) {
+            if (player == Player.Top) {
+                if (position+ 2*COLUMNS == target) {
+                    Figure figureAtTarget = Grid[target];
+                    return Grid[position+COLUMNS] == null && (figureAtTarget == null || figureAtTarget.player == Player.Bottom);
+                }
+            }
+            else {
+                if (position- 2*COLUMNS == target) {
+                    Figure figureAtTarget = Grid[target];
+                    return Grid[position-COLUMNS] == null && (figureAtTarget == null || figureAtTarget.player == Player.Top);
+                }
             }
         }
-        if (player == Player.Top) {
-            return position+ ROWS == target || position+ 2*ROWS == target;
-        }
-        else {
-            return position- ROWS == target || position- 2*ROWS == target;
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "player=" + player +
-                '}';
+        return false;
     }
 }

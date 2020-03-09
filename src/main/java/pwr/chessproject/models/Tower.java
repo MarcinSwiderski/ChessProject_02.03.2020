@@ -1,8 +1,9 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMovePerpendicular;
+import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.MovingStrategies;
 
-public class Tower extends Figure implements IMovePerpendicular {
+public class Tower extends Figure implements IMoveable {
     public Tower(Player player) {
         super(player);
         this.figureType = FigureType.Tower;
@@ -15,13 +16,6 @@ public class Tower extends Figure implements IMovePerpendicular {
      */
     @Override
     public boolean canMove(int position, int target) {
-        return IMovePerpendicular.super.canMove(position, target);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "player=" + player +
-                '}';
+        return MovingStrategies.canMoveInRange(position, target) && MovingStrategies.canMovePerpendicular(position, target);
     }
 }

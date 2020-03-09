@@ -1,18 +1,22 @@
 package pwr.chessproject;
 
-import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.board.Board;
+import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] p ) {
-        Board board = new Board();
-        int position, target;
-        board.writeGridContent();
 
-        Scanner scanner = new Scanner(System.in);
+        Board board = new Board(8,8);
+        board.writeGridContent();
+        System.out.println(board);
+
+        int position, target;
+        //board.clearBoard();
+
+        /*Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println(board);
@@ -26,6 +30,6 @@ public class Main {
             catch (NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 System.out.println(ex);
             }
-        }
+        }*/
     }
 }

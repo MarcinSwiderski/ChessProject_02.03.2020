@@ -1,8 +1,9 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveDiagonal;
+import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.MovingStrategies;
 
-public class Bishop extends Figure implements IMoveDiagonal {
+public class Bishop extends Figure implements IMoveable {
     public Bishop(Player player) {
         super(player);
         this.figureType = FigureType.Bishop;
@@ -15,13 +16,6 @@ public class Bishop extends Figure implements IMoveDiagonal {
      */
     @Override
     public boolean canMove(int position, int target) {
-        return IMoveDiagonal.super.canMove(position, target);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "player=" + player +
-                '}';
+        return MovingStrategies.canMoveInRange(position, target) && MovingStrategies.canMoveDiagonal(position, target);
     }
 }

@@ -7,20 +7,46 @@ import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.util.Arrays;
 
-public final class Board {
-    public static final int ROWS = 8;
-    public static final int COLUMNS = 8;
-    public static final int AREA = ROWS * COLUMNS;
+public class Board {
+    public static int ROWS  = 8;
+    public static int COLUMNS = 8;
+    public static int AREA = ROWS*COLUMNS;
 
-    public static Figure[] Grid = new Figure[ROWS * COLUMNS];
+    public static Figure[] Grid;
 
     public Board() {
-       constructDefaultBoard();
+        Grid = new Figure[AREA];
+        constructDefaultBoard();
     }
 
-    public void constructCustomBoard(Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
-        if (savedBoard.length != AREA || savedPlayer.length != AREA)
-            throw new IllegalArgumentException("Specified saved Board is corrupted and can't be loaded");
+    public Board(int rows, int columns) throws IllegalArgumentException {
+        if (rows < 8 || columns < 8)
+            throw new IllegalArgumentException("Board is too small");
+        else if (rows == 8 && columns == 8) {
+            Grid = new Figure[AREA];
+            constructDefaultBoard();
+        }
+        else {
+            ROWS = rows;
+            COLUMNS = columns;
+            AREA = ROWS*COLUMNS;
+            Grid = new Figure[AREA];
+        }
+    }
+
+    public Board(int rows, int columns, Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
+        if (rows < 8 || columns < 8)
+            throw new IllegalArgumentException("Board is too small");
+        else {
+            ROWS = rows;
+            COLUMNS = columns;
+            AREA = rows*columns;
+            this.constructCustomBoard(savedBoard, savedPlayer);
+        }
+        Grid = new Figure[AREA];
+    }
+
+    private void constructCustomBoard(Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
         for (int i = 0; i < AREA; i++) {
             switch (savedBoard[i]) {
                 case King:
@@ -47,13 +73,13 @@ public final class Board {
         }
     }
 
-    public void constructDefaultBoard() {
+    private void constructDefaultBoard() {
         int currentPosition;
         Figure.Player player;
         for (int row = 0; row < ROWS; row++) {
             player = row < 4 ? Figure.Player.Top : Figure.Player.Bottom;
             for (int column = 0; column < COLUMNS; column++) {
-                currentPosition = row*ROWS+column;
+                currentPosition = row*COLUMNS+column;
                 if (row == 1 || row == 6)
                     Grid[currentPosition] = new Pawn(player);
                 else if (currentPosition == 0 || currentPosition == 7 || currentPosition == 56 || currentPosition == 63)
@@ -87,7 +113,8 @@ public final class Board {
             Board.Grid[position] = null;
             if (selectedFigure instanceof Pawn) {
                 Pawn pawn = (Pawn)selectedFigure;
-                pawn.afterFirstMove();
+                if (pawn.getFirstMoveIndicator())
+                    pawn.afterFirstMoveIndicator();
             }
         }
         else throw new NotMoveableException(position, target, Board.Grid[position]);
@@ -106,7 +133,7 @@ public final class Board {
                 else if (column == -1 || column == COLUMNS)
                     grid.append("-----");
                 else {
-                    currentPosition = row*ROWS+column;
+                    currentPosition = row*COLUMNS+column;
                     grid.append(Board.Grid[currentPosition] == null ? "_____" : Board.Grid[currentPosition].getClass().getSimpleName());
                 }
                 grid.append("\t");
@@ -120,7 +147,8 @@ public final class Board {
     public void writeGridContent() {
         for (int row = 0; row < ROWS; row++) {
             for (int column = 0; column < COLUMNS; column++) {
-                System.out.print(Grid[row*ROWS+column] + String.valueOf(row) + ":" + column + ":" + (row * ROWS + column) + " \t");
+                //System.out.println(row + ":" + column + "\t");
+                System.out.print(Grid[row*COLUMNS+column] + String.valueOf(row) + ":" + column + ":" + (row * COLUMNS + column) + " \t");
             }
             System.out.println();
         }

@@ -13,8 +13,6 @@ public interface IMoveable {
      * @param target The target position to move to
      * @return Value indicating if such movement is possible
      */
-    default boolean canMove(int position, int target) {
-        return target >= 0 && target <= AREA - 1 && target != position;
-    }
+    boolean canMove(int position, int target);
 
 }

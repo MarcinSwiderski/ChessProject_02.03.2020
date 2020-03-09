@@ -21,4 +21,11 @@ public abstract class Figure {
     public Figure(Player player) {
         this.player = player;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "player=" + player +
+                '}';
+    }
 }
