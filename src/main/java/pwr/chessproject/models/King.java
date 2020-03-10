@@ -84,8 +84,14 @@ public class King extends Figure implements IMoveable {
             availableFields.remove(Integer.valueOf(position+COLUMNS+1));
         }
 
-        if (availableFields.contains(target))
-            return true;
-        return false;
+        if (availableFields.contains(target)) {
+            if(Grid[target] != null) {
+                return !(Grid[target].player == Grid[position].player);
+            }
+            else
+                return true;
+        }
+        else
+            return false;
     }
 }

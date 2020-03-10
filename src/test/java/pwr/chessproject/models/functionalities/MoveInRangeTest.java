@@ -28,7 +28,7 @@ class MoveInRangeTest {
         );
     }
 
-    @ParameterizedTest(name = "{arguments} can move perpendicularly")
+    @ParameterizedTest(name = "{arguments} can not move outside of the board range")
     @MethodSource("figureProvider")
     void canNotMoveOutsideRange(IMoveable figure) {
         int position = AREA-1;

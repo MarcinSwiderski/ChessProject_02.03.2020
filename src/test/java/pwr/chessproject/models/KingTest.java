@@ -7,6 +7,7 @@ import pwr.chessproject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
@@ -77,6 +78,22 @@ class KingTest {
                 () -> assertFalse(king.canMove(position, position+COLUMNS-1)),
                 () -> assertFalse(king.canMove(position, position-1)),
                 () -> assertFalse(king.canMove(position, position-COLUMNS-1))
+        );
+    }
+
+    @Test
+    void canKillOnlyEnemies() {
+
+        Grid[0] = new King(Top);
+        IMoveable king = (IMoveable) Grid[0];
+
+        //obstacle
+        Grid[1] = new Pawn(Bottom);
+        Grid[COLUMNS] = new Pawn(Top);
+
+        assertAll(
+                () -> assertTrue(king.canMove(0, 1)),
+                () -> assertFalse(king.canMove(0, COLUMNS))
         );
     }
 }

@@ -3,6 +3,10 @@ package pwr.chessproject.models;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
+import java.util.ArrayList;
+
+import static pwr.chessproject.board.Board.*;
+
 public class Knight extends Figure implements IMoveable {
     public Knight(Player player) {
         super(player);
@@ -19,28 +23,67 @@ public class Knight extends Figure implements IMoveable {
         if (!MovingStrategies.canMoveInRange(position, target))
             return false;
 
+        ArrayList<Integer> availableFields = new ArrayList<Integer>() {
+            {
+                add(position-2*COLUMNS-1);
+                add(position-2*COLUMNS+1);
+                add(position+2-COLUMNS);
+                add(position+2+COLUMNS);
+                add(position+2*COLUMNS-1);
+                add(position+2*COLUMNS+1);
+                add(position-2-COLUMNS);
+                add(position-2+COLUMNS);
+            }
+        };
 
-        /*
-        switch(position)
-        {
-
-            case (10):
-                return position + 6 == target || position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 10 == target || position - 15 == target || position - 17 == target;
-            case ( 5 / " X = 1, Y (3,6) "  ):
-                return position - 15 == target || position - 6 == target || position + 10 == target || position + 17 == target;
-
-            case ( 8" X = 2, Y (3,6) "  ):
-                return position + 15 == target || position + 10 == target || position + 17 == target || position - 6 == target || position - 15 == target || position - 17 == target;
-            break;
-            case ( 7" X = 8 , Y (3,6) "  ):
-                return position + 15 == target || position + 6 == target || position - 10 == target || position - 17 == target;
-            break;
-            case ( 6 " X = 8 " ):
-
-                break;
+        //left side
+        if (position % COLUMNS <= 1) {
+            availableFields.remove(Integer.valueOf(position-2+COLUMNS));
+            availableFields.remove(Integer.valueOf(position-2-COLUMNS));
+            if (position % COLUMNS == 0) {
+                availableFields.remove(Integer.valueOf(position+2*COLUMNS-1));
+                availableFields.remove(Integer.valueOf(position-2*COLUMNS-1));
+            }
         }
 
-         */
-        return true;
+        //Right side
+        if (position % COLUMNS >= COLUMNS-2) {
+            availableFields.remove(Integer.valueOf(position + 2 + COLUMNS));
+            availableFields.remove(Integer.valueOf(position + 2 - COLUMNS));
+            if (position % COLUMNS == COLUMNS-1) {
+                availableFields.remove(Integer.valueOf(position + 2 * COLUMNS + 1));
+                availableFields.remove(Integer.valueOf(position - 2 * COLUMNS + 1));
+            }
+        }
+
+        //Top side
+        if (position / COLUMNS <= 1) {
+            availableFields.remove(Integer.valueOf(position - 2 * COLUMNS + 1));
+            availableFields.remove(Integer.valueOf(position - 2 * COLUMNS - 1));
+            if (position / COLUMNS == 0) {
+                availableFields.remove(Integer.valueOf(position + 2 - COLUMNS));
+                availableFields.remove(Integer.valueOf(position - 2 - COLUMNS));
+            }
+        }
+
+        //Bot side
+        if (position / COLUMNS >= ROWS-2) {
+            availableFields.remove(Integer.valueOf(position + 2 * COLUMNS + 1));
+            availableFields.remove(Integer.valueOf(position + 2 * COLUMNS - 1));
+            if (position / COLUMNS == ROWS-1) {
+                availableFields.remove(Integer.valueOf(position + 2 + COLUMNS));
+                availableFields.remove(Integer.valueOf(position - 2 + COLUMNS));
+            }
+        }
+
+        if (availableFields.contains(target)) {
+            if(Grid[target] != null) {
+                return !(Grid[target].player == Grid[position].player);
+            }
+            else
+                return true;
+        }
+        else
+            return false;
     }
 }
