@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import pwr.chessproject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 
@@ -31,7 +31,7 @@ class PawnTest {
 
     @Test
     void topCanMoveOnlyOneOrTwoDownwards() {
-        int topPosition = 0+1+COLUMNS;
+        int topPosition = 1 + COLUMNS;
         Grid[topPosition] = new Pawn(Top);
         IMoveable pawn = (IMoveable)Grid[topPosition];
         Assertions.assertAll(
@@ -68,6 +68,7 @@ class PawnTest {
 
     @Test
     void pawnCanKill() {
+        //todo tests for proper killing
         Grid[0] = new Pawn(Top);
         Grid[COLUMNS] = new Pawn(Bottom);
         IMoveable pawn = (IMoveable)Grid[0];

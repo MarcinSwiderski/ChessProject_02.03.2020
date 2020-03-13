@@ -1,15 +1,12 @@
 package pwr.chessproject.models;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import pwr.chessproject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.chessproject.board.Board.*;
-import static pwr.chessproject.board.Board.COLUMNS;
+import static pwr.chessproject.game.Board.*;
+import static pwr.chessproject.game.Board.COLUMNS;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 

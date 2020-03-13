@@ -1,4 +1,4 @@
-package pwr.chessproject.board;
+package pwr.chessproject.game;
 
 import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.*;
@@ -102,11 +102,14 @@ public class Board {
         Arrays.fill(Grid, null);
     }
 
-    public void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
+    public void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
         if (position < 0 || position > AREA - 1 )
             throw new IllegalArgumentException("Can not select figure outside of the board");
         if (Board.Grid[position] == null)
             throw new NullPointerException("There is no figure at the selected position: " + TranslateCords.translateIntCordToString(position));
+    }
+
+    public void moveFigure(int position, int target) throws NotMoveableException {
         IMoveable selectedFigure = (IMoveable)Grid[position];
         if (selectedFigure.canMove(position, target)) {
             Board.Grid[target] = Board.Grid[position];

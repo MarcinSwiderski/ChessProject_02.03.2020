@@ -1,6 +1,6 @@
 package pwr.chessproject.frame;
 
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 
 public class TranslateCords {
 

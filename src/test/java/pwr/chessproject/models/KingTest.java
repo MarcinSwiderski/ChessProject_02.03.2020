@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import pwr.chessproject.models.functionalities.IMoveable;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 

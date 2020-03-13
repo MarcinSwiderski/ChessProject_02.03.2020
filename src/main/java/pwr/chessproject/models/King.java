@@ -4,9 +4,8 @@ import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 
 public class King extends Figure implements IMoveable {
     public King(Player player) {

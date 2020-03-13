@@ -1,8 +1,6 @@
 package pwr.chessproject.models.functionalities;
 
 
-import static pwr.chessproject.board.Board.*;
-
 /**
  * Default figure movement check functionality
  */

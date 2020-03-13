@@ -2,7 +2,7 @@ package pwr.chessproject.models.functionalities;
 
 import pwr.chessproject.models.Figure;
 
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 
 /**
  * Contains common moving strategies

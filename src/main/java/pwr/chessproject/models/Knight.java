@@ -5,7 +5,7 @@ import pwr.chessproject.models.functionalities.MovingStrategies;
 
 import java.util.ArrayList;
 
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 
 public class Knight extends Figure implements IMoveable {
     public Knight(Player player) {

@@ -1,6 +1,6 @@
 package pwr.chessproject.models;
 
-import static pwr.chessproject.board.Board.*;
+import static pwr.chessproject.game.Board.*;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
@@ -29,6 +29,8 @@ public class Pawn extends Figure implements IMoveable {
     public boolean canMove(int position, int target) {
         if (!MovingStrategies.canMoveInRange(position, target))
             return false;
+
+        //todo proper attacking
 
             if (player == Player.Top) {
                 if (position + COLUMNS == target) {
