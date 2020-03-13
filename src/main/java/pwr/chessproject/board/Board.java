@@ -134,7 +134,7 @@ public class Board {
                     grid.append("-----");
                 else {
                     currentPosition = row*COLUMNS+column;
-                    grid.append(Board.Grid[currentPosition] == null ? "_____" : Board.Grid[currentPosition].getClass().getSimpleName());
+                    grid.append(Board.Grid[currentPosition] == null ? "_____" : Board.Grid[currentPosition].getClass().getSimpleName() + Board.Grid[currentPosition].player.toString().toCharArray()[0]);
                 }
                 grid.append("\t");
             }

@@ -9,14 +9,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] p ) {
 
-        Board board = new Board(8,8);
-        board.writeGridContent();
-        System.out.println(board);
+        Board board = new Board();
 
         int position, target;
-        //board.clearBoard();
 
-        /*Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println(board);
@@ -26,10 +23,17 @@ public class Main {
                 System.out.println("Select a target: ");
                 target = TranslateCords.translateStringCordToInt(scanner.next().trim().toUpperCase());
                 board.moveFigure(position, target);
+                throw new Exception("xd");
             }
             catch (NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 System.out.println(ex);
             }
-        }*/
+            catch (Exception ex) {
+                System.out.println(ex);
+                System.out.println("Press any key and enter to close");
+                scanner.next();
+                break;
+            }
+        }
     }
 }
