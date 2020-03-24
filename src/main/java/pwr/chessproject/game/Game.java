@@ -2,6 +2,7 @@ package pwr.chessproject.game;
 
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
+import pwr.chessproject.models.Pawn;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
@@ -11,17 +12,17 @@ import static pwr.chessproject.frame.TranslateCords.*;
 import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.*;
 
-public class Game {
-    private Board board;
+public final class Game {
+    Board board;
 
-    private Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
+    Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
         {
             put(Top, 3);
-            put(Bottom, 4);
+            put(Bottom, AREA-4);
         }
     };
 
-    private Figure.Player currentPlayer = Top;
+    Figure.Player currentPlayer = Top;
 
     public Game(Board board) {
         this.board = board;
@@ -36,6 +37,9 @@ public class Game {
             System.out.println(board);
 
             try {
+                System.out.println(kingPosition.get(currentPlayer));
+                if (isChecked(kingPosition.get(currentPlayer)))
+                    System.out.println("Check!");
                 System.out.println(currentPlayer + " turn: ");
                 System.out.println("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
@@ -46,13 +50,13 @@ public class Game {
                 }
                 System.out.println("Select a target: ");
                 target = translateStringCordToInt(scanner.next().trim().toUpperCase());
-                if (isChecked(kingPosition.get(currentPlayer))) {
-                    if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
-                        System.out.println("You can not move into " + translateIntCordToString(target) + " because of check");
-                        continue;
-                    }
+                if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
+                    System.out.println("You can not move into " + translateIntCordToString(target) + " because of check");
+                    continue;
                 }
                 board.moveFigure(position, target);
+                if (Grid[target] instanceof King)
+                    kingPosition.replace(currentPlayer, target);
                 passTurn();
             } catch (NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 System.out.println(ex.getMessage());
@@ -65,7 +69,7 @@ public class Game {
         }
     }
 
-    private boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
+    boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
         Figure selectedFigure = Grid[position];
         Figure targetFigure = Grid[target];
         if (!((IMoveable)selectedFigure).canMove(position, target))
@@ -78,7 +82,7 @@ public class Game {
         return isActionValid;
     }
 
-    private boolean isChecked(int kingPosition) {
+    boolean isChecked(int kingPosition) {
         Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
         Figure figure;
         for (int i = 0; i < AREA; i++) {
@@ -91,7 +95,7 @@ public class Game {
         return false;
     }
 
-    private boolean isCheckmated (int kingPosition) {
+    boolean isCheckmated (int kingPosition) {
         //todo
         if (!isChecked(kingPosition))
             return false;
@@ -107,7 +111,7 @@ public class Game {
         return true;
     }
 
-    private void passTurn() {
+    void passTurn() {
         this.currentPlayer = this.currentPlayer == Top ? Bottom : Top;
     }
 

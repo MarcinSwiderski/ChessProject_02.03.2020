@@ -54,7 +54,7 @@ public class Pawn extends Figure implements IMoveable {
             }
             else {
                 if (position- 2*COLUMNS == target)
-                    return Grid[target] == null && Grid[position+COLUMNS] == null;
+                    return Grid[target] == null && Grid[position-COLUMNS] == null;
             }
         }
         return false;
