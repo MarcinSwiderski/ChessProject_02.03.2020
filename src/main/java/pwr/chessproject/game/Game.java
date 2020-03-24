@@ -37,7 +37,6 @@ public final class Game {
             System.out.println(board);
 
             try {
-                System.out.println(kingPosition.get(currentPlayer));
                 if (isChecked(kingPosition.get(currentPlayer)))
                     System.out.println("Check!");
                 System.out.println(currentPlayer + " turn: ");
@@ -72,13 +71,17 @@ public final class Game {
     boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
         Figure selectedFigure = Grid[position];
         Figure targetFigure = Grid[target];
+        int kingPosition = this.kingPosition.get(currentPlayer);
         if (!((IMoveable)selectedFigure).canMove(position, target))
             throw new NotMoveableException(position, target, Board.Grid[position]);
         Grid[position] = null;
         Grid[target] = selectedFigure;
+        if (Grid[target] instanceof King)
+            this.kingPosition.replace(currentPlayer, target);
         boolean isActionValid = toCheck.action();
         Grid[position] = selectedFigure;
         Grid[target] = targetFigure;
+        this.kingPosition.replace(currentPlayer, kingPosition);
         return isActionValid;
     }
 
