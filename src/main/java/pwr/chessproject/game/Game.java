@@ -1,13 +1,13 @@
 package pwr.chessproject.game;
 
-import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.Figure;
+import pwr.chessproject.models.King;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
+import static pwr.chessproject.frame.TranslateCords.*;
 import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.*;
 
@@ -38,21 +38,19 @@ public class Game {
             try {
                 System.out.println(currentPlayer + " turn: ");
                 System.out.println("Select a figure: ");
-                position = TranslateCords.translateStringCordToInt(scanner.next().trim().toUpperCase());
+                position = translateStringCordToInt(scanner.next().trim().toUpperCase());
                 board.checkPosition(position);
                 if (Grid[position].player != currentPlayer) {
                     System.out.println("You have to select " + currentPlayer + " player figure");
                     continue;
                 }
-                else if (isMate(kingPosition.get(currentPlayer)) && Grid[position].figureType != Figure.FigureType.King) {
-                    System.out.println("You are under mate. You have to select king");
-                    continue;
-                }
                 System.out.println("Select a target: ");
-                target = TranslateCords.translateStringCordToInt(scanner.next().trim().toUpperCase());
-                if (isMate(kingPosition.get(currentPlayer)) && isMate(target)) {
-                    System.out.println("You can not move into " + TranslateCords.translateIntCordToString(target) + " because of mate");
-                    continue;
+                target = translateStringCordToInt(scanner.next().trim().toUpperCase());
+                if (isChecked(kingPosition.get(currentPlayer))) {
+                    if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
+                        System.out.println("You can not move into " + translateIntCordToString(target) + " because of check");
+                        continue;
+                    }
                 }
                 board.moveFigure(position, target);
                 passTurn();
@@ -67,7 +65,20 @@ public class Game {
         }
     }
 
-    private boolean isMate (int kingPosition) {
+    private boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
+        Figure selectedFigure = Grid[position];
+        Figure targetFigure = Grid[target];
+        if (!((IMoveable)selectedFigure).canMove(position, target))
+            throw new NotMoveableException(position, target, Board.Grid[position]);
+        Grid[position] = null;
+        Grid[target] = selectedFigure;
+        boolean isActionValid = toCheck.action();
+        Grid[position] = selectedFigure;
+        Grid[target] = targetFigure;
+        return isActionValid;
+    }
+
+    private boolean isChecked(int kingPosition) {
         Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
         Figure figure;
         for (int i = 0; i < AREA; i++) {
@@ -80,22 +91,28 @@ public class Game {
         return false;
     }
 
-    private boolean isGameFinished (int kingPosition) {
-        //todo winning conditions
-        Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
-        Figure figure;
-        for (int i = 0; i < AREA; i++) {
-            figure = Grid[i];
-            if (figure != null && figure.player == opponent) {
-                if (((IMoveable)figure).canMove(i, kingPosition))
-                    return false;
-            }
+    private boolean isCheckmated (int kingPosition) {
+        //todo
+        if (!isChecked(kingPosition))
+            return false;
+        King king;
+        if (Grid[kingPosition] instanceof King) {
+            king = (King) Grid[kingPosition];
+        }
+        else throw new ClassCastException("Could not find the King");
+        for (int target: king.getAvailableFields(kingPosition)) {
+            if (king.canMove(kingPosition, target) && !isChecked(target))
+                return false;
         }
         return true;
     }
 
     private void passTurn() {
         this.currentPlayer = this.currentPlayer == Top ? Bottom : Top;
+    }
+
+    private interface IToCheck {
+        boolean action();
     }
 
 }

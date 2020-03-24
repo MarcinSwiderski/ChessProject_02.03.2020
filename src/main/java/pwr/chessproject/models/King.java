@@ -13,42 +13,13 @@ public class King extends Figure implements IMoveable {
         this.figureType = FigureType.King;
     }
 
+
     /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
+     * Maps every available field that king can move to
+     * @param position Position to map
+     * @return List of available fields
      */
-    @Override
-    public boolean canMove(int position, int target) {
-        if (!MovingStrategies.canMoveInRange(position, target))
-            return false;
-
-        /*if (!(Grid[position].player == player)) {
-            if (position > 0 && position < 8)
-                return position + 1 == target || position - 1 == target || position + 7 == target || position + 9 == target || position + 8 == target;
-
-            if (position > 56 && position < 63)
-                return position + 1 == target || position - 1 == target || position - 7 == target || position - 9 == target || position - 8 == target;
-
-            if (position == 8 || position == 16 || position == 24 || position == 32 || position == 40 || position == 48)
-                return position + 1 == target || position - 7 == target || position + 9 == target || position + 8 == target || position - 8 == target;
-
-            if (position == 15 || position == 23 || position == 31 || position == 39 || position == 47 || position == 55)
-                return position - 1 == target || position - 9 == target || position + 7 == target || position + 8 == target || position - 8 == target;
-
-            if (position == 0)
-                return position + 1 == target || position + 8 == target || position + 9 == target;
-
-            if (position == 7)
-                return position + 7 == target || position + 8 == target || position - 1 == target;
-
-            if (position == 63)
-                return position - 1 == target || position - 8 == target || position - 9 == target;
-
-            if (position == 56)
-                return position + 1 == target || position - 8 == target || position - 7 == target;
-        }*/
-
+    public ArrayList<Integer> getAvailableFields(int position) {
         ArrayList<Integer> availableFields = new ArrayList<Integer>() {
             {
                 add(position-COLUMNS);
@@ -83,7 +54,20 @@ public class King extends Figure implements IMoveable {
             availableFields.remove(Integer.valueOf(position+COLUMNS+1));
         }
 
-        if (availableFields.contains(target)) {
+        return availableFields;
+    }
+
+    /**
+     * Checks if you can move into target position
+     * @param target The target position to move to
+     * @return Value indicating if you can move into target position
+     */
+    @Override
+    public boolean canMove(int position, int target) {
+        if (!MovingStrategies.canMoveInRange(position, target))
+            return false;
+
+        if (getAvailableFields(position).contains(target)) {
             if(Grid[target] != null) {
                 return !(Grid[target].player == Grid[position].player);
             }

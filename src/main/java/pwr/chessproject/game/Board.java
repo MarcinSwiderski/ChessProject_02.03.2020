@@ -14,11 +14,20 @@ public class Board {
 
     public static Figure[] Grid;
 
+    /**
+     * Creates default 8x8 board and sets figures
+     */
     public Board() {
         Grid = new Figure[AREA];
         constructDefaultBoard();
     }
 
+    /**
+     * Creates custom board with specified size
+     * @param rows Number of rows
+     * @param columns Number of columns
+     * @throws IllegalArgumentException
+     */
     public Board(int rows, int columns) throws IllegalArgumentException {
         if (rows < 8 || columns < 8)
             throw new IllegalArgumentException("Board is too small");
@@ -73,6 +82,9 @@ public class Board {
         }
     }
 
+    /**
+     * Initializes Grid with default 8x8 board and sets figures
+     */
     private void constructDefaultBoard() {
         int currentPosition;
         Figure.Player player;
@@ -98,10 +110,19 @@ public class Board {
         }
     }
 
+    /**
+     * Fills the static Grid with null's
+     */
     public void clearBoard() {
         Arrays.fill(Grid, null);
     }
 
+    /**
+     * Checks if position is in range and whether there is a figure
+     * @param position The Figure current position
+     * @throws NullPointerException
+     * @throws IllegalArgumentException
+     */
     public void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
         if (position < 0 || position > AREA - 1 )
             throw new IllegalArgumentException("Can not select figure outside of the board");
@@ -109,6 +130,12 @@ public class Board {
             throw new NullPointerException("There is no figure at the selected position: " + TranslateCords.translateIntCordToString(position));
     }
 
+    /**
+     * Moves figure from position to target if it's possible
+     * @param position The Figure current position
+     * @param target The target position to move to
+     * @throws NotMoveableException
+     */
     public void moveFigure(int position, int target) throws NotMoveableException {
         IMoveable selectedFigure = (IMoveable)Grid[position];
         if (selectedFigure.canMove(position, target)) {
@@ -146,6 +173,9 @@ public class Board {
         return grid.toString();
     }
 
+    /**
+     * Writes Grid to console, includes fields info: 'row:column:index'
+     */
     @Deprecated
     public void writeGridContent() {
         for (int row = 0; row < ROWS; row++) {
