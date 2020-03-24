@@ -53,8 +53,8 @@ class PawnTest {
 
         //obstacles
         Grid[COLUMNS] = new Pawn(Top);
-        Grid[COLUMNS+1] = new Pawn(Bottom);
         Grid[2*COLUMNS] = new Pawn(Top);
+        Grid[1+COLUMNS] = new Pawn(Top);
 
         IMoveable pawn1 = (IMoveable)Grid[0];
         IMoveable pawn2 = (IMoveable)Grid[1];
@@ -68,11 +68,14 @@ class PawnTest {
 
     @Test
     void pawnCanKill() {
-        //todo tests for proper killing
-        Grid[0] = new Pawn(Top);
+        Grid[1] = new Pawn(Top);
         Grid[COLUMNS] = new Pawn(Bottom);
-        IMoveable pawn = (IMoveable)Grid[0];
-        assertTrue(pawn.canMove(0, COLUMNS));
+        Grid[COLUMNS+2] = new Pawn(Bottom);
+        IMoveable pawn = (IMoveable)Grid[1];
+        Assertions.assertAll(
+                () -> assertTrue(pawn.canMove(1, COLUMNS)),
+                () -> assertTrue(pawn.canMove(1, COLUMNS+2))
+        );
     }
 
     @Test

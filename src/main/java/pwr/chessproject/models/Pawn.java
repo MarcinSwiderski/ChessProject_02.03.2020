@@ -30,33 +30,31 @@ public class Pawn extends Figure implements IMoveable {
         if (!MovingStrategies.canMoveInRange(position, target))
             return false;
 
-        //todo proper attacking
-
             if (player == Player.Top) {
-                if (position + COLUMNS == target) {
-                    Figure figureAtTarget = Grid[target];
-                    return figureAtTarget == null || figureAtTarget.player == Player.Bottom;
+                if (position + COLUMNS == target)
+                    return Grid[target] == null;
+                else if (position + COLUMNS + 1  == target || position + COLUMNS - 1  == target) {
+                    Figure targetFigure = Grid[target];
+                    return targetFigure != null && targetFigure.player == Player.Bottom;
                 }
             }
             else {
-                if (position - COLUMNS == target) {
-                    Figure figureAtTarget = Grid[target];
-                    return figureAtTarget == null || figureAtTarget.player == Player.Top;
+                if (position - COLUMNS == target)
+                    return Grid[target] == null;
+                else if (position - COLUMNS + 1  == target || position - COLUMNS - 1  == target) {
+                    Figure targetFigure = Grid[target];
+                    return targetFigure != null && targetFigure.player == Player.Top;
                 }
             }
 
         if (firstMoveIndicator) {
             if (player == Player.Top) {
-                if (position+ 2*COLUMNS == target) {
-                    Figure figureAtTarget = Grid[target];
-                    return Grid[position+COLUMNS] == null && (figureAtTarget == null || figureAtTarget.player == Player.Bottom);
-                }
+                if (position+ 2*COLUMNS == target)
+                    return Grid[target] == null && Grid[position+COLUMNS] == null;
             }
             else {
-                if (position- 2*COLUMNS == target) {
-                    Figure figureAtTarget = Grid[target];
-                    return Grid[position-COLUMNS] == null && (figureAtTarget == null || figureAtTarget.player == Player.Top);
-                }
+                if (position- 2*COLUMNS == target)
+                    return Grid[target] == null && Grid[position+COLUMNS] == null;
             }
         }
         return false;
