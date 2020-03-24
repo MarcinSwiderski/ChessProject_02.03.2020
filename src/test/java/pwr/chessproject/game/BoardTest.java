@@ -1,8 +1,13 @@
 package pwr.chessproject.game;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import pwr.chessproject.models.Bishop;
+import pwr.chessproject.models.Figure;
+import pwr.chessproject.models.FigureMoveExtension;
+import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,6 +56,11 @@ class BoardTest {
     }
 
     @Test
-    void moveFigureTest() {
+    void moveFigureTest() throws NotMoveableException {
+        Board board = new Board(10, 10);
+        Bishop bishop = new Bishop(Figure.Player.Top);
+        Board.Grid[0] = bishop;
+        board.moveFigure(0, Board.AREA-1);
+        assertSame(Board.Grid[Board.AREA - 1], bishop);
     }
 }
