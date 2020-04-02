@@ -19,6 +19,7 @@ public class King extends Figure implements IMoveable {
      * @param position Position to map
      * @return List of available fields
      */
+    @Override
     public ArrayList<Integer> getAvailableFields(int position) {
         ArrayList<Integer> availableFields = new ArrayList<Integer>() {
             {
@@ -54,6 +55,8 @@ public class King extends Figure implements IMoveable {
             availableFields.remove(Integer.valueOf(position+COLUMNS+1));
         }
 
+        availableFields.removeIf(field -> Grid[field] != null && Grid[field].player == player);
+
         return availableFields;
     }
 
@@ -64,17 +67,6 @@ public class King extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!MovingStrategies.canMoveInRange(position, target))
-            return false;
-
-        if (getAvailableFields(position).contains(target)) {
-            if(Grid[target] != null) {
-                return !(Grid[target].player == Grid[position].player);
-            }
-            else
-                return true;
-        }
-        else
-            return false;
+        return getAvailableFields(position).contains(target);
     }
 }

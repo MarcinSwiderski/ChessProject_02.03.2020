@@ -20,9 +20,11 @@ public class Knight extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!MovingStrategies.canMoveInRange(position, target))
-            return false;
+        return getAvailableFields(position).contains(target);
+    }
 
+    @Override
+    public ArrayList<Integer> getAvailableFields(int position) {
         ArrayList<Integer> availableFields = new ArrayList<Integer>() {
             {
                 add(position-2*COLUMNS-1);
@@ -76,14 +78,8 @@ public class Knight extends Figure implements IMoveable {
             }
         }
 
-        if (availableFields.contains(target)) {
-            if(Grid[target] != null) {
-                return !(Grid[target].player == Grid[position].player);
-            }
-            else
-                return true;
-        }
-        else
-            return false;
+        availableFields.removeIf(field -> Grid[field] != null && Grid[field].player == player);
+
+        return availableFields;
     }
 }

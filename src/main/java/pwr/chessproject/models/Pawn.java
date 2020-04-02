@@ -4,6 +4,9 @@ import static pwr.chessproject.game.Board.*;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+
 public class Pawn extends Figure implements IMoveable {
 
     private boolean firstMoveIndicator = true;
@@ -27,36 +30,39 @@ public class Pawn extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        if (!MovingStrategies.canMoveInRange(position, target))
-            return false;
+        return getAvailableFields(position).contains(target);
+    }
 
-            if (player == Player.Top) {
-                if (position + COLUMNS == target)
-                    return Grid[target] == null;
-                else if (position + COLUMNS + 1  == target || position + COLUMNS - 1  == target) {
-                    Figure targetFigure = Grid[target];
-                    return targetFigure != null && targetFigure.player == Player.Bottom;
-                }
-            }
-            else {
-                if (position - COLUMNS == target)
-                    return Grid[target] == null;
-                else if (position - COLUMNS + 1  == target || position - COLUMNS - 1  == target) {
-                    Figure targetFigure = Grid[target];
-                    return targetFigure != null && targetFigure.player == Player.Top;
-                }
-            }
+    @Override
+    public ArrayList<Integer> getAvailableFields(int position) {
+        Figure.Player player = Grid[position].player;
+        ArrayList<Integer> fields = new ArrayList<>();
+
+        if (player == Player.Top && position + COLUMNS < AREA) {
+            if (position % COLUMNS != 0 && Grid[position + COLUMNS - 1] != null && Grid[position + COLUMNS - 1].player != player)
+                fields.add(position + COLUMNS - 1);
+            if (Grid[position + COLUMNS] == null)
+                fields.add(position + COLUMNS);
+            if (position % COLUMNS != COLUMNS - 1 && Grid[position + COLUMNS + 1] != null && Grid[position + COLUMNS + 1].player != player)
+                fields.add(position + COLUMNS + 1);
+        } else if (player == Player.Bottom && position - COLUMNS >= 0) {
+            if (position % COLUMNS != 0 && Grid[position - COLUMNS - 1] != null && Grid[position - COLUMNS - 1].player != player)
+                fields.add(position - COLUMNS - 1);
+            if (Grid[position - COLUMNS] == null)
+                fields.add(position - COLUMNS);
+            if (position % COLUMNS != COLUMNS - 1 && Grid[position - COLUMNS + 1] != null && Grid[position - COLUMNS + 1].player != player)
+                fields.add(position - COLUMNS + 1);
+        }
 
         if (firstMoveIndicator) {
-            if (player == Player.Top) {
-                if (position+ 2*COLUMNS == target)
-                    return Grid[target] == null && Grid[position+COLUMNS] == null;
-            }
-            else {
-                if (position- 2*COLUMNS == target)
-                    return Grid[target] == null && Grid[position-COLUMNS] == null;
-            }
+            if (player == Player.Top && position + 2 * COLUMNS < AREA)
+                if (Grid[position + COLUMNS] == null && Grid[position + 2 * COLUMNS] == null)
+                    fields.add(position + 2 * COLUMNS);
+            if (player == Player.Bottom && position - 2 * COLUMNS < AREA)
+                if (Grid[position - COLUMNS] == null && Grid[position - 2 * COLUMNS] == null)
+                    fields.add(position - 2 * COLUMNS);
         }
-        return false;
+
+        return fields;
     }
 }

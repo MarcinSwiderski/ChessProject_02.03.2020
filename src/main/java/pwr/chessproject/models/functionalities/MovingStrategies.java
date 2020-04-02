@@ -2,6 +2,8 @@ package pwr.chessproject.models.functionalities;
 
 import pwr.chessproject.models.Figure;
 
+import java.util.ArrayList;
+
 import static pwr.chessproject.game.Board.*;
 
 /**
@@ -15,6 +17,7 @@ public final class MovingStrategies {
      * @param target The target position to move to
      * @return Value indicating if such movement is possible
      */
+    @Deprecated
     public static boolean canMoveInRange(int position, int target) {
         return target >= 0 && target <= AREA - 1 && target != position;
     }
@@ -22,81 +25,67 @@ public final class MovingStrategies {
     /**
      * Checks if target position is on one of two diagonal lines crossing each other in selected figure position
      * @param position The Figure current position
-     * @param target The target position to move to
      * @return Value indicating if such movement is possible
      */
     public static boolean canMoveDiagonal(int position, int target) {
+        return getFreeDiagonalFields(position).contains(target);
+    }
 
+
+    /**
+     * @param position The position to evaluate
+     * @return ArrayList<Integer> of unobstructed diagonal fields
+     */
+    public static ArrayList<Integer> getFreeDiagonalFields(int position) {
         Figure.Player player = Grid[position].player;
+        ArrayList<Integer> fields = new ArrayList<>();
+        addRightTop(fields, position, player);
+        addRightBot(fields, position, player);
+        addLeftBot(fields, position, player);
+        addLeftTop(fields, position, player);
 
-        //P1(x1,y1) and P2(x2,y2) defines a line containing movement vector
-        int x1 = position / ROWS;
-        int y1 = position % COLUMNS;
-        int x2 = target / ROWS;
-        int y2 = target % COLUMNS;
-        //preventing dividing by '0'
-        if (x1 == x2)
-            return false;
+        return fields;
+    }
 
-        //calculating 'a', parameter of 'y = ax + b'
-        double a = (double)(y1-y2)/(double)(x1-x2);
-
-        if (a == 1) {
-            if(target < position)
-                while(target != position) {
-                    position -= COLUMNS+1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            else // target > position
-                while(target != position) {
-                    position += COLUMNS+1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            return true;
+    private static void addRightTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position-COLUMNS+1; i % COLUMNS != 0 && i >= 0 ; i = i-COLUMNS+1) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
         }
-        else if (a == -1) {
-            if(target < position)
-                while(target != position) {
-                    position -= COLUMNS-1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            else // target > position
-                while(target != position) {
-                    position += COLUMNS-1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            return true;
+    }
+    private static void addRightBot (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position+COLUMNS+1; i % COLUMNS != 0 && i < AREA; i = i+COLUMNS+1) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
         }
-        else
-            return false;
+    }
+    private static void addLeftBot (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position+COLUMNS-1; i % COLUMNS != COLUMNS-1 && i < AREA; i = i+COLUMNS-1) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
+    }
+    private static void addLeftTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position-COLUMNS-1; i % COLUMNS != COLUMNS-1 && i >= 0; i = i-COLUMNS-1) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
     }
 
     /**
@@ -106,63 +95,63 @@ public final class MovingStrategies {
      * @return Value indicating if such movement is possible
      */
     public static boolean canMovePerpendicular(int position, int target) {
-        Figure.Player player = Grid[position].player;
-        //same column
-        if (target % 8 == position % 8) {
-            if(target < position)
-                while(target != position) {
-                    position -= 8;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            else // target > position
-                while(target != position) {
-                    position += 8;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            return true;
-        }
-        else if (target / 8 == position / 8) {
-            if(target < position)
-                while(target != position) {
-                    position -= 1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            else // target > position
-                while(target != position) {
-                    position += 1;
-                    if (Grid[position] == null)
-                        continue;
-                    else {
-                        if (Grid[position].player == player)
-                            return false;
-                        else
-                            return target == position;
-                    }
-                }
-            return true;
-        }
-        else
-            return false;
+        return getFreePerpendicularFields(position).contains(target);
     }
+
+    /**
+     * @param position The position to evaluate
+     * @return ArrayList<Integer> of unobstructed perpendicular fields
+     */
+    public static ArrayList<Integer> getFreePerpendicularFields(int position) {
+        Figure.Player player = Grid[position].player;
+        ArrayList<Integer> fields = new ArrayList<>();
+        addTop(fields, position, player);
+        addRight(fields, position, player);
+        addBot(fields, position, player);
+        addLeft(fields, position, player);
+
+        return fields;
+    }
+
+    private static void addTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position-COLUMNS; i >= 0 ; i -= COLUMNS) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
+    }
+    private static void addRight (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position+1; i % COLUMNS != 0 && i < AREA; i++) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
+    }
+    private static void addBot (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position+COLUMNS; i < AREA; i += COLUMNS) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
+    }
+    private static void addLeft (ArrayList<Integer> fields, int position, Figure.Player player) {
+        for (int i = position-1; i % COLUMNS != COLUMNS-1 && i >= 0; i--) {
+            if (Grid[i] != null) {
+                if (Grid[i].player != player)
+                    fields.add(i);
+                break;
+            }
+            fields.add(i);
+        }
+    }
+
 }

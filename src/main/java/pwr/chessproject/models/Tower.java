@@ -3,6 +3,8 @@ package pwr.chessproject.models;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
+import java.util.ArrayList;
+
 public class Tower extends Figure implements IMoveable {
     public Tower(Player player) {
         super(player);
@@ -16,6 +18,11 @@ public class Tower extends Figure implements IMoveable {
      */
     @Override
     public boolean canMove(int position, int target) {
-        return MovingStrategies.canMoveInRange(position, target) && MovingStrategies.canMovePerpendicular(position, target);
+        return MovingStrategies.canMovePerpendicular(position, target);
+    }
+
+    @Override
+    public ArrayList<Integer> getAvailableFields(int position) {
+        return MovingStrategies.getFreePerpendicularFields(position);
     }
 }
