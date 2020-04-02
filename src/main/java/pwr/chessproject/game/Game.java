@@ -35,7 +35,6 @@ public final class Game {
 
         while (true) {
             System.out.println(board);
-
             try {
                 if (isChecked(kingPosition.get(currentPlayer)))
                     System.out.println("Check!");
@@ -56,8 +55,11 @@ public final class Game {
                 board.moveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
+
+                if (isCheckmated(this.kingPosition.get(currentPlayer)))
+                    break;
                 passTurn();
-            } catch (NullPointerException | IllegalArgumentException | NotMoveableException ex) {
+            } catch (NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
                 System.out.println(ex.getMessage());
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -66,6 +68,8 @@ public final class Game {
                 break;
             }
         }
+
+        System.out.println(this.kingPosition.get(currentPlayer).toString().toUpperCase() + " PLAYER LOST");
     }
 
     boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
@@ -98,18 +102,19 @@ public final class Game {
         return false;
     }
 
-    boolean isCheckmated (int kingPosition) {
-        //todo
+    boolean isCheckmated (int kingPosition) throws NotMoveableException, ClassCastException {
         if (!isChecked(kingPosition))
             return false;
-        King king;
-        if (Grid[kingPosition] instanceof King) {
-            king = (King) Grid[kingPosition];
-        }
-        else throw new ClassCastException("Could not find the King");
-        for (int target: king.getAvailableFields(kingPosition)) {
-            if (king.canMove(kingPosition, target) && !isChecked(target))
-                return false;
+
+        IMoveable figure;
+        for (int position = 0; position < AREA; position++) {
+            if (Grid[position] != null) {
+                figure = (IMoveable) Grid[position];
+                for (int target: figure.getAvailableFields(position)) {
+                    if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition)))
+                        return false;
+                }
+            }
         }
         return true;
     }
