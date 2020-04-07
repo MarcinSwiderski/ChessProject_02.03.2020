@@ -3,10 +3,6 @@ package pwr.chessproject.game;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import pwr.chessproject.models.Figure;
-import pwr.chessproject.models.FigureMoveExtension;
 import pwr.chessproject.models.King;
 import pwr.chessproject.models.Tower;
 

@@ -15,7 +15,7 @@ public class TranslateCords {
     public static int translateStringCordToInt(String cords) throws IllegalArgumentException {
         if (cords.length() != 2)
             throw new IllegalArgumentException("Not enough or too many cords in: '" + cords + "'");
-        char[] arrayOfCords = cords.toCharArray();
+        char[] arrayOfCords = cords.toUpperCase().toCharArray();
         int column = arrayOfCords[0] - 65;
         int row = arrayOfCords[1] - 48;
         if (column < 0 || column > COLUMNS)
