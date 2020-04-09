@@ -5,6 +5,7 @@ import pwr.chessproject.api.models.MovePlayerResponse;
 import pwr.chessproject.api.models.MoveVIResponse;
 import pwr.chessproject.api.requests.API;
 import pwr.chessproject.frame.TranslateCords;
+import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
 import pwr.chessproject.models.functionalities.IMoveable;
@@ -127,7 +128,8 @@ public final class Game {
                 System.out.println("VI moved from " + moveVIResponse.getFrom() + " to " + moveVIResponse.getTo());
                 passTurn();
             } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
-                System.out.println(ex.getMessage());
+                Logger.release(ex.getMessage());
+                Logger.debug(ex.toString());
             }
         }
         if (this.currentPlayer == Bottom)
