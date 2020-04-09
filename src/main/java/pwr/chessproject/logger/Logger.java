@@ -8,15 +8,15 @@ public class Logger {
 
     private static Mode mode = Mode.debug;
 
-    public static void debug(String message) {
+    public static void debug(Object message) {
         if (mode.equals(Mode.debug))
-            System.out.println("#\t"+message);
+            System.out.println("#\t"+message.toString());
 
     }
 
-    public static void release(String message) {
+    public static void release(Object message) {
         if (mode.equals(Mode.release) || mode.equals(Mode.debug))
-            System.out.println(message);
+            System.out.println(message.toString());
 
     }
 

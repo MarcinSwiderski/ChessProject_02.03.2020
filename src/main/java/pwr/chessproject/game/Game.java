@@ -83,40 +83,41 @@ public final class Game {
     public void startGameAgainstVI() {
         int position, target;
         Scanner scanner = new Scanner(System.in);
+        Figure.Player opponent;
         API api = new API();
         try {
             CreateNewGameResponse response = api.createNewGame();
-            System.out.println("VI says:\t"+response.getStatus());
+            Logger.release("VI says:\t"+response.getStatus());
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            System.out.println("Critical error during initial connecting to VI");
+            Logger.release(ex.getMessage());
+            Logger.release("Critical error during initial connecting to VI");
             System.exit(1);
         }
         System.out.println("You start as a bottom player");
         while (true) {
-            System.out.println(board);
+            Logger.release(board);
             try {
                 if (isChecked(kingPosition.get(currentPlayer)))
-                    System.out.println("Check!");
-                System.out.println("Your turn");
-                System.out.println("Select a figure: ");
+                    Logger.release("Check!");
+                Logger.release("Your turn");
+                Logger.release("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
                 board.checkPosition(position);
                 if (Grid[position].player != currentPlayer) {
-                    System.out.println("You have to select your figure");
+                    Logger.release("You have to select your figure");
                     continue;
                 }
-                System.out.println("Select a target: ");
+                Logger.release("Select a target: ");
                 target = translateStringCordToInt(scanner.next().trim().toUpperCase());
                 if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
-                    System.out.println("You can not move into " + translateIntCordToString(target) + " because of check");
+                    Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
                 board.moveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
 
-                Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
+                opponent =  this.currentPlayer == Top ? Bottom : Top;
                 if (isCheckmated(this.kingPosition.get(opponent)))
                     break;
                 passTurn();
@@ -125,7 +126,12 @@ public final class Game {
                 position = TranslateCords.translateStringCordToInt(moveVIResponse.getFrom());
                 target = TranslateCords.translateStringCordToInt(moveVIResponse.getTo());
                 board.moveFigure(position, target);
-                System.out.println("VI moved from " + moveVIResponse.getFrom() + " to " + moveVIResponse.getTo());
+                if (Grid[target] instanceof King)
+                    kingPosition.replace(currentPlayer, target);
+                Logger.release("VI moved from " + moveVIResponse.getFrom() + " to " + moveVIResponse.getTo());
+                opponent =  this.currentPlayer == Top ? Bottom : Top;
+                if (isCheckmated(this.kingPosition.get(opponent)))
+                    break;
                 passTurn();
             } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
                 Logger.release(ex.getMessage());
@@ -133,9 +139,9 @@ public final class Game {
             }
         }
         if (this.currentPlayer == Bottom)
-            System.out.println("YOU WIN!!!");
+            Logger.release("YOU WIN!!!");
         else
-            System.out.println("YOU LOOSE :<");
+            Logger.release("YOU LOOSE :<");
     }
 
         /*Call call = client.newCall(request);
