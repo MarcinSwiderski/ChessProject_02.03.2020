@@ -21,6 +21,9 @@ import static pwr.chessproject.models.Figure.Player.*;
 public final class Game {
     Board board;
 
+    /**
+     * Contain information about kings current positions allowing for dynamic game situation check
+     */
     Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
         {
             put(Top, 3);
@@ -35,7 +38,7 @@ public final class Game {
     }
 
     /**
-     * Starts 'hot-seat' game in IDE output
+     * Starts 'hot-seat' game in IDE output. Game lasts until someone wins
      */
     public void startHotSeatGame() {
         int position, target;
@@ -144,28 +147,13 @@ public final class Game {
             Logger.release("YOU LOOSE :<");
     }
 
-        /*Call call = client.newCall(request);
-
-        call.enqueue(new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println(e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println(response.body().string());
-            }
-        });*/
-
     /**
      * Simulates move on real Grid and returns callback function result
      * @param position The Figure current position
      * @param target The target position to move to
      * @param toCheck Callback which result will be returned
      * @return Boolean result of the callback
-     * @throws NotMoveableException When simulated move is not valid
+     * @throws NotMoveableException - When simulated move is not valid
      */
     boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
         Figure selectedFigure = Grid[position];
@@ -184,6 +172,11 @@ public final class Game {
         return isActionValid;
     }
 
+    /**
+     * Checks whether specified position is under check in current board
+     * @param kingPosition Position to check
+     * @return True when checked, else false
+     */
     boolean isChecked(int kingPosition) {
         Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
         Figure figure;
@@ -197,7 +190,12 @@ public final class Game {
         return false;
     }
 
-    boolean isCheckmated (int kingPosition) throws NotMoveableException, ClassCastException {
+    /**
+     * Iterate through all possible movements of all existing figures to verify if king at parameter position have any option to not be checked
+     * @param kingPosition Position to check
+     * @return True when checked-mated, else false
+     */
+    boolean isCheckmated (int kingPosition) throws NotMoveableException {
         if (!isChecked(kingPosition))
             return false;
 
@@ -214,6 +212,9 @@ public final class Game {
         return true;
     }
 
+    /**
+     * Simply reverses this.currentPlayer
+     */
     void passTurn() {
         this.currentPlayer = this.currentPlayer == Top ? Bottom : Top;
     }

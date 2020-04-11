@@ -10,17 +10,25 @@ import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.io.IOException;
 
+/**
+ * Realizes 3 operations (creating new game, sending players move, requesting VI's move) from https://github.com/anzemur/chess-api
+ */
 public class API {
 
-    private OkHttpClient client;
+    private final OkHttpClient client;
     private String game_id;
-    private Jsonb jsonb;
+    private final Jsonb jsonb;
 
     public API() {
-        this.client = new OkHttpClient().newBuilder().build();
+        client = new OkHttpClient().newBuilder().build();
         jsonb = JsonbBuilder.create();
     }
 
+    /**
+     * Sends a http request to 'http://chess-api-chess.herokuapp.com/api/v1/chess/one' to request new game_id
+     * @return Java model of JSON response containing game_id
+     * @throws IOException - when http response code isn't 200
+     */
     public CreateNewGameResponse createNewGame() throws IOException {
         Logger.debug("Requesting for a new game...");
         Request request = new Request.Builder()
@@ -34,12 +42,20 @@ public class API {
         CreateNewGameResponse response = jsonb.fromJson(content, CreateNewGameResponse.class);
         this.game_id = response.getGame_id();
 
-        Logger.debug("Response received: \n%"+content+"%");
+        Logger.debug("Response received: \n\t%"+content+"%");
         Logger.debug("Game id: "+response.getGame_id());
         Logger.debug("Request id: "+response.get_id());
         return response;
     }
 
+
+    /**
+     * Sends a http request to 'http://chess-api-chess.herokuapp.com/api/v1/chess/one/move/player' with current game_id to update server board with players move
+     * @param from The Figure current position
+     * @param to The target position to move to
+     * @return Java model of JSON response
+     * @throws IOException - when http response code isn't 200 or move could not be executed in server
+     */
     public MovePlayerResponse movePlayer(String from, String to) throws IOException {
         Logger.debug("Requesting for a player move...");
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -58,7 +74,7 @@ public class API {
 
         MovePlayerResponse response = jsonb.fromJson(content, MovePlayerResponse.class);
 
-        Logger.debug("Response received: \n%"+content+"%");
+        Logger.debug("Response received: \n\t%"+content+"%");
 
         if (response.getStatus().contains("error"))
             throw new IOException("Error during sending player's move to VI\n"+response.getStatus());
@@ -66,6 +82,11 @@ public class API {
         return response;
     }
 
+    /**
+     * Sends a http request to 'http://chess-api-chess.herokuapp.com/api/v1/chess/one/move/ai' with current game_id to request VI's move
+     * @return Java model of JSON response containing VI's move
+     * @throws IOException - when http response code isn't 200 or move could not be executed in server
+     */
     public MoveVIResponse moveVI() throws IOException {
         Logger.debug("Requesting for a VI move...");
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -87,19 +108,8 @@ public class API {
         if (response.getStatus().contains("error"))
             throw new IOException("Error during VI's move\n"+response.getStatus());
 
-        Logger.debug("Response received: \n%"+content+"%");
+        Logger.debug("Response received: \n\t%"+content+"%");
 
         return response;
-    }
-
-    public void resetBoard() throws IOException {
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-        RequestBody body = RequestBody.create(mediaType, "game_id="+this.game_id);
-        Request request = new Request.Builder()
-                .url("http://chess-api-chess.herokuapp.com/api/v1/chess/two/reset")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .build();
-        Response response = client.newCall(request).execute();
     }
 }
