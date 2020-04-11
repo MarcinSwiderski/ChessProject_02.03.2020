@@ -46,22 +46,22 @@ public final class Game {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println(board);
+            Logger.release(board);
             try {
                 if (isChecked(kingPosition.get(currentPlayer)))
-                    System.out.println("Check!");
-                System.out.println(currentPlayer + " turn: ");
-                System.out.println("Select a figure: ");
+                    Logger.release("Check!");
+                Logger.release(currentPlayer + " turn: ");
+                Logger.release("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
                 board.checkPosition(position);
                 if (Grid[position].player != currentPlayer) {
-                    System.out.println("You have to select " + currentPlayer + " player figure");
+                    Logger.release("You have to select " + currentPlayer + " player figure");
                     continue;
                 }
-                System.out.println("Select a target: ");
+                Logger.release("Select a target: ");
                 target = translateStringCordToInt(scanner.next().trim().toUpperCase());
                 if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
-                    System.out.println("You can not move into " + translateIntCordToString(target) + " because of check");
+                    Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
                 board.moveFigure(position, target);
@@ -73,11 +73,12 @@ public final class Game {
                     break;
                 passTurn();
             } catch (NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
-                System.out.println(ex.getMessage());
+                Logger.release(ex.getMessage());
+                Logger.debug(ex.toString());
             }
         }
 
-        System.out.println(currentPlayer + " WINS");
+        Logger.release(currentPlayer + " WINS");
     }
 
     /**
@@ -136,7 +137,7 @@ public final class Game {
                 if (isCheckmated(this.kingPosition.get(opponent)))
                     break;
                 passTurn();
-            } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
+            } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 Logger.release(ex.getMessage());
                 Logger.debug(ex.toString());
             }

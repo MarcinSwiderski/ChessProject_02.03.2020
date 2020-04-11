@@ -26,7 +26,7 @@ public class Board {
      * Creates custom board with specified size
      * @param rows Number of rows
      * @param columns Number of columns
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException - When specified parameters are below 8
      */
     public Board(int rows, int columns) throws IllegalArgumentException {
         if (rows < 8 || columns < 8)
@@ -120,8 +120,8 @@ public class Board {
     /**
      * Checks if position is in range and whether there is a figure
      * @param position The Figure current position
-     * @throws NullPointerException
-     * @throws IllegalArgumentException
+     * @throws NullPointerException - When there is null at the selected position
+     * @throws IllegalArgumentException - When position is outside of the board
      */
     public void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
         if (position < 0 || position > AREA - 1 )
@@ -134,7 +134,7 @@ public class Board {
      * Moves figure from position to target if it's possible
      * @param position The Figure current position
      * @param target The target position to move to
-     * @throws NotMoveableException
+     * @throws NotMoveableException - When figures movement rules do not allow to move it into specified target
      */
     public void moveFigure(int position, int target) throws NotMoveableException {
         IMoveable selectedFigure = (IMoveable)Grid[position];
@@ -154,6 +154,7 @@ public class Board {
     public String toString() {
         StringBuilder grid = new StringBuilder();
         int currentPosition;
+        String color;
         for (int row = -1; row < ROWS + 1; row++) {
             for (int column = -1; column < COLUMNS + 1; column++) {
                 if ((row == -1 || row == ROWS) && column != -1 && column != COLUMNS)
@@ -164,7 +165,14 @@ public class Board {
                     grid.append("-----");
                 else {
                     currentPosition = row*COLUMNS+column;
-                    grid.append(Board.Grid[currentPosition] == null ? "_____" : Board.Grid[currentPosition].getClass().getSimpleName() + Board.Grid[currentPosition].player.toString().toCharArray()[0]);
+                    if (Board.Grid[currentPosition] == null)
+                        grid.append("_____");
+                    else {
+                        color = Grid[currentPosition].player == Figure.Player.Top ? ConsoleColors.BLUE : ConsoleColors.RED;
+                        grid.append(color);
+                        grid.append(Board.Grid[currentPosition].getClass().getSimpleName()).append(Board.Grid[currentPosition].player.toString().toCharArray()[0]);
+                        grid.append(ConsoleColors.BLACK);
+                    }
                 }
                 grid.append("\t");
             }
