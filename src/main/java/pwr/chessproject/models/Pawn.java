@@ -55,9 +55,10 @@ public class Pawn extends Figure implements IMoveable {
         }
 
         if (firstMoveIndicator) {
-            if (player == Player.Top && position + 2 * COLUMNS < AREA)
+            if (player == Player.Top && position + 2 * COLUMNS < AREA) {
                 if (Grid[position + COLUMNS] == null && Grid[position + 2 * COLUMNS] == null)
                     fields.add(position + 2 * COLUMNS);
+            }
             if (player == Player.Bottom && position - 2 * COLUMNS < AREA)
                 if (Grid[position - COLUMNS] == null && Grid[position - 2 * COLUMNS] == null)
                     fields.add(position - 2 * COLUMNS);

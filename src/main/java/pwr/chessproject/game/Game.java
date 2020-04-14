@@ -1,10 +1,8 @@
 package pwr.chessproject.game;
 
 import pwr.chessproject.api.models.CreateNewGameResponse;
-import pwr.chessproject.api.models.MovePlayerResponse;
 import pwr.chessproject.api.models.MoveVIResponse;
 import pwr.chessproject.api.requests.API;
-import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
@@ -12,11 +10,15 @@ import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Scanner;
 
-import static pwr.chessproject.frame.TranslateCords.*;
-import static pwr.chessproject.game.Board.*;
-import static pwr.chessproject.models.Figure.Player.*;
+import static pwr.chessproject.frame.TranslateCords.translateIntCordToString;
+import static pwr.chessproject.frame.TranslateCords.translateStringCordToInt;
+import static pwr.chessproject.game.Board.AREA;
+import static pwr.chessproject.game.Board.Grid;
+import static pwr.chessproject.models.Figure.Player.Bottom;
+import static pwr.chessproject.models.Figure.Player.Top;
 
 public final class Game {
     Board board;
@@ -75,6 +77,7 @@ public final class Game {
             } catch (NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
                 Logger.release(ex.getMessage());
                 Logger.debug(ex.toString());
+                continue;
             }
         }
 
@@ -89,14 +92,17 @@ public final class Game {
         Scanner scanner = new Scanner(System.in);
         Figure.Player opponent;
         API api = new API();
+
+        //Registering new game
         try {
             CreateNewGameResponse response = api.createNewGame();
             Logger.release("VI says:\t"+response.getStatus());
         } catch (IOException ex) {
-            Logger.release(ex.getMessage());
+            Logger.debug(ex);
             Logger.release("Critical error during initial connecting to VI");
             System.exit(1);
         }
+
         System.out.println("You start as a bottom player");
         while (true) {
             Logger.release(board);
@@ -125,11 +131,11 @@ public final class Game {
                 if (isCheckmated(this.kingPosition.get(opponent)))
                     break;
                 passTurn();
-                api.movePlayer(TranslateCords.translateIntCordToString(position), TranslateCords.translateIntCordToString(target));
+                api.movePlayer(translateIntCordToString(position), translateIntCordToString(target));
                 MoveVIResponse moveVIResponse = api.moveVI();
-                position = TranslateCords.translateStringCordToInt(moveVIResponse.getFrom());
-                target = TranslateCords.translateStringCordToInt(moveVIResponse.getTo());
-                board.moveFigure(position, target);
+                position = translateStringCordToInt(moveVIResponse.getFrom());
+                target = translateStringCordToInt(moveVIResponse.getTo());
+                board.forceMoveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
                 Logger.release("VI moved from " + moveVIResponse.getFrom() + " to " + moveVIResponse.getTo());
@@ -140,6 +146,7 @@ public final class Game {
             } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 Logger.release(ex.getMessage());
                 Logger.debug(ex.toString());
+                continue;
             }
         }
         if (this.currentPlayer == Bottom)
@@ -149,7 +156,7 @@ public final class Game {
     }
 
     /**
-     * Simulates move on real Grid and returns callback function result
+     * Simulates move on real Grid then returns callback function result
      * @param position The Figure current position
      * @param target The target position to move to
      * @param toCheck Callback which result will be returned

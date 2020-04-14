@@ -131,12 +131,13 @@ public class Board {
     }
 
     /**
-     * Moves figure from position to target if it's possible
+     * Moves figure from position to target if figures rules allow it
      * @param position The Figure current position
      * @param target The target position to move to
      * @throws NotMoveableException - When figures movement rules do not allow to move it into specified target
      */
-    public void moveFigure(int position, int target) throws NotMoveableException {
+    public void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
+        checkPosition(position);
         IMoveable selectedFigure = (IMoveable)Grid[position];
         if (selectedFigure.canMove(position, target)) {
             Board.Grid[target] = Board.Grid[position];
@@ -148,6 +149,25 @@ public class Board {
             }
         }
         else throw new NotMoveableException(position, target, Board.Grid[position]);
+    }
+
+    /**
+     * Moves figure from position to target regardless figures movement rules
+     * @param position The Figure current position
+     * @param target The target position to move to
+     * @throws NullPointerException - When there is null at the selected position
+     * @throws IllegalArgumentException - When position is outside of the board
+     */
+    public void forceMoveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
+        checkPosition(position);
+        IMoveable selectedFigure = (IMoveable)Grid[position];
+        Board.Grid[target] = Board.Grid[position];
+        Board.Grid[position] = null;
+        if (selectedFigure instanceof Pawn) {
+            Pawn pawn = (Pawn)selectedFigure;
+            if (pawn.getFirstMoveIndicator())
+                pawn.afterFirstMoveIndicator();
+        }
     }
 
     @Override
