@@ -13,6 +13,10 @@ public class Logger {
      * @param message Message or variable to print
      */
     public static void debug(Object message) {
+        if (message == null ) {
+            System.out.println("#\tnull");
+            return;
+        }
         if (mode.equals(Mode.debug))
             System.out.println("#\t"+message.toString());
 
@@ -23,6 +27,10 @@ public class Logger {
      * @param message Message or variable to print
      */
     public static void release(Object message) {
+        if (message == null ) {
+            System.out.println("#\tnull");
+            return;
+        }
         if (mode.equals(Mode.release) || mode.equals(Mode.debug))
             System.out.println(message.toString());
 

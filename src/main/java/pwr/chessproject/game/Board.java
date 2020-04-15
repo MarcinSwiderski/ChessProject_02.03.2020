@@ -5,7 +5,14 @@ import pwr.chessproject.models.*;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Board {
     public static int ROWS  = 8;
@@ -43,43 +50,8 @@ public class Board {
         }
     }
 
-    public Board(int rows, int columns, Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
-        if (rows < 8 || columns < 8)
-            throw new IllegalArgumentException("Board is too small");
-        else {
-            ROWS = rows;
-            COLUMNS = columns;
-            AREA = rows*columns;
-            this.constructCustomBoard(savedBoard, savedPlayer);
-        }
-        Grid = new Figure[AREA];
-    }
-
-    private void constructCustomBoard(Figure.FigureType[] savedBoard, Figure.Player[] savedPlayer) throws IllegalArgumentException {
-        for (int i = 0; i < AREA; i++) {
-            switch (savedBoard[i]) {
-                case King:
-                    Grid[i] = new King(savedPlayer[i]);
-                    break;
-                case Queen:
-                    Grid[i] = new Queen(savedPlayer[i]);
-                    break;
-                case Tower:
-                    Grid[i] = new Tower(savedPlayer[i]);
-                    break;
-                case Bishop:
-                    Grid[i] = new Bishop(savedPlayer[i]);
-                    break;
-                case Knight:
-                    Grid[i] = new Knight(savedPlayer[i]);
-                    break;
-                case Pawn:
-                    Grid[i] = new Pawn(savedPlayer[i]);
-                    break;
-                default:
-                    Grid[i] = null;
-            }
-        }
+    public Board(String name) throws IOException {
+        loadBoard(name);
     }
 
     /**
@@ -100,9 +72,9 @@ public class Board {
                     Grid[currentPosition] = new Knight(player);
                 else if (currentPosition == 2 || currentPosition == 5 || currentPosition == 58 || currentPosition == 61)
                     Grid[currentPosition] = new Bishop(player);
-                else if (currentPosition == 3 || currentPosition == 60)
+                else if (currentPosition == 3 || currentPosition == 59)
                     Grid[currentPosition] = new King(player);
-                else if (currentPosition == 4 || currentPosition == 59)
+                else if (currentPosition == 4 || currentPosition == 60)
                     Grid[currentPosition] = new Queen(player);
                 else
                     Grid[currentPosition] = null;
@@ -168,6 +140,81 @@ public class Board {
             if (pawn.getFirstMoveIndicator())
                 pawn.afterFirstMoveIndicator();
         }
+    }
+
+    private void gridToFile(Figure[] Grid, File file) throws IOException {
+        FileWriter writer = new FileWriter(file);
+        writer.write(ROWS + "\t" + COLUMNS + "\n");
+        for (int row = 0; row*COLUMNS < Grid.length ; row++) {
+            for (int column = 0; column < COLUMNS; column++) {
+                Figure figure = Grid[row*COLUMNS + column];
+                if (figure != null)
+                    writer.append(figure.toString());
+                else
+                    writer.append("null");
+                writer.append("\t");
+            }
+            writer.append("\n");
+        }
+        writer.close();
+    }
+
+    public void safeBoard(String name) throws IOException, NullPointerException {
+        if (Board.Grid == null)
+            throw new NullPointerException("Board is uninitialized");
+
+        File file = new File(Path.of("Boards", name+".board").toString());
+
+        if (file.createNewFile()) {
+            gridToFile(Board.Grid, file);
+        }
+        else
+            throw new IOException("File already exists.");
+    }
+
+    private Figure[] fileToGrid(File file) throws IOException {
+        Scanner scanner = new Scanner(file);
+        ROWS = Integer.parseInt(scanner.next());
+        COLUMNS = Integer.parseInt(scanner.next());
+        AREA = ROWS*COLUMNS;
+        Figure[] grid = new Figure[AREA];
+
+        String word;
+        Figure figure;
+        Figure.Player player;
+        for (int currentPosition = 0; currentPosition < AREA; currentPosition++) {
+            word = scanner.next();
+            if (word.contains(Figure.Player.Bottom.toString()))
+                player = Figure.Player.Bottom;
+            else
+                player = Figure.Player.Top;
+
+            if (word.contains(Figure.FigureType.King.toString()))
+                figure = new King(player);
+            else if (word.contains(Figure.FigureType.Queen.toString()))
+                figure = new Queen(player);
+            else if (word.contains(Figure.FigureType.Bishop.toString()))
+                figure = new Bishop(player);
+            else if (word.contains(Figure.FigureType.Knight.toString()))
+                figure = new Knight(player);
+            else if (word.contains(Figure.FigureType.Tower.toString()))
+                figure = new Tower(player);
+            else if (word.contains(Figure.FigureType.Pawn.toString()))
+                figure = new Pawn(player);
+            else
+                figure = null;
+            grid[currentPosition] = figure;
+        }
+        return grid;
+    }
+
+    public void loadBoard(String name) throws IOException {
+        File file = new File(Path.of("Boards", name+".board").toString());
+
+        if (file.createNewFile())
+            throw new FileNotFoundException("No such file: "+name);
+        else
+            Grid = fileToGrid(file);
     }
 
     @Override

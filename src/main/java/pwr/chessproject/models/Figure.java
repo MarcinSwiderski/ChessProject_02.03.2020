@@ -23,6 +23,32 @@ public abstract class Figure {
     }
 
     @Override
+    public Figure clone() {
+        Figure figure;
+        switch (this.figureType) {
+            case King: figure = new King(player);
+                break;
+            case Queen: figure = new Queen(player);
+                break;
+            case Bishop: figure = new Bishop(player);
+                break;
+            case Knight: figure = new Knight(player);
+                break;
+            case Tower: figure = new Tower(player);
+                break;
+            case Pawn: figure = new Pawn(player);
+                break;
+            default:
+                figure = null;
+        }
+        if (this instanceof Pawn)
+            if (!((Pawn) this).getFirstMoveIndicator())
+                ((Pawn)figure).afterFirstMoveIndicator();
+
+         return figure;
+    }
+
+    @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 "player=" + player +

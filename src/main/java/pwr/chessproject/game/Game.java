@@ -6,6 +6,7 @@ import pwr.chessproject.api.requests.API;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
+import pwr.chessproject.models.Pawn;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
@@ -26,10 +27,10 @@ public final class Game {
     /**
      * Contain information about kings current positions allowing for dynamic game situation check
      */
-    Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
+    Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<>() {
         {
             put(Top, 3);
-            put(Bottom, AREA-4);
+            put(Bottom, 59);
         }
     };
 
@@ -50,8 +51,12 @@ public final class Game {
         while (true) {
             Logger.release(board);
             try {
-                if (isChecked(kingPosition.get(currentPlayer)))
+                if (isChecked(kingPosition.get(currentPlayer))) {
                     Logger.release("Check!");
+                    if (isCheckmated(this.kingPosition.get(currentPlayer)))
+                        break;
+                }
+
                 Logger.release(currentPlayer + " turn: ");
                 Logger.release("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
@@ -62,7 +67,7 @@ public final class Game {
                 }
                 Logger.release("Select a target: ");
                 target = translateStringCordToInt(scanner.next().trim().toUpperCase());
-                if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
+                if (simulateMoveAndCheck(position, target, this::isChecked)) {
                     Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
@@ -70,9 +75,6 @@ public final class Game {
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
 
-                Figure.Player opponent =  this.currentPlayer == Top ? Bottom : Top;
-                if (isCheckmated(this.kingPosition.get(opponent)))
-                    break;
                 passTurn();
             } catch (NullPointerException | IllegalArgumentException | NotMoveableException | ClassCastException ex) {
                 Logger.release(ex.getMessage());
@@ -81,7 +83,7 @@ public final class Game {
             }
         }
 
-        Logger.release(currentPlayer + " WINS");
+        Logger.release(currentPlayer + " LOOSES");
     }
 
     /**
@@ -119,7 +121,7 @@ public final class Game {
                 }
                 Logger.release("Select a target: ");
                 target = translateStringCordToInt(scanner.next().trim().toUpperCase());
-                if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition.get(currentPlayer)))) {
+                if (simulateMoveAndCheck(position, target, this::isChecked)) {
                     Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
@@ -164,19 +166,23 @@ public final class Game {
      * @throws NotMoveableException - When simulated move is not valid
      */
     boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
-        Figure selectedFigure = Grid[position];
-        Figure targetFigure = Grid[target];
-        int kingPosition = this.kingPosition.get(currentPlayer);
-        if (!((IMoveable)selectedFigure).canMove(position, target))
-            throw new NotMoveableException(position, target, Board.Grid[position]);
-        Grid[position] = null;
-        Grid[target] = selectedFigure;
-        if (Grid[target] instanceof King)
+        Figure selectedFigure = Grid[position].clone();
+        Figure targetFigure;
+        if (Grid[target] == null )
+            targetFigure = null;
+        else
+            targetFigure = Grid[target].clone();
+        int oldKingPosition = this.kingPosition.get(currentPlayer);
+
+        board.moveFigure(position, target);
+        if (selectedFigure instanceof King)
             this.kingPosition.replace(currentPlayer, target);
-        boolean isActionValid = toCheck.action();
+
+        boolean isActionValid = toCheck.action(this.kingPosition.get(currentPlayer));
+
         Grid[position] = selectedFigure;
         Grid[target] = targetFigure;
-        this.kingPosition.replace(currentPlayer, kingPosition);
+        this.kingPosition.replace(currentPlayer, oldKingPosition);
         return isActionValid;
     }
 
@@ -207,12 +213,15 @@ public final class Game {
         if (!isChecked(kingPosition))
             return false;
 
+        Figure.Player player = Grid[kingPosition].player;
+
+        Boolean isCheckmated = false;
         IMoveable figure;
         for (int position = 0; position < AREA; position++) {
-            if (Grid[position] != null) {
+            if (Grid[position] != null && Grid[position].player == player) {
                 figure = (IMoveable) Grid[position];
                 for (int target: figure.getAvailableFields(position)) {
-                    if (simulateMoveAndCheck(position, target, () -> isChecked(kingPosition)))
+                    if (!simulateMoveAndCheck(position, target, this::isChecked))
                         return false;
                 }
             }
@@ -228,6 +237,6 @@ public final class Game {
     }
 
     private interface IToCheck {
-        boolean action();
+        boolean action(int newKingPosition);
     }
 }
