@@ -27,7 +27,7 @@ public final class Game {
     /**
      * Contain information about kings current positions allowing for dynamic game situation check
      */
-    Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<>() {
+    Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
         {
             put(Top, 3);
             put(Bottom, 59);
@@ -236,7 +236,7 @@ public final class Game {
         this.currentPlayer = this.currentPlayer == Top ? Bottom : Top;
     }
 
-    private interface IToCheck {
+    interface IToCheck {
         boolean action(int newKingPosition);
     }
 }
