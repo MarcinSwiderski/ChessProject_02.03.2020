@@ -15,7 +15,7 @@ public abstract class Figure {
     public FigureType figureType;
 
     /**
-     * Constructor to call for every figure setting info about player and starting position
+     * Constructor to call for every figure, setting info about player
      * @param player The Player enum type
      */
     public Figure(Player player) {

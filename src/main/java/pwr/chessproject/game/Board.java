@@ -72,9 +72,9 @@ public class Board {
                     Grid[currentPosition] = new Knight(player);
                 else if (currentPosition == 2 || currentPosition == 5 || currentPosition == 58 || currentPosition == 61)
                     Grid[currentPosition] = new Bishop(player);
-                else if (currentPosition == 3 || currentPosition == 59)
-                    Grid[currentPosition] = new King(player);
                 else if (currentPosition == 4 || currentPosition == 60)
+                    Grid[currentPosition] = new King(player);
+                else if (currentPosition == 3 || currentPosition == 59)
                     Grid[currentPosition] = new Queen(player);
                 else
                     Grid[currentPosition] = null;
@@ -142,6 +142,11 @@ public class Board {
         }
     }
 
+    /**
+     * Converts grid provided as a parameter into text and saves it in provided file
+     * @param Grid A grid to save
+     * @param file Text to file to save into
+     */
     private void gridToFile(Figure[] Grid, File file) throws IOException {
         FileWriter writer = new FileWriter(file);
         writer.write(ROWS + "\t" + COLUMNS + "\n");
@@ -159,6 +164,12 @@ public class Board {
         writer.close();
     }
 
+    /**
+     * Safes board into ~/Board/*.board file with provided name
+     * @param name Desired
+     * @throws IOException - When file already exists
+     * @throws NullPointerException - When board is uninitialized
+     */
     public void safeBoard(String name) throws IOException, NullPointerException {
         if (Board.Grid == null)
             throw new NullPointerException("Board is uninitialized");
@@ -172,6 +183,11 @@ public class Board {
             throw new IOException("File already exists.");
     }
 
+    /**
+     * Reads file content and returns equivalent grid
+     * @param file *.board containing board setup
+     * @return Grid base on provided file
+     */
     private Figure[] fileToGrid(File file) throws IOException {
         Scanner scanner = new Scanner(file);
         ROWS = Integer.parseInt(scanner.next());
@@ -208,6 +224,10 @@ public class Board {
         return grid;
     }
 
+    /**
+     * Finds a file in Boards folder and initializes Grid with it
+     * @param name Name of the file without extension
+     */
     public void loadBoard(String name) throws IOException {
         File file = new File(Path.of("Boards", name+".board").toString());
 

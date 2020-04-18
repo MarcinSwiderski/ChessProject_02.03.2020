@@ -16,7 +16,7 @@ public class Main {
             System.exit(0);
         else if (userResponse == 1) {
             try {
-                Board board = new Board("test");
+                Board board = new Board();
                 Game game = new Game(board);
                 game.startHotSeatGame();
             }

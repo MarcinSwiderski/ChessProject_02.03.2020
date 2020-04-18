@@ -29,8 +29,8 @@ public final class Game {
      */
     Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
         {
-            put(Top, 3);
-            put(Bottom, 59);
+            put(Top, 4);
+            put(Bottom, 60);
         }
     };
 
@@ -205,7 +205,7 @@ public final class Game {
     }
 
     /**
-     * Iterate through all possible movements of all existing figures to verify if king at parameter position have any option to not be checked
+     * Iterate through all possible movements of all current players figures to verify if king at parameter position have any option to not be checked
      * @param kingPosition Position to check
      * @return True when checked-mated, else false
      */
@@ -214,8 +214,7 @@ public final class Game {
             return false;
 
         Figure.Player player = Grid[kingPosition].player;
-
-        Boolean isCheckmated = false;
+        
         IMoveable figure;
         for (int position = 0; position < AREA; position++) {
             if (Grid[position] != null && Grid[position].player == player) {
