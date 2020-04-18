@@ -11,6 +11,16 @@ repositories {
     mavenCentral()
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'pwr.chessproject.Main'
+    }
+    baseName = "chess"
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     compile 'org.junit.jupiter:junit-jupiter:5.6.0'
