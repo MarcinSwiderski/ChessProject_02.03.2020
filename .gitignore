@@ -115,3 +115,6 @@ hs_err_pid*
 # unused developer junk
 unused.txt
 
+#gradle specific
+local.properties
+

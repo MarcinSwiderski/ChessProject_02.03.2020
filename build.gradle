@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'pl.edu.pwr'
+version 'no-ver'
 
 sourceCompatibility = 1.8
 
@@ -16,7 +16,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'pwr.chessproject.Main'
     }
-    baseName = "chess"
+    name = "chess"
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
