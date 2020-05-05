@@ -34,7 +34,7 @@ public final class MovingStrategies {
 
     /**
      * @param position The position to evaluate
-     * @return ArrayList<Integer> of unobstructed diagonal fields
+     * @return ArrayList&lt;Integer&gt; of unobstructed diagonal fields
      */
     public static ArrayList<Integer> getFreeDiagonalFields(int position) {
         Figure.Player player = Grid[position].player;
@@ -100,7 +100,7 @@ public final class MovingStrategies {
 
     /**
      * @param position The position to evaluate
-     * @return ArrayList<Integer> of unobstructed perpendicular fields
+     * @return ArrayList&lt;Integer&gt; of unobstructed perpendicular fields
      */
     public static ArrayList<Integer> getFreePerpendicularFields(int position) {
         Figure.Player player = Grid[position].player;

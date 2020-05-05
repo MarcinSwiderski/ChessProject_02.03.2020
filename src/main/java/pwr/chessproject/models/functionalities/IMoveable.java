@@ -16,7 +16,7 @@ public interface IMoveable {
     boolean canMove(int position, int target);
 
     /**
-     * Returns ArrayList<Integer> of fields that a figure can move into, including figures movement pattern and current board
+     * Returns ArrayList&lt;Integer&gt;of fields that a figure can move into, including figures movement pattern and current board
      * @param position The Figures current position
      * @return List of available fields
      */
