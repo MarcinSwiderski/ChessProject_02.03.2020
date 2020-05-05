@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-//create a single Jar with all dependencies
+//Creates a single Jar with all dependencies
 task fatJar(type: Jar, group: "build", description: "Creates a .jar file with all implementation dependencies") {
     manifest {
         attributes 'Main-Class': 'pwr.chessproject.Main'
@@ -26,6 +26,10 @@ jar {
     manifest {
         attributes 'Main-Class': 'pwr.chessproject.Main'
     }
+}
+
+build{
+    dependsOn(fatJar)
 }
 
 dependencies {

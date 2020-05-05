@@ -4,11 +4,12 @@ import pwr.chessproject.game.Board;
 import pwr.chessproject.game.Game;
 import pwr.chessproject.logger.Logger;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] p ) {
-        Logger.debug("Mode: "+Logger.getMode());
+        Logger.configureLogMode(p);
         Logger.release("Let's play some chess\n\t1 - Two player hot-seat\n\t2 - Single player game against https://github.com/anzemur/chess-api\n\t0 - Close");
         Scanner scanner = new Scanner(System.in);
         int userResponse = scanner.nextInt();
@@ -36,6 +37,5 @@ public class Main {
                 System.exit(1);
             }
         }
-
     }
 }
