@@ -1,3 +1,5 @@
+import java.lang.reflect.Executable
+
 plugins {
     id 'java'
 }
@@ -16,7 +18,7 @@ task fatJar(type: Jar, group: "build", description: "Creates a .jar file with al
     manifest {
         attributes 'Main-Class': 'pwr.chessproject.Main'
     }
-    baseName = "chess"
+    setArchivesBaseName("chess")
     from { configurations.default.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
@@ -38,9 +40,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
     implementation 'com.squareup.okhttp3:okhttp:3.4.2'
-    implementation group: 'javax.json.bind', name: 'javax.json.bind-api', version: '1.0'
-    implementation group: 'org.eclipse', name: 'yasson', version: '1.0.1'
-    implementation group: 'org.glassfish', name: 'javax.json', version: '1.1.2'
+    implementation 'javax.json.bind:javax.json.bind-api:1.0'
+    implementation 'org.eclipse:yasson:1.0.1'
+    implementation 'org.glassfish:javax.json:1.1.2'
 }
 
 test {

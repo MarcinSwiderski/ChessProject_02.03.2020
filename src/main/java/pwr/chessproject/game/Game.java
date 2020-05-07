@@ -25,7 +25,7 @@ public final class Game {
     Board board;
 
     /**
-     * Contain information about kings current positions allowing for dynamic game situation check
+     * Contains information about kings current positions, allowing for dynamic game situation check
      */
     Hashtable<Figure.Player, Integer> kingPosition = new Hashtable<Figure.Player, Integer>() {
         {
@@ -41,7 +41,7 @@ public final class Game {
     }
 
     /**
-     * Starts 'hot-seat' game in IDE output. Game lasts until someone wins
+     * Starts 'hot-seat' game in the standard output. Game lasts until someone wins
      */
     public void startHotSeatGame() {
         int position, target;

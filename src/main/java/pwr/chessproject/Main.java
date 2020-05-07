@@ -4,7 +4,6 @@ import pwr.chessproject.game.Board;
 import pwr.chessproject.game.Game;
 import pwr.chessproject.logger.Logger;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
