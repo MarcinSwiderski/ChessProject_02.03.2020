@@ -1,11 +1,10 @@
 package pwr.chessproject.models;
 
-import static pwr.chessproject.game.Board.*;
 import pwr.chessproject.models.functionalities.IMoveable;
-import pwr.chessproject.models.functionalities.MovingStrategies;
 
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
+
+import static pwr.chessproject.game.Board.*;
 
 public class Pawn extends Figure implements IMoveable {
 

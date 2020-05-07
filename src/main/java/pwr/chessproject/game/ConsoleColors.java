@@ -1,6 +1,6 @@
 package pwr.chessproject.game;
 
-public abstract class ConsoleColors {
+abstract class ConsoleColors {
     public static final String RESET = "\033[0m";  // Text Reset
 
     // Regular Colors

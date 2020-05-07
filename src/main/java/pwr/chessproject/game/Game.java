@@ -6,7 +6,6 @@ import pwr.chessproject.api.requests.API;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
-import pwr.chessproject.models.Pawn;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
@@ -16,14 +15,14 @@ import java.util.Scanner;
 
 import static pwr.chessproject.frame.TranslateCords.translateIntCordToString;
 import static pwr.chessproject.frame.TranslateCords.translateStringCordToInt;
-import static pwr.chessproject.game.Board.AREA;
-import static pwr.chessproject.game.Board.Grid;
+import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 
+/**
+ * This class is responsible for interactive game experience
+ */
 public final class Game {
-    Board board;
-
     /**
      * Contains information about kings current positions, allowing for dynamic game situation check
      */
@@ -36,10 +35,6 @@ public final class Game {
 
     Figure.Player currentPlayer = Bottom;
 
-    public Game(Board board) {
-        this.board = board;
-    }
-
     /**
      * Starts 'hot-seat' game in the standard output. Game lasts until someone wins
      */
@@ -49,7 +44,7 @@ public final class Game {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            Logger.release(board);
+            Logger.release(Board.getGrid());
             try {
                 if (isChecked(kingPosition.get(currentPlayer))) {
                     Logger.release("Check!");
@@ -60,7 +55,7 @@ public final class Game {
                 Logger.release(currentPlayer + " turn: ");
                 Logger.release("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
-                board.checkPosition(position);
+                Board.checkPosition(position);
                 if (Grid[position].player != currentPlayer) {
                     Logger.release("You have to select " + currentPlayer + " player figure");
                     continue;
@@ -71,7 +66,7 @@ public final class Game {
                     Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
-                board.moveFigure(position, target);
+                Board.moveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
 
@@ -107,14 +102,14 @@ public final class Game {
 
         System.out.println("You start as a bottom player");
         while (true) {
-            Logger.release(board);
+            Logger.release(Board.getGrid());
             try {
                 if (isChecked(kingPosition.get(currentPlayer)))
                     Logger.release("Check!");
                 Logger.release("Your turn");
                 Logger.release("Select a figure: ");
                 position = translateStringCordToInt(scanner.next().trim().toUpperCase());
-                board.checkPosition(position);
+                Board.checkPosition(position);
                 if (Grid[position].player != currentPlayer) {
                     Logger.release("You have to select your figure");
                     continue;
@@ -125,7 +120,7 @@ public final class Game {
                     Logger.release("You can not move into " + translateIntCordToString(target) + " because of check");
                     continue;
                 }
-                board.moveFigure(position, target);
+                Board.moveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
 
@@ -137,7 +132,7 @@ public final class Game {
                 MoveVIResponse moveVIResponse = api.moveVI();
                 position = translateStringCordToInt(moveVIResponse.getFrom());
                 target = translateStringCordToInt(moveVIResponse.getTo());
-                board.forceMoveFigure(position, target);
+                Board.forceMoveFigure(position, target);
                 if (Grid[target] instanceof King)
                     kingPosition.replace(currentPlayer, target);
                 Logger.release("VI moved from " + moveVIResponse.getFrom() + " to " + moveVIResponse.getTo());
@@ -174,7 +169,7 @@ public final class Game {
             targetFigure = Grid[target].clone();
         int oldKingPosition = this.kingPosition.get(currentPlayer);
 
-        board.moveFigure(position, target);
+        Board.moveFigure(position, target);
         if (selectedFigure instanceof King)
             this.kingPosition.replace(currentPlayer, target);
 

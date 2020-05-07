@@ -1,6 +1,7 @@
 package pwr.chessproject;
 
 import pwr.chessproject.game.Board;
+import pwr.chessproject.game.BoardCreator;
 import pwr.chessproject.game.Game;
 import pwr.chessproject.logger.Logger;
 
@@ -14,22 +15,16 @@ public class Main {
         int userResponse = scanner.nextInt();
         if (userResponse == 0)
             System.exit(0);
-        else if (userResponse == 1) {
+        else {
+            BoardCreator boardCreator = new BoardCreator();
+            Board.Grid = boardCreator.constructdefaultBoard();
+            Game game = new Game();
             try {
-                Board board = new Board();
-                Game game = new Game(board);
-                game.startHotSeatGame();
-            }
-            catch (Exception ex) {
-                Logger.release(ex.getMessage());
-                System.exit(1);
-            }
-        }
-        else if (userResponse == 2) {
-            Board board = new Board();
-            Game game = new Game(board);
-            try {
-                game.startGameAgainstVI();
+                if (userResponse == 1) {
+                    game.startHotSeatGame();
+                } else if (userResponse == 2) {
+                    game.startGameAgainstVI();
+                }
             } catch (Exception ex) {
                 Logger.release(ex.getMessage());
                 Logger.debug(ex.toString());
