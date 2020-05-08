@@ -17,7 +17,7 @@ public class Main {
             System.exit(0);
         else {
             BoardCreator boardCreator = new BoardCreator();
-            Board.Grid = boardCreator.constructdefaultBoard();
+            Board.Grid = boardCreator.constructDefaultBoard();
             Game game = new Game();
             try {
                 if (userResponse == 1) {

@@ -19,15 +19,14 @@ class GameTest {
 
     @BeforeAll
     private static void setupGame () {
-        Board board = new Board();
-        board.clearBoard();
-        game = new Game(board);
+        BoardCreator boardCreator = new BoardCreator();
+        Board.Grid = boardCreator.constructDefaultBoard();
+        game = new Game();
     }
 
     @BeforeEach
     public void whipeOutBoard() {
-        Board board = new Board();
-        board.clearBoard();
+        Board.clearBoard();
     }
 
     @Test

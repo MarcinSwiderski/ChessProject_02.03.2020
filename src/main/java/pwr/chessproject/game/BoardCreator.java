@@ -24,7 +24,7 @@ public class BoardCreator {
         if (rows < 8 || columns < 8)
             throw new IllegalArgumentException("Board is too small");
         else if (rows == 8 && columns == 8) {
-            return constructdefaultBoard();
+            return constructDefaultBoard();
         }
         else {
             ROWS = rows;
@@ -39,9 +39,10 @@ public class BoardCreator {
      * @return Grid with nicely positioned figures
      * @throws IllegalArgumentException When board is not 8x8
      */
-    public Figure[] constructdefaultBoard() throws IllegalArgumentException {
-        if (ROWS != 8 || COLUMNS != 8)
-            throw new IllegalArgumentException("The board size is not default 8x8");
+    public Figure[] constructDefaultBoard() throws IllegalArgumentException {
+        ROWS = 8;
+        COLUMNS = 8;
+        AREA = ROWS*COLUMNS;
         Figure[] grid = new Figure[AREA];
         int currentPosition;
         Figure.Player player;
