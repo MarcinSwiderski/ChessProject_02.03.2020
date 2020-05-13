@@ -99,7 +99,7 @@ public abstract class Board {
                 }
                 grid.append("\t");
             }
-            grid.append("\n");
+            grid.append("\n\n");
         }
         return grid.toString();
     }
