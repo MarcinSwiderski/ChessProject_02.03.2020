@@ -9,6 +9,7 @@ import pwr.chessproject.models.King;
 import pwr.chessproject.models.functionalities.IMoveable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -89,18 +90,20 @@ public final class Game {
         Scanner scanner = new Scanner(System.in);
         Figure.Player opponent;
         API api = new API();
+        String gameId;
 
         //Registering new game
         try {
             CreateNewGameResponse response = api.createNewGame();
-            Logger.release("VI says:\t"+response.getStatus());
+            gameId = response.getGame_id();
+            Logger.release("VI: You can't beat me you mere mortal. Hahahaha...");
         } catch (IOException ex) {
             Logger.debug(ex);
-            Logger.release("Critical error during initial connecting to VI");
-            System.exit(1);
+            Logger.release("Critical error by the server side during initial connection to VI");
+            return;
         }
 
-        System.out.println("You start as a bottom player");
+        Logger.release("You start as a bottom player");
         while (true) {
             Logger.release(Board.getGrid());
             try {
@@ -128,8 +131,8 @@ public final class Game {
                 if (isCheckmated(this.kingPosition.get(opponent)))
                     break;
                 passTurn();
-                api.movePlayer(translateIntCordToString(position), translateIntCordToString(target));
-                MoveVIResponse moveVIResponse = api.moveVI();
+                api.movePlayer(gameId, translateIntCordToString(position), translateIntCordToString(target));
+                MoveVIResponse moveVIResponse = api.moveVI(gameId);
                 position = translateStringCordToInt(moveVIResponse.getFrom());
                 target = translateStringCordToInt(moveVIResponse.getTo());
                 Board.forceMoveFigure(position, target);
@@ -140,10 +143,14 @@ public final class Game {
                 if (isCheckmated(this.kingPosition.get(opponent)))
                     break;
                 passTurn();
-            } catch (IOException | NullPointerException | IllegalArgumentException | NotMoveableException ex) {
+            } catch (NullPointerException | IllegalArgumentException | NotMoveableException ex) {
                 Logger.release(ex.getMessage());
-                Logger.debug(ex.toString());
+                Logger.debug(ex);
                 continue;
+            } catch (IOException | OperationNotSupportedException ex) {
+                Logger.release(ex.getMessage() + "\n" + "Ending the game :\\");
+                Logger.debug(ex);
+                return;
             }
         }
         if (this.currentPlayer == Bottom)
