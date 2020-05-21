@@ -1,12 +1,13 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static pwr.chessproject.game.Board.*;
 
-public class Pawn extends Figure implements IMoveable {
+public class Pawn extends Figure implements Movable {
 
     private boolean firstMoveIndicator = true;
 
@@ -33,9 +34,9 @@ public class Pawn extends Figure implements IMoveable {
     }
 
     @Override
-    public ArrayList<Integer> getAvailableFields(int position) {
+    public List<Integer> getAvailableFields(int position) {
         Figure.Player player = Grid[position].player;
-        ArrayList<Integer> fields = new ArrayList<>();
+        List<Integer> fields = new ArrayList<>();
 
         if (player == Player.Top && position + COLUMNS < AREA) {
             if (position % COLUMNS != 0 && Grid[position + COLUMNS - 1] != null && Grid[position + COLUMNS - 1].player != player)
@@ -64,5 +65,13 @@ public class Pawn extends Figure implements IMoveable {
         }
 
         return fields;
+    }
+
+    @Override
+    public Figure clone() throws CloneNotSupportedException {
+        Pawn pawn = (Pawn)super.clone();
+        if (!((Pawn) this).getFirstMoveIndicator())
+            ((Pawn)pawn).afterFirstMoveIndicator();
+        return pawn;
     }
 }

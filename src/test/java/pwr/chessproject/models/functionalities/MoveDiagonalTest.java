@@ -24,7 +24,7 @@ class MoveDiagonalTest {
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMoveDiagonal(IMoveable figure) {
+    void canMoveDiagonal(Movable figure) {
         int position = (ROWS/2)*COLUMNS+COLUMNS/2;
         Grid[position] = (Figure)figure;
         Assertions.assertAll(
@@ -37,7 +37,7 @@ class MoveDiagonalTest {
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMoveOnlyDiagonal(IMoveable figure) {
+    void canMoveOnlyDiagonal(Movable figure) {
         if (figure instanceof Bishop) {
             int position = COLUMNS*3-1;
             Grid[position] = (Figure)figure;
@@ -52,7 +52,7 @@ class MoveDiagonalTest {
 
     @ParameterizedTest(name = "{arguments} can not move through obstacles")
     @MethodSource("figureProvider")
-    void canNotMoveThroughObstacles(IMoveable figure) {
+    void canNotMoveThroughObstacles(Movable figure) {
 
         Grid[0] = (Figure) figure;
 

@@ -2,7 +2,7 @@ package pwr.chessproject.models;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pwr.chessproject.game.Board.*;
@@ -17,7 +17,7 @@ class KnightTest {
     void atLeftTopCorner () {
         int position = 0;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertFalse(knight.canMove(position, -2*COLUMNS-1)),
                 () -> assertFalse(knight.canMove(position, -2*COLUMNS+1)),
@@ -34,7 +34,7 @@ class KnightTest {
     void atRightTopCorner () {
         int position = COLUMNS-1;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS-1)),
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS+1)),
@@ -51,7 +51,7 @@ class KnightTest {
     void atRightBotCorner () {
         int position = AREA-1;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertTrue(knight.canMove(position, position-2*COLUMNS-1)),
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS+1)),
@@ -68,7 +68,7 @@ class KnightTest {
     void atLeftBotCorner () {
         int position = AREA-COLUMNS;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS-1)),
                 () -> assertTrue(knight.canMove(position, position-2*COLUMNS+1)),
@@ -85,7 +85,7 @@ class KnightTest {
     void atInnerSquare () {
         int position = COLUMNS+1;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS-1)),
                 () -> assertFalse(knight.canMove(position, position-2*COLUMNS+1)),
@@ -102,7 +102,7 @@ class KnightTest {
     void atFreePosition () {
         int position = (ROWS/2)*COLUMNS+COLUMNS/2;
         Grid[position] = new Knight(Top);
-        IMoveable knight = (IMoveable)Grid[position];
+        Movable knight = (Movable)Grid[position];
         assertAll(
                 () -> assertTrue(knight.canMove(position, position-2*COLUMNS-1)),
                 () -> assertTrue(knight.canMove(position, position-2*COLUMNS+1)),
@@ -119,7 +119,7 @@ class KnightTest {
     void canMoveThroughObstacles() {
 
         Grid[0] = new Knight(Top);
-        IMoveable knight = (IMoveable) Grid[0];
+        Movable knight = (Movable) Grid[0];
 
         //obstacle
         Grid[COLUMNS] = new Pawn(Top);
@@ -132,7 +132,7 @@ class KnightTest {
     void canKillOnlyEnemies() {
 
         Grid[0] = new Knight(Top);
-        IMoveable knight = (IMoveable) Grid[0];
+        Movable knight = (Movable) Grid[0];
 
         //obstacle
         Grid[2+COLUMNS] = new Pawn(Bottom);

@@ -29,7 +29,7 @@ class MoveInRangeTest {
 
     @ParameterizedTest(name = "{arguments} can not move outside of the board range")
     @MethodSource("figureProvider")
-    void canNotMoveOutsideRange(IMoveable figure) {
+    void canNotMoveOutsideRange(Movable figure) {
         int position = AREA-1;
         Grid[position] = (Figure)figure;
         if (figure instanceof Bishop)

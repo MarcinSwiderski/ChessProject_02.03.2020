@@ -3,13 +3,14 @@ package pwr.chessproject.models.functionalities;
 import pwr.chessproject.models.Figure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static pwr.chessproject.game.Board.*;
 
 /**
  * Contains common moving strategies
  */
-public final class MovingStrategies {
+public abstract class MovingStrategies {
 
     /**
      * Checks if target position is even in the board
@@ -36,7 +37,7 @@ public final class MovingStrategies {
      * @param position The position to evaluate
      * @return ArrayList&lt;Integer&gt; of unobstructed diagonal fields
      */
-    public static ArrayList<Integer> getFreeDiagonalFields(int position) {
+    public static List<Integer> getFreeDiagonalFields(int position) {
         Figure.Player player = Grid[position].player;
         ArrayList<Integer> fields = new ArrayList<>();
         addRightTop(fields, position, player);
@@ -47,7 +48,7 @@ public final class MovingStrategies {
         return fields;
     }
 
-    private static void addRightTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addRightTop (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position-COLUMNS+1; i % COLUMNS != 0 && i >= 0 ; i = i-COLUMNS+1) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -57,7 +58,7 @@ public final class MovingStrategies {
             fields.add(i);
         }
     }
-    private static void addRightBot (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addRightBot (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position+COLUMNS+1; i % COLUMNS != 0 && i < AREA; i = i+COLUMNS+1) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -77,7 +78,7 @@ public final class MovingStrategies {
             fields.add(i);
         }
     }
-    private static void addLeftTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addLeftTop (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position-COLUMNS-1; i % COLUMNS != COLUMNS-1 && i >= 0; i = i-COLUMNS-1) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -102,7 +103,7 @@ public final class MovingStrategies {
      * @param position The position to evaluate
      * @return ArrayList&lt;Integer&gt; of unobstructed perpendicular fields
      */
-    public static ArrayList<Integer> getFreePerpendicularFields(int position) {
+    public static List<Integer> getFreePerpendicularFields(int position) {
         Figure.Player player = Grid[position].player;
         ArrayList<Integer> fields = new ArrayList<>();
         addTop(fields, position, player);
@@ -113,7 +114,7 @@ public final class MovingStrategies {
         return fields;
     }
 
-    private static void addTop (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addTop (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position-COLUMNS; i >= 0 ; i -= COLUMNS) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -123,7 +124,7 @@ public final class MovingStrategies {
             fields.add(i);
         }
     }
-    private static void addRight (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addRight (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position+1; i % COLUMNS != 0 && i < AREA; i++) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -133,7 +134,7 @@ public final class MovingStrategies {
             fields.add(i);
         }
     }
-    private static void addBot (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addBot (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position+COLUMNS; i < AREA; i += COLUMNS) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)
@@ -143,7 +144,7 @@ public final class MovingStrategies {
             fields.add(i);
         }
     }
-    private static void addLeft (ArrayList<Integer> fields, int position, Figure.Player player) {
+    private static void addLeft (List<Integer> fields, int position, Figure.Player player) {
         for (int i = position-1; i % COLUMNS != COLUMNS-1 && i >= 0; i--) {
             if (Grid[i] != null) {
                 if (Grid[i].player != player)

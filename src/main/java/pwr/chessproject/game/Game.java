@@ -6,7 +6,7 @@ import pwr.chessproject.api.requests.API;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.King;
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import javax.naming.OperationNotSupportedException;
@@ -168,12 +168,22 @@ public final class Game {
      * @throws NotMoveableException - When simulated move is not valid
      */
     boolean simulateMoveAndCheck(int position, int target, IToCheck toCheck) throws NotMoveableException {
-        Figure selectedFigure = Grid[position].clone();
+        Figure selectedFigure;
         Figure targetFigure;
-        if (Grid[target] == null )
-            targetFigure = null;
-        else
-            targetFigure = Grid[target].clone();
+        try {
+            selectedFigure = Grid[position].clone();
+            if (Grid[target] == null )
+                targetFigure = null;
+            else
+                targetFigure = Grid[target].clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.debug(ex);
+            Logger.release("Unexpected error during validating a move. Program needs to be sjut down.");
+            System.exit(1);
+            return false;
+        }
+
+
         int oldKingPosition = this.kingPosition.get(currentPlayer);
 
         Board.moveFigure(position, target);
@@ -199,7 +209,7 @@ public final class Game {
         for (int i = 0; i < AREA; i++) {
             figure = Grid[i];
             if (figure != null && figure.player == opponent) {
-                if (((IMoveable)figure).canMove(i, kingPosition))
+                if (((Movable)figure).canMove(i, kingPosition))
                     return true;
             }
         }
@@ -217,10 +227,10 @@ public final class Game {
 
         Figure.Player player = Grid[kingPosition].player;
         
-        IMoveable figure;
+        Movable figure;
         for (int position = 0; position < AREA; position++) {
             if (Grid[position] != null && Grid[position].player == player) {
-                figure = (IMoveable) Grid[position];
+                figure = (Movable) Grid[position];
                 for (int target: figure.getAvailableFields(position)) {
                     if (!simulateMoveAndCheck(position, target, this::isChecked))
                         return false;

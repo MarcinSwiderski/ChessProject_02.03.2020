@@ -25,7 +25,7 @@ class MovePerpendicularTest {
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMovePerpendicular(IMoveable figure) {
+    void canMovePerpendicular(Movable figure) {
         int position = (ROWS/2)*COLUMNS+COLUMNS/2;
         Grid[position] = (Figure)figure;
         Assertions.assertAll(
@@ -38,7 +38,7 @@ class MovePerpendicularTest {
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMoveOnlyPerpendicular(IMoveable figure) {
+    void canMoveOnlyPerpendicular(Movable figure) {
         if (figure instanceof Tower) {
             int position = COLUMNS*2-1;
             Grid[position] = (Figure)figure;
@@ -54,7 +54,7 @@ class MovePerpendicularTest {
 
     @ParameterizedTest(name = "{arguments} can not move through obstacles")
     @MethodSource("figureProvider")
-    void canNotMoveThroughObstacles(IMoveable figure) {
+    void canNotMoveThroughObstacles(Movable figure) {
 
         Grid[0] = (Figure) figure;
 

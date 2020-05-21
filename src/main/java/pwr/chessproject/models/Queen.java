@@ -1,11 +1,12 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Queen extends Figure implements IMoveable {
+public class Queen extends Figure implements Movable {
     public Queen(Player player) {
         super(player);
         this.figureType = FigureType.Queen;
@@ -22,8 +23,8 @@ public class Queen extends Figure implements IMoveable {
     }
 
     @Override
-    public ArrayList<Integer> getAvailableFields(int position) {
-        ArrayList<Integer> fields = new ArrayList<>();
+    public List<Integer> getAvailableFields(int position) {
+        List<Integer> fields = new ArrayList<>();
         fields.addAll(MovingStrategies.getFreeDiagonalFields(position));
         fields.addAll(MovingStrategies.getFreePerpendicularFields(position));
         return fields;

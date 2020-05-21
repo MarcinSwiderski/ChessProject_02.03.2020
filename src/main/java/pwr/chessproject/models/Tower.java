@@ -1,11 +1,12 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.MovingStrategies;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Tower extends Figure implements IMoveable {
+public class Tower extends Figure implements Movable {
     public Tower(Player player) {
         super(player);
         this.figureType = FigureType.Tower;
@@ -22,7 +23,7 @@ public class Tower extends Figure implements IMoveable {
     }
 
     @Override
-    public ArrayList<Integer> getAvailableFields(int position) {
+    public List<Integer> getAvailableFields(int position) {
         return MovingStrategies.getFreePerpendicularFields(position);
     }
 }

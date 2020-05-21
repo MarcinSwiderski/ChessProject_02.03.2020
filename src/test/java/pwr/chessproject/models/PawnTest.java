@@ -3,7 +3,7 @@ package pwr.chessproject.models;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pwr.chessproject.game.Board.*;
@@ -17,7 +17,7 @@ class PawnTest {
     void bottomCanMoveOnlyOneOrTwoUpwards() {
         int botPosition = AREA-1-COLUMNS;
         Grid[botPosition] = new Pawn(Bottom);
-        IMoveable pawn = (IMoveable)Grid[botPosition];
+        Movable pawn = (Movable)Grid[botPosition];
         Assertions.assertAll(
                 () -> assertTrue(pawn.canMove(botPosition, botPosition-COLUMNS)),
                 () -> assertTrue(pawn.canMove(botPosition, botPosition-2*COLUMNS)),
@@ -33,7 +33,7 @@ class PawnTest {
     void topCanMoveOnlyOneOrTwoDownwards() {
         int topPosition = 1 + COLUMNS;
         Grid[topPosition] = new Pawn(Top);
-        IMoveable pawn = (IMoveable)Grid[topPosition];
+        Movable pawn = (Movable)Grid[topPosition];
         Assertions.assertAll(
                 () -> assertTrue(pawn.canMove(topPosition, topPosition+COLUMNS)),
                 () -> assertTrue(pawn.canMove(topPosition, topPosition+2*COLUMNS)),
@@ -56,8 +56,8 @@ class PawnTest {
         Grid[2*COLUMNS] = new Pawn(Top);
         Grid[1+COLUMNS] = new Pawn(Top);
 
-        IMoveable pawn1 = (IMoveable)Grid[0];
-        IMoveable pawn2 = (IMoveable)Grid[1];
+        Movable pawn1 = (Movable)Grid[0];
+        Movable pawn2 = (Movable)Grid[1];
 
         Assertions.assertAll(
                 () -> assertFalse(pawn1.canMove(0, COLUMNS)),
@@ -71,7 +71,7 @@ class PawnTest {
         Grid[1] = new Pawn(Top);
         Grid[COLUMNS] = new Pawn(Bottom);
         Grid[COLUMNS+2] = new Pawn(Bottom);
-        IMoveable pawn = (IMoveable)Grid[1];
+        Movable pawn = (Movable)Grid[1];
         Assertions.assertAll(
                 () -> assertTrue(pawn.canMove(1, COLUMNS)),
                 () -> assertTrue(pawn.canMove(1, COLUMNS+2))

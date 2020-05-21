@@ -3,7 +3,7 @@ package pwr.chessproject.game;
 import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.Pawn;
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.util.Arrays;
@@ -48,7 +48,7 @@ public abstract class Board {
      */
     public static void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
         checkPosition(position);
-        IMoveable selectedFigure = (IMoveable)Grid[position];
+        Movable selectedFigure = (Movable)Grid[position];
         if (selectedFigure.canMove(position, target)) {
             forceMoveFigure(position, target);
         }
@@ -64,7 +64,7 @@ public abstract class Board {
      */
     public static void forceMoveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
         checkPosition(position);
-        IMoveable selectedFigure = (IMoveable)Grid[position];
+        Movable selectedFigure = (Movable)Grid[position];
         Board.Grid[target] = Board.Grid[position];
         Board.Grid[position] = null;
         if (selectedFigure instanceof Pawn) {

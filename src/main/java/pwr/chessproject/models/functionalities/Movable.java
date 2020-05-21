@@ -1,12 +1,11 @@
 package pwr.chessproject.models.functionalities;
 
-
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default figure movement check functionality
  */
-public interface IMoveable {
+public interface Movable {
     /**
      * Checks if target position is even in the board
      * @param position The Figures current position
@@ -20,6 +19,6 @@ public interface IMoveable {
      * @param position The Figures current position
      * @return List of available fields
      */
-    ArrayList<Integer> getAvailableFields(int position);
+    List<Integer> getAvailableFields(int position);
 
 }
