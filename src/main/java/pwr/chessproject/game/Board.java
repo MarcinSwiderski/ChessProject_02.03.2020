@@ -127,8 +127,8 @@ public class Board implements Cloneable {
      * Do not changes any state and returns value indicating whether or not move is possible
      * @param position The Figure current position
      * @param target   The target position to move to
-     * @throws NullPointerException     - When there is null at the selected position
-     * @throws IllegalArgumentException - When position is outside of the board
+     * @throws NullPointerException When there is null at the selected position
+     * @throws IllegalArgumentException When position is outside of the board
      */
     public void isMovePossible(int position, int target) throws NullPointerException, IllegalArgumentException, NotMoveableException {
             checkPosition(position);
