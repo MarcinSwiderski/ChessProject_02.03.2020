@@ -1,29 +1,25 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.Movable;
-import pwr.chessproject.models.functionalities.MovingStrategies;
+import pwr.chessproject.game.Board;
+import pwr.chessproject.models.functionalities.PerpendicularStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Tower extends Figure implements Movable {
+public class Tower extends Figure {
     public Tower(Player player) {
         super(player);
         this.figureType = FigureType.Tower;
     }
 
     /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
+     * Returns ArrayList&lt;Integer&gt; of fields on perpendicular lines crossing at specified position that a figure can move into, includes current board
+     * @param position The Figures current position
+     * @param board Current board on which figure exists
+     * @return List of available fields
      */
     @Override
-    public boolean canMove(int position, int target) {
-        return MovingStrategies.canMovePerpendicular(position, target);
-    }
-
-    @Override
-    public List<Integer> getAvailableFields(int position) {
-        return MovingStrategies.getFreePerpendicularFields(position);
+    public List<Integer> getAvailableFields(int position, Board board) {
+        PerpendicularStrategy strategy = new PerpendicularStrategy(board);
+        return strategy.getFreePerpendicularFields(position);
     }
 }

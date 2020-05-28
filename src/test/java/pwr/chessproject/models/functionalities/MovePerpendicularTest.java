@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import pwr.chessproject.game.Board;
 import pwr.chessproject.models.*;
 
 import java.util.stream.Stream;
@@ -16,6 +17,12 @@ import static pwr.chessproject.models.Figure.Player.Top;
 @ExtendWith(FigureMoveExtension.class)
 class MovePerpendicularTest {
 
+    private Board board;
+
+    public MovePerpendicularTest(Board board) {
+        this.board = board;
+    }
+
     private static Stream<Arguments> figureProvider () {
         return  Stream.of(
                 Arguments.of(new Tower(Top)),
@@ -26,13 +33,13 @@ class MovePerpendicularTest {
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
     void canMovePerpendicular(Movable figure) {
-        int position = (ROWS/2)*COLUMNS+COLUMNS/2;
-        Grid[position] = (Figure)figure;
+        int position = (board.getRows()/2)*board.getColumns()+board.getColumns()/2;
+        board.grid[position] = (Figure)figure;
         Assertions.assertAll(
-                () -> assertTrue(figure.canMove(position, position+1)),
-                () -> assertTrue(figure.canMove(position, position-1)),
-                () -> assertTrue(figure.canMove(position, position+COLUMNS)),
-                () -> assertTrue(figure.canMove(position, position-COLUMNS))
+                () -> assertTrue(figure.canMove(position, position+1, board)),
+                () -> assertTrue(figure.canMove(position, position-1, board)),
+                () -> assertTrue(figure.canMove(position, position+board.getColumns(), board)),
+                () -> assertTrue(figure.canMove(position, position-board.getColumns(), board))
         );
     }
 
@@ -40,13 +47,13 @@ class MovePerpendicularTest {
     @MethodSource("figureProvider")
     void canMoveOnlyPerpendicular(Movable figure) {
         if (figure instanceof Tower) {
-            int position = COLUMNS*2-1;
-            Grid[position] = (Figure)figure;
+            int position = board.getColumns()*2-1;
+            board.grid[position] = (Figure)figure;
             Assertions.assertAll(
-                    () -> assertFalse(figure.canMove(position, position+COLUMNS-1)),
-                    () -> assertFalse(figure.canMove(position, position-COLUMNS-1)),
-                    () -> assertFalse(figure.canMove(position, position+1)),
-                    () -> assertFalse(figure.canMove(position, position-2*COLUMNS))
+                    () -> assertFalse(figure.canMove(position, position+board.getColumns()-1, board)),
+                    () -> assertFalse(figure.canMove(position, position-board.getColumns()-1, board)),
+                    () -> assertFalse(figure.canMove(position, position+1, board)),
+                    () -> assertFalse(figure.canMove(position, position-2*board.getColumns(), board))
             );
         }
 
@@ -56,14 +63,14 @@ class MovePerpendicularTest {
     @MethodSource("figureProvider")
     void canNotMoveThroughObstacles(Movable figure) {
 
-        Grid[0] = (Figure) figure;
+        board.grid[0] = (Figure) figure;
 
         //obstacle
-        Grid[2] = new Pawn(Top);
+        board.grid[2] = new Pawn(Top);
 
         Assertions.assertAll(
-                () -> assertFalse(figure.canMove(0, 2)),
-                () -> assertFalse(figure.canMove(0, 3))
+                () -> assertFalse(figure.canMove(0, 2, board)),
+                () -> assertFalse(figure.canMove(0, 3, board))
         );
     }
 }

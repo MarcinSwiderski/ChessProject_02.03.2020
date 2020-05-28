@@ -1,21 +1,30 @@
 package pwr.chessproject.models;
 
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 import pwr.chessproject.game.Board;
 import pwr.chessproject.game.BoardCreator;
 
-public class FigureMoveExtension implements BeforeAllCallback, BeforeEachCallback {
+import java.io.IOException;
 
-    @Override
-    public void beforeAll(ExtensionContext context) {
-        BoardCreator boardCreator = new BoardCreator();
-        Board.Grid = boardCreator.constructDefaultBoard();;
+public class FigureMoveExtension implements BeforeEachCallback, ParameterResolver {
+
+    public Board board = new BoardCreator().defaultBoard();
+
+    public FigureMoveExtension() throws IOException {
     }
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        Board.clearBoard();
+        board.clearBoard();
+    }
+
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return parameterContext.getParameter().getType().equals(Board.class);
+    }
+
+    @Override
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return this.board;
     }
 }

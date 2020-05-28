@@ -2,27 +2,69 @@ package pwr.chessproject.game;
 
 import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.Figure;
+import pwr.chessproject.models.Figure.Player;
 import pwr.chessproject.models.Pawn;
 import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
 
-/**
- * One and only, global, static board
- */
-public abstract class Board {
-    public static int ROWS  = 8;
-    public static int COLUMNS = 8;
-    public static int AREA = ROWS*COLUMNS;
+import static pwr.chessproject.models.Figure.Player.Bottom;
+import static pwr.chessproject.models.Figure.Player.Top;
 
-    public static Figure[] Grid;
+public class Board {
+    private final int rows;
+    private final int columns;
+    private final int area;
+    public final int KING_TOP_STARTING_POINT = 4;
+    public final int KING_BOT_STARTING_POINT = 60;
 
     /**
-     * Fills the static Grid with null's
+     * Contains information about kings current positions, allowing for dynamic game situation check
      */
-    public static void clearBoard() {
-        Arrays.fill(Grid, null);
+    private final Map<Player, Integer> kingPosition = new Hashtable<Player, Integer>() {
+        {
+            put(Top, KING_TOP_STARTING_POINT);
+            put(Bottom, KING_BOT_STARTING_POINT);
+        }
+    };
+
+    public Board(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
+        this.area = rows*columns;
+        this.grid = new Figure[area];
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    int getKingPosition(Player player) {
+        return kingPosition.get(player);
+    }
+
+    void setKingPosition(Player player, int target) {
+        this.kingPosition.replace(player, target);
+    }
+
+    public Figure[] grid;
+
+    /**
+     * Fills the Grid with null's
+     */
+    public void clearBoard() {
+        Arrays.fill(grid, null);
     }
 
     /**
@@ -31,11 +73,13 @@ public abstract class Board {
      * @throws NullPointerException - When there is null at the selected position
      * @throws IllegalArgumentException - When position is outside of the board
      */
-    public static void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
-        if (position < 0 || position > AREA - 1 )
+    public void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
+        if (position < 0 || position > area - 1 )
             throw new IllegalArgumentException("Can not select figure outside of the board");
-        if (Board.Grid[position] == null)
-            throw new NullPointerException("There is no figure at the selected position: " + TranslateCords.translateIntCordToString(position));
+        if (grid[position] == null) {
+            TranslateCords translateCords = new TranslateCords(this);
+            throw new NullPointerException("There is no figure at the selected position: " + translateCords.translateIntCordToString(position));
+        }
     }
 
     /**
@@ -46,13 +90,16 @@ public abstract class Board {
      * @throws NullPointerException - When there is null at the selected position
      * @throws IllegalArgumentException - When position is outside of the board
      */
-    public static void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
+    public void moveFigure(int position, int target) throws NotMoveableException, NullPointerException, IllegalArgumentException {
         checkPosition(position);
-        Movable selectedFigure = (Movable)Grid[position];
-        if (selectedFigure.canMove(position, target)) {
+        Movable selectedFigure = grid[position];
+        if (selectedFigure.canMove(position, target, this)) {
             forceMoveFigure(position, target);
         }
-        else throw new NotMoveableException(position, target, Board.Grid[position]);
+        else {
+            TranslateCords translateCords = new TranslateCords(this);
+            throw new NotMoveableException(translateCords.translateIntCordToString(position), translateCords.translateIntCordToString(target), grid[position]);
+        }
     }
 
     /**
@@ -62,11 +109,11 @@ public abstract class Board {
      * @throws NullPointerException - When there is null at the selected position
      * @throws IllegalArgumentException - When position is outside of the board
      */
-    public static void forceMoveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
+    public void forceMoveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
         checkPosition(position);
-        Movable selectedFigure = (Movable)Grid[position];
-        Board.Grid[target] = Board.Grid[position];
-        Board.Grid[position] = null;
+        Movable selectedFigure = grid[position];
+        grid[target] = grid[position];
+        grid[position] = null;
         if (selectedFigure instanceof Pawn) {
             Pawn pawn = (Pawn)selectedFigure;
             if (pawn.getFirstMoveIndicator())
@@ -74,26 +121,27 @@ public abstract class Board {
         }
     }
 
-    public static String getGrid() {
+    @Override
+    public String toString() {
         StringBuilder grid = new StringBuilder();
         int currentPosition;
         String color;
-        for (int row = -1; row < ROWS + 1; row++) {
-            for (int column = -1; column < COLUMNS + 1; column++) {
-                if ((row == -1 || row == ROWS) && column != -1 && column != COLUMNS)
-                        grid.append("  ").append(((char)(65+column))).append("  ");
-                else if ((column == -1 || column == COLUMNS) && row != -1 && row != ROWS)
-                        grid.append("  ").append(ROWS-row).append("  ");
-                else if (column == -1 || column == COLUMNS)
+        for (int row = -1; row < rows + 1; row++) {
+            for (int column = -1; column < columns + 1; column++) {
+                if ((row == -1 || row == rows) && column != -1 && column != columns)
+                    grid.append("  ").append(((char)(65+column))).append("  ");
+                else if ((column == -1 || column == columns) && row != -1 && row != rows)
+                    grid.append("  ").append(rows-row).append("  ");
+                else if (column == -1 || column == columns)
                     grid.append("-----");
                 else {
-                    currentPosition = row*COLUMNS+column;
-                    if (Board.Grid[currentPosition] == null)
+                    currentPosition = row*columns+column;
+                    if (this.grid[currentPosition] == null)
                         grid.append("_____");
                     else {
-                        color = Grid[currentPosition].player == Figure.Player.Top ? ConsoleColors.BLUE : ConsoleColors.RED;
+                        color = this.grid[currentPosition].player == Player.Top ? ConsoleColors.BLUE : ConsoleColors.RED;
                         grid.append(color);
-                        grid.append(Board.Grid[currentPosition].getClass().getSimpleName()).append(Board.Grid[currentPosition].player.toString().toCharArray()[0]);
+                        grid.append(this.grid[currentPosition].getClass().getSimpleName()).append(this.grid[currentPosition].player.toString().toCharArray()[0]);
                         grid.append(ConsoleColors.BLACK);
                     }
                 }
@@ -108,11 +156,11 @@ public abstract class Board {
      * Writes Grid to console, includes fields info: 'row:column:index'
      */
     @Deprecated
-    public static void writeGridContent() {
-        for (int row = 0; row < ROWS; row++) {
-            for (int column = 0; column < COLUMNS; column++) {
+    public void writeGridContent() {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
                 //System.out.println(row + ":" + column + "\t");
-                System.out.print(Grid[row*COLUMNS+column] + String.valueOf(row) + ":" + column + ":" + (row * COLUMNS + column) + " \t");
+                System.out.print(grid[row*columns+column].toString() + row + ":" + column + ":" + (row * columns + column) + " \t");
             }
             System.out.println();
         }

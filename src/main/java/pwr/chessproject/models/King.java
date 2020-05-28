@@ -1,72 +1,61 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.Movable;
+import pwr.chessproject.game.Board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static pwr.chessproject.game.Board.*;
+public class King extends Figure  {
 
-public class King extends Figure implements Movable {
     public King(Player player) {
         super(player);
         this.figureType = FigureType.King;
     }
 
-
     /**
      * Maps every available field that king can move to
      * @param position Position to map
+     * @param board Current board on which figure exists
      * @return List of available fields
      */
     @Override
-    public List<Integer> getAvailableFields(int position) {
+    public List<Integer> getAvailableFields(int position, Board board) {
         List<Integer> availableFields = new ArrayList<Integer>() {
             {
-                add(position-COLUMNS);
-                add(position-COLUMNS+1);
+                add(position-board.getColumns());
+                add(position-board.getColumns()+1);
                 add(position+1);
-                add(position+COLUMNS+1);
-                add(position+COLUMNS);
-                add(position+COLUMNS-1);
+                add(position+board.getColumns()+1);
+                add(position+board.getColumns());
+                add(position+board.getColumns()-1);
                 add(position-1);
-                add(position-COLUMNS-1);
+                add(position-board.getColumns()-1);
             }
         };
 
-        if (position % COLUMNS == 0) {
-            availableFields.remove(Integer.valueOf(position-COLUMNS-1));
+        if (position % board.getColumns() == 0) {
+            availableFields.remove(Integer.valueOf(position-board.getColumns()-1));
             availableFields.remove(Integer.valueOf(position-1));
-            availableFields.remove(Integer.valueOf(position+COLUMNS-1));
+            availableFields.remove(Integer.valueOf(position+board.getColumns()-1));
         }
-        if (position % COLUMNS == COLUMNS-1) {
-            availableFields.remove(Integer.valueOf(position+COLUMNS+1));
+        if (position % board.getColumns() == board.getColumns()-1) {
+            availableFields.remove(Integer.valueOf(position+board.getColumns()+1));
             availableFields.remove(Integer.valueOf(position+1));
-            availableFields.remove(Integer.valueOf(position-COLUMNS+1));
+            availableFields.remove(Integer.valueOf(position-board.getColumns()+1));
         }
-        if (position / COLUMNS == 0) {
-            availableFields.remove(Integer.valueOf(position-COLUMNS-1));
-            availableFields.remove(Integer.valueOf(position-COLUMNS));
-            availableFields.remove(Integer.valueOf(position-COLUMNS+1));
+        if (position / board.getColumns() == 0) {
+            availableFields.remove(Integer.valueOf(position-board.getColumns()-1));
+            availableFields.remove(Integer.valueOf(position-board.getColumns()));
+            availableFields.remove(Integer.valueOf(position-board.getColumns()+1));
         }
-        if (position / COLUMNS == ROWS-1) {
-            availableFields.remove(Integer.valueOf(position+COLUMNS-1));
-            availableFields.remove(Integer.valueOf(position+COLUMNS));
-            availableFields.remove(Integer.valueOf(position+COLUMNS+1));
+        if (position / board.getColumns() == board.getRows()-1) {
+            availableFields.remove(Integer.valueOf(position+board.getColumns()-1));
+            availableFields.remove(Integer.valueOf(position+board.getColumns()));
+            availableFields.remove(Integer.valueOf(position+board.getColumns()+1));
         }
 
-        availableFields.removeIf(field -> Grid[field] != null && Grid[field].player == player);
+        availableFields.removeIf(field -> board.grid[field] != null && board.grid[field].player == player);
 
         return availableFields;
-    }
-
-    /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
-     */
-    @Override
-    public boolean canMove(int position, int target) {
-        return getAvailableFields(position).contains(target);
     }
 }

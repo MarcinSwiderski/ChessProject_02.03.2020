@@ -1,13 +1,11 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.Movable;
+import pwr.chessproject.game.Board;
+import pwr.chessproject.models.functionalities.PawnStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static pwr.chessproject.game.Board.*;
-
-public class Pawn extends Figure implements Movable {
+public class Pawn extends Figure  {
 
     private boolean firstMoveIndicator = true;
 
@@ -23,55 +21,17 @@ public class Pawn extends Figure implements Movable {
         return firstMoveIndicator;
     }
 
-    /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
-     */
     @Override
-    public boolean canMove(int position, int target) {
-        return getAvailableFields(position).contains(target);
-    }
-
-    @Override
-    public List<Integer> getAvailableFields(int position) {
-        Figure.Player player = Grid[position].player;
-        List<Integer> fields = new ArrayList<>();
-
-        if (player == Player.Top && position + COLUMNS < AREA) {
-            if (position % COLUMNS != 0 && Grid[position + COLUMNS - 1] != null && Grid[position + COLUMNS - 1].player != player)
-                fields.add(position + COLUMNS - 1);
-            if (Grid[position + COLUMNS] == null)
-                fields.add(position + COLUMNS);
-            if (position % COLUMNS != COLUMNS - 1 && Grid[position + COLUMNS + 1] != null && Grid[position + COLUMNS + 1].player != player)
-                fields.add(position + COLUMNS + 1);
-        } else if (player == Player.Bottom && position - COLUMNS >= 0) {
-            if (position % COLUMNS != 0 && Grid[position - COLUMNS - 1] != null && Grid[position - COLUMNS - 1].player != player)
-                fields.add(position - COLUMNS - 1);
-            if (Grid[position - COLUMNS] == null)
-                fields.add(position - COLUMNS);
-            if (position % COLUMNS != COLUMNS - 1 && Grid[position - COLUMNS + 1] != null && Grid[position - COLUMNS + 1].player != player)
-                fields.add(position - COLUMNS + 1);
-        }
-
-        if (firstMoveIndicator) {
-            if (player == Player.Top && position + 2 * COLUMNS < AREA) {
-                if (Grid[position + COLUMNS] == null && Grid[position + 2 * COLUMNS] == null)
-                    fields.add(position + 2 * COLUMNS);
-            }
-            if (player == Player.Bottom && position - 2 * COLUMNS < AREA)
-                if (Grid[position - COLUMNS] == null && Grid[position - 2 * COLUMNS] == null)
-                    fields.add(position - 2 * COLUMNS);
-        }
-
-        return fields;
+    public List<Integer> getAvailableFields(int position, Board board) {
+        PawnStrategy pawnStrategy = new PawnStrategy(board);
+        return pawnStrategy.getAvailableFields(position, firstMoveIndicator);
     }
 
     @Override
     public Figure clone() throws CloneNotSupportedException {
         Pawn pawn = (Pawn)super.clone();
-        if (!((Pawn) this).getFirstMoveIndicator())
-            ((Pawn)pawn).afterFirstMoveIndicator();
+        if (!this.getFirstMoveIndicator())
+            pawn.afterFirstMoveIndicator();
         return pawn;
     }
 }

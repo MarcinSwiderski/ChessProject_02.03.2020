@@ -3,97 +3,103 @@ package pwr.chessproject.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import pwr.chessproject.game.Board;
 import pwr.chessproject.models.functionalities.Movable;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pwr.chessproject.game.Board.*;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
 class KingTest {
 
+    private final Board board;
+
+    public KingTest(Board board) {
+        this.board = board;
+    }
+
     @Test
     void atLeftTopCorner () {
         int position = 0;
-        Grid[position] = new King(Top);
-        Movable king = (Movable)Grid[position];
-        Assertions.assertAll(
-                () -> assertFalse(king.canMove(position, -COLUMNS)),
-                () -> assertFalse(king.canMove(position, -COLUMNS+1)),
-                () -> assertTrue(king.canMove(position, 1)),
-                () -> assertTrue(king.canMove(position, COLUMNS+1)),
-                () -> assertTrue(king.canMove(position, COLUMNS)),
-                () -> assertFalse(king.canMove(position, COLUMNS-1)),
-                () -> assertFalse(king.canMove(position, -1)),
-                () -> assertFalse(king.canMove(position, -COLUMNS-1))
+        board.grid[position] = new King(Top);
+        Movable king = board.grid[position];
+        assertAll(
+                () -> assertFalse(king.canMove(position, -board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, -board.getColumns()+1, board)),
+                () -> assertTrue(king.canMove(position, 1, board)),
+                () -> assertTrue(king.canMove(position, board.getColumns()+1, board)),
+                () -> assertTrue(king.canMove(position, board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, board.getColumns()-1, board)),
+                () -> assertFalse(king.canMove(position, -1, board)),
+                () -> assertFalse(king.canMove(position, -board.getColumns()-1, board))
         );
     }
 
     @Test
     void atRightTopCorner () {
-        int position = COLUMNS-1;
-        Grid[position] = new King(Top);
-        Movable king = (Movable)Grid[position];
+        int position = board.getColumns()-1;
+        board.grid[position] = new King(Top);
+        Movable king = board.grid[position];
         Assertions.assertAll(
-                () -> assertFalse(king.canMove(position, position-COLUMNS)),
-                () -> assertFalse(king.canMove(position, position-COLUMNS+1)),
-                () -> assertFalse(king.canMove(position, position+1)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS+1)),
-                () -> assertTrue(king.canMove(position, position+COLUMNS)),
-                () -> assertTrue(king.canMove(position, position+COLUMNS-1)),
-                () -> assertTrue(king.canMove(position, position-1)),
-                () -> assertFalse(king.canMove(position, position-COLUMNS-1))
+                () -> assertFalse(king.canMove(position, position-board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, position-board.getColumns()+1, board)),
+                () -> assertFalse(king.canMove(position, position+1, board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns()+1, board)),
+                () -> assertTrue(king.canMove(position, position+board.getColumns(), board)),
+                () -> assertTrue(king.canMove(position, position+board.getColumns()-1, board)),
+                () -> assertTrue(king.canMove(position, position-1, board)),
+                () -> assertFalse(king.canMove(position, position-board.getColumns()-1, board))
         );
     }
 
     @Test
     void atRightBotCorner () {
-        int position = AREA-1;
-        Grid[position] = new King(Top);
-        Movable king = (Movable)Grid[position];
+        int position = board.getArea()-1;
+        board.grid[position] = new King(Top);
+        Movable king = board.grid[position];
         Assertions.assertAll(
-                () -> assertTrue(king.canMove(position, position-COLUMNS)),
-                () -> assertFalse(king.canMove(position, position-COLUMNS+1)),
-                () -> assertFalse(king.canMove(position, position+1)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS+1)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS-1)),
-                () -> assertTrue(king.canMove(position, position-1)),
-                () -> assertTrue(king.canMove(position, position-COLUMNS-1))
+                () -> assertTrue(king.canMove(position, position-board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, position-board.getColumns()+1, board)),
+                () -> assertFalse(king.canMove(position, position+1, board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns()+1, board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns()-1, board)),
+                () -> assertTrue(king.canMove(position, position-1, board)),
+                () -> assertTrue(king.canMove(position, position-board.getColumns()-1, board))
         );
     }
 
     @Test
     void atLeftBotCorner () {
-        int position = AREA-COLUMNS;
-        Grid[position] = new King(Top);
-        Movable king = (Movable)Grid[position];
+        int position = board.getArea()-board.getColumns();
+        board.grid[position] = new King(Top);
+        Movable king = board.grid[position];
         Assertions.assertAll(
-                () -> assertTrue(king.canMove(position, position-COLUMNS)),
-                () -> assertTrue(king.canMove(position, position-COLUMNS+1)),
-                () -> assertTrue(king.canMove(position, position+1)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS+1)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS)),
-                () -> assertFalse(king.canMove(position, position+COLUMNS-1)),
-                () -> assertFalse(king.canMove(position, position-1)),
-                () -> assertFalse(king.canMove(position, position-COLUMNS-1))
+                () -> assertTrue(king.canMove(position, position-board.getColumns(), board)),
+                () -> assertTrue(king.canMove(position, position-board.getColumns()+1, board)),
+                () -> assertTrue(king.canMove(position, position+1, board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns()+1, board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns(), board)),
+                () -> assertFalse(king.canMove(position, position+board.getColumns()-1, board)),
+                () -> assertFalse(king.canMove(position, position-1, board)),
+                () -> assertFalse(king.canMove(position, position-board.getColumns()-1, board))
         );
     }
 
     @Test
     void canKillOnlyEnemies() {
 
-        Grid[0] = new King(Top);
-        Movable king = (Movable) Grid[0];
+        board.grid[0] = new King(Top);
+        Movable king = board.grid[0];
 
         //obstacle
-        Grid[1] = new Pawn(Bottom);
-        Grid[COLUMNS] = new Pawn(Top);
+        board.grid[1] = new Pawn(Bottom);
+        board.grid[board.getColumns()] = new Pawn(Top);
 
         assertAll(
-                () -> assertTrue(king.canMove(0, 1)),
-                () -> assertFalse(king.canMove(0, COLUMNS))
+                () -> assertTrue(king.canMove(0, 1, board)),
+                () -> assertFalse(king.canMove(0, board.getColumns(), board))
         );
     }
 }
