@@ -25,7 +25,7 @@ public class Board implements Cloneable {
     /**
      * Contains information about kings current positions, allowing for dynamic game situation check
      */
-    private Map<Player, Integer> kingPosition = new Hashtable<Player, Integer>() {
+    Map<Player, Integer> kingPosition = new Hashtable<Player, Integer>() {
         {
             put(Top, KING_TOP_STARTING_POINT);
             put(Bottom, KING_BOT_STARTING_POINT);
