@@ -1,10 +1,12 @@
 package pwr.chessproject.game;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pwr.chessproject.models.Bishop;
 import pwr.chessproject.models.Figure;
+import pwr.chessproject.models.King;
 import pwr.chessproject.models.functionalities.NotMoveableException;
 
 import java.io.IOException;
@@ -14,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
 
     @Test
-    void creatingBoardSmallerThan8x8ThrowsException () {
+    void creatingBoardSmallerThan3x3ThrowsException () {
         Exception exception = assertThrows(IllegalArgumentException.class, ()-> {
             BoardCreator boardCreator = new BoardCreator();
-            Board board = boardCreator.customEmptyBoard(7, 8);
+            Board board = boardCreator.customEmptyBoard(2, 3);
         });
 
         String expectedMessage = "Board is too small";
@@ -65,5 +67,18 @@ class BoardTest {
         board.grid[0] = bishop;
         board.moveFigure(0, board.getArea()-1);
         assertSame(board.grid[board.getArea() - 1], bishop);
+    }
+
+    @Test
+    void movingKingChangesKingPositionField() throws NotMoveableException {
+        Board board = new BoardCreator().customEmptyBoard(8,8);
+        King king = new King(Figure.Player.Top);
+        int startingPosition = board.KING_TOP_STARTING_POINT;
+        board.grid[startingPosition] = king;
+        board.moveFigure(startingPosition, startingPosition+1);
+        Assertions.assertAll(
+                () -> assertNull(board.grid[startingPosition]),
+                () -> assertEquals(board.grid[startingPosition+1], king)
+        );
     }
 }

@@ -8,10 +8,10 @@ public class BoardCreator {
      * Creates new custom board with specified grid size
      * @param rows Number of rows
      * @param columns Number of columns
-     * @throws IllegalArgumentException - When specified parameters are below 8
+     * @throws IllegalArgumentException - When specified parameters are below 3
      */
     public Board customEmptyBoard(int rows, int columns) throws IllegalArgumentException {
-        if (rows < 8 || columns < 8)
+        if (rows < 3 || columns < 3)
             throw new IllegalArgumentException("Board is too small");
         else
             return new Board(rows, columns);

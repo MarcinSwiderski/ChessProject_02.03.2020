@@ -3,6 +3,7 @@ package pwr.chessproject.game;
 import pwr.chessproject.frame.TranslateCords;
 import pwr.chessproject.models.Figure;
 import pwr.chessproject.models.Figure.Player;
+import pwr.chessproject.models.King;
 import pwr.chessproject.models.Pawn;
 import pwr.chessproject.models.functionalities.Movable;
 import pwr.chessproject.models.functionalities.NotMoveableException;
@@ -111,7 +112,7 @@ public class Board {
      */
     public void forceMoveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
         checkPosition(position);
-        Movable selectedFigure = grid[position];
+        Figure selectedFigure = grid[position];
         grid[target] = grid[position];
         grid[position] = null;
         if (selectedFigure instanceof Pawn) {
@@ -119,6 +120,8 @@ public class Board {
             if (pawn.getFirstMoveIndicator())
                 pawn.afterFirstMoveIndicator();
         }
+        else if (selectedFigure instanceof King)
+            setKingPosition(selectedFigure.player, target);
     }
 
     @Override
