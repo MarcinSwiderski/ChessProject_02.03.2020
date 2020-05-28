@@ -8,7 +8,7 @@ import pwr.chessproject.models.Figure;
 public class NotMoveableException extends Exception {
 
     public NotMoveableException() {
-        super("Can not move figure");
+        super("Figure's movement rules do not allow such move");
     }
 
     /**
@@ -26,5 +26,9 @@ public class NotMoveableException extends Exception {
      */
     public NotMoveableException(String position, String target) {
         super(String.format("Can not move figure from %s to %s", position, target));
+    }
+
+    public NotMoveableException(String message) {
+        super(message);
     }
 }

@@ -20,14 +20,14 @@ public class TranslateCords {
 
     public int translateStringCordToInt(String cords) throws IllegalArgumentException {
         if (cords.length() < 2)
-            throw new IllegalArgumentException("Not enough cords in: '" + cords + "'");
+            throw new IllegalArgumentException("Bad cords in: '" + cords + "'");
         char[] arrayOfCords = cords.toUpperCase().toCharArray();
         int column = arrayOfCords[0] - 65;
         int row = arrayOfCords[1] - 48;
         if (column < 0 || column > board.getColumns())
-            throw new IllegalArgumentException(arrayOfCords[0] + " is not in range ");
+            throw new IllegalArgumentException("Column cord is not in range ");
         if (row < 0 || row > board.getRows())
-            throw new IllegalArgumentException(arrayOfCords[1] + " is not in range ");
+            throw new IllegalArgumentException("Row cord is not in range ");
         return (board.getArea() - row*board.getRows()) + column;
     }
 }

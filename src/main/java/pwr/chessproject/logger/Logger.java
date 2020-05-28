@@ -36,6 +36,10 @@ public class Logger {
         }
     }
 
+    public static void answear(String message) {
+        Logger.release(">  " + message);
+    }
+
     public static Mode getMode() {
         return mode;
     }

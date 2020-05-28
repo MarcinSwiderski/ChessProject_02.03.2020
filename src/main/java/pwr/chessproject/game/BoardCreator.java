@@ -1,5 +1,7 @@
 package pwr.chessproject.game;
 
+import pwr.chessproject.logger.Logger;
+
 import java.io.IOException;
 
 public class BoardCreator {
@@ -15,6 +17,21 @@ public class BoardCreator {
             throw new IllegalArgumentException("Board is too small");
         else
             return new Board(rows, columns);
+    }
+
+    /**
+     * Creates new custom board from file
+     * @param fileName Name of the file without .board extension
+     */
+    public Board boardFromFile(String fileName)  {
+        BoardLoader boardLoader = new BoardLoader();
+        try {
+            return boardLoader.getBoardFromFile(fileName);
+        } catch (IOException e) {
+            Logger.debug(e);
+            Logger.answear(e.getMessage());
+        }
+        return null;
     }
 
     /**

@@ -9,10 +9,11 @@ import java.util.List;
  */
 public interface Movable {
     /**
-     * Checks if target position is even in the board
+     * Checks if you can move into target position
      * @param position The Figures current position
      * @param target The target position to move to
-     * @return Value indicating if such movement is possible
+     * @param board Current board on which figure exists
+     * @return Value indicating if you can move into target position
      */
     boolean canMove(int position, int target, Board board);
 
