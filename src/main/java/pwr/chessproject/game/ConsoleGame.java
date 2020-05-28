@@ -12,13 +12,14 @@ import java.util.Scanner;
 
 public class ConsoleGame extends GameRules {
 
-    private final Scanner scanner = new Scanner(System.in);
-    private final TranslateCords translateCords = new TranslateCords(this.board);
+    protected final Scanner scanner = new Scanner(System.in);
+    protected final TranslateCords translateCords = new TranslateCords(this.board);
 
     private final List<String> closeWords = new ArrayList<String>();
     private final List<String> goBackWords = new ArrayList<String>();
 
-    private int position;
+    protected int position;
+    protected int target;
 
     public ConsoleGame(Board board) {
         super(board);
@@ -68,6 +69,7 @@ public class ConsoleGame extends GameRules {
                 int target = translateCords.translateStringCordToInt(userFeedback);
                 if (isMoveValid(this.position, target)) {
                     board.moveFigure(this.position, target);
+                    this.target = target;
                     return this;
                 }
                 else
@@ -81,12 +83,13 @@ public class ConsoleGame extends GameRules {
         return this;
     }
 
-    private void executeTurn() {
+    protected void executeTurn() {
         if (isPlayerUnderCheck())
             Logger.release("CHECK!");
 
         try {
             select().move().passTurn();
+            Logger.debug("Player moved from " + translateCords.translateIntCordToString(position) + " to " + translateCords.translateIntCordToString(target));
         } catch (GoBackException e) {
             executeTurn();
         }
@@ -106,5 +109,6 @@ public class ConsoleGame extends GameRules {
     public void endGame(String reason) {
         setStatus(reason);
         Logger.release("Game ended");
+        System.exit(1);
     }
 }

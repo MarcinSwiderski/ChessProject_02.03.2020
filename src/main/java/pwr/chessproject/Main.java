@@ -2,6 +2,7 @@ package pwr.chessproject;
 
 import pwr.chessproject.game.BoardCreator;
 import pwr.chessproject.game.ConsoleGame;
+import pwr.chessproject.game.ConsoleSinglePlayerGame;
 import pwr.chessproject.game.Game;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.logger.LoggerConfiguration;
@@ -21,7 +22,13 @@ public class Main {
             System.exit(0);
         else {
             try {
-                Game game = new ConsoleGame(new BoardCreator().boardFromFile("test"));
+                Game game;
+                if (userResponse == 1)
+                    game = new ConsoleGame(new BoardCreator().boardFromFile("default"));
+                else if (userResponse == 2)
+                    game = new ConsoleSinglePlayerGame(new BoardCreator().boardFromFile("default"));
+                else
+                    throw new Exception("Unrecognized answer.");
                 game.startGame();
             }
             catch (Exception ex) {
