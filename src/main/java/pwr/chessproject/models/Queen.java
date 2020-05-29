@@ -7,6 +7,9 @@ import pwr.chessproject.models.functionalities.PerpendicularStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Queen implementation moves diagonally and perpendicularly
+ */
 public class Queen extends Figure {
     public Queen(Player player) {
         super(player);

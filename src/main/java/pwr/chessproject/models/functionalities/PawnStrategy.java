@@ -6,14 +6,27 @@ import pwr.chessproject.models.Figure;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provides a pawn-like movement pattern depending on the board
+ */
 public class PawnStrategy {
 
     private final Board board;
 
+    /**
+     * Constructs a strategy
+     * @param board Current board used to define size of the board and state of the grid
+     */
     public PawnStrategy(Board board) {
         this.board = board;
     }
 
+    /**
+     * Returns list of fields on which figure could move if moving like a pawn including moves that kill opponent's figures and first move bonus
+     * @param position The position to evaluate
+     * @param firstMoveIndicator Value indicating whether or not evaluate first move bonus
+     * @return ArrayList&lt;Integer&gt; of diagonal fields
+     */
     public List<Integer> getAvailableFields(int position, Boolean firstMoveIndicator) {
         Figure.Player player = board.grid[position].player;
         List<Integer> fields = new ArrayList<>();

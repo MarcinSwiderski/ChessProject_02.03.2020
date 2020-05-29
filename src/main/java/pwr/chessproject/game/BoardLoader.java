@@ -2,10 +2,8 @@ package pwr.chessproject.game;
 
 import pwr.chessproject.models.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Scanner;
 
@@ -34,7 +32,7 @@ public class BoardLoader {
     }
 
     /**
-     * Saves board into ~/Board/[name].board file with provided name
+     * Saves board into Board/[name].board file with provided name
      * @param board A board to save
      * @param name Name of the file that will be created without extension
      * @throws IOException - When file already exists
@@ -57,8 +55,10 @@ public class BoardLoader {
      * Reads file content and returns equivalent board
      * @param file *.board file containing board setup
      * @return Grid base on provided file
+     * @throws IOException When reading from file failed
+     * @throws NumberFormatException When board file is corrupted
      */
-    private Board fileToGrid(File file) throws IOException {
+    private Board fileToBoard(File file) throws IOException, NumberFormatException {
         Scanner scanner = new Scanner(file);
         int rows = Integer.parseInt(scanner.next());
         int columns = Integer.parseInt(scanner.next());
@@ -75,8 +75,10 @@ public class BoardLoader {
             else
                 player = Figure.Player.Top;
 
-            if (word.contains(Figure.FigureType.King.toString()))
+            if (word.contains(Figure.FigureType.King.toString())) {
                 figure = new King(player);
+                board.setKingPosition(player, currentPosition);
+            }
             else if (word.contains(Figure.FigureType.Queen.toString()))
                 figure = new Queen(player);
             else if (word.contains(Figure.FigureType.Bishop.toString()))
@@ -98,6 +100,7 @@ public class BoardLoader {
      * Finds a file in Boards folder and returns board it represents
      * @param name Name of the file without .board extension
      * @return Representation of the board saved in specified file
+     * @throws FileNotFoundException When specified name does not correspond to any file
      */
     public Board getBoardFromFile(String name) throws IOException {
         File file = new File(Path.of("Boards", name+".board").toString());
@@ -105,7 +108,6 @@ public class BoardLoader {
         if (file.createNewFile())
             throw new FileNotFoundException("No such file: "+name);
         else
-            return fileToGrid(file);
+            return fileToBoard(file);
     }
-
 }

@@ -46,7 +46,7 @@ class GameRulesTest {
 
     @Test
     void isPlayerCheckmated() {
-        game = new ConsoleGame(new BoardCreator().boardFromFile("checkmate test"));
+        game = new ConsoleGame(new BoardCreator().boardFromFile("checkmate_test"));
         assertFalse(game.isPlayerCheckmated());
         game.passTurn();
         assertTrue(game.isPlayerCheckmated());

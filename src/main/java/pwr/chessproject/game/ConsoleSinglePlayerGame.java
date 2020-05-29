@@ -7,10 +7,11 @@ import pwr.chessproject.api.requests.API;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 
-import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
-import java.rmi.UnexpectedException;
 
+/**
+ * Implementation of single player game against virtual intelligence
+ */
 public class ConsoleSinglePlayerGame extends ConsoleGame {
 
     private final API api;
@@ -21,6 +22,10 @@ public class ConsoleSinglePlayerGame extends ConsoleGame {
         api = new API();
     }
 
+    /**
+     * Communicates with server and initializes the game. Sets the game id
+     * @return Response from the server
+     */
     private CreateNewGameResponse initializeGame() {
         try {
             CreateNewGameResponse createNewGameResponse = api.createNewGame();
@@ -29,34 +34,42 @@ public class ConsoleSinglePlayerGame extends ConsoleGame {
             return createNewGameResponse;
         } catch (IOException e) {
             Logger.debug(e);
-            Logger.release(e);
+            Logger.answer(e.getMessage());
             endGame("Error connecting to VI.");
         }
         return null;
     }
 
+    /**
+     * Sends information about player move to the server
+     * @return Response from the server
+     */
     private MovePlayerResponse movePlayer() {
         try {
             MovePlayerResponse movePlayerResponse = api.movePlayer(gameId, translateCords.translateIntCordToString(position), translateCords.translateIntCordToString(target));
             VIsays(movePlayerResponse.getStatus());
             return movePlayerResponse;
-        } catch (IOException | OperationNotSupportedException e) {
+        } catch (IOException e) {
             Logger.debug(e);
-            Logger.release(e.getMessage());
+            Logger.answer(e.getMessage());
             endGame("Error sending players move to VI.");
         }
         return null;
     }
 
+    /**
+     * Obtains VI's move from the server
+     * @return Response from the server
+     */
     private MoveVIResponse moveVI() {
         try {
             MoveVIResponse moveVIResponse = api.moveVI(gameId);
             VIsays(moveVIResponse.getStatus());
             board.moveFigure(translateCords.translateStringCordToInt(moveVIResponse.getFrom()), translateCords.translateStringCordToInt(moveVIResponse.getTo()));
             return moveVIResponse;
-        } catch (IOException | OperationNotSupportedException e) {
+        } catch (IOException e) {
             Logger.debug(e);
-            Logger.release(e.getMessage());
+            Logger.answer(e.getMessage());
             endGame("Error requesting VI's move.");
         }
         return null;
@@ -85,6 +98,10 @@ public class ConsoleSinglePlayerGame extends ConsoleGame {
             endGame("VI crashes you as expected.");
     }
 
+    /**
+     * Logs message in release level with 'VI: ' prefix
+     * @param message Immersive message to print
+     */
     private void VIsays(String message) {
         Logger.release("VI: " + message);
     }

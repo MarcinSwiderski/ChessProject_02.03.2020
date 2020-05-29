@@ -7,14 +7,28 @@ import pwr.chessproject.models.functionalities.Movable;
  * Abstract class containing universal information about every figure
  */
 public abstract class Figure implements Cloneable, Movable {
+    /**
+     * Standard chess figure types
+     */
     public enum FigureType {
         Pawn, Tower, Knight, Bishop, Queen, King
     }
+
+    /**
+     * Horizontally described divide into two players
+     */
     public enum Player {
         Bottom, Top
     }
 
-    public Player player;
+    /**
+     * Player to whom figure belongs
+     */
+    public final Player player;
+
+    /**
+     * Standard chess figure type value of the figure
+     */
     public FigureType figureType;
 
     /**

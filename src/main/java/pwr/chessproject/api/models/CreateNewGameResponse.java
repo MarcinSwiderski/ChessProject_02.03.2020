@@ -1,5 +1,8 @@
 package pwr.chessproject.api.models;
 
+/**
+ * Generic model of JSON response
+ */
 public class CreateNewGameResponse {
 
         private String game_id;

@@ -15,6 +15,9 @@ import java.util.Map;
 import static pwr.chessproject.models.Figure.Player.Bottom;
 import static pwr.chessproject.models.Figure.Player.Top;
 
+/**
+ * Logical representation of the board, containing information about board size, figures positions. This class is also responsible for moving figures
+ */
 public class Board implements Cloneable {
     private final int rows;
     private final int columns;
@@ -32,8 +35,16 @@ public class Board implements Cloneable {
         }
     };
 
+    /**
+     * Logical representation of figures on the board
+     */
     public Figure[] grid;
 
+    /**
+     * Constructs a board with specified size, calculates area and initializes grid. This constructor should not be used outside of the board creator!
+     * @param rows Number of rows
+     * @param columns Number of columns
+     */
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
@@ -71,8 +82,8 @@ public class Board implements Cloneable {
     /**
      * Checks if position is in range and whether there is a figure
      * @param position The Figure current position
-     * @throws NullPointerException     - When there is null at the selected position
-     * @throws IllegalArgumentException - When position is outside of the board
+     * @throws NullPointerException When there is null at the selected position
+     * @throws IllegalArgumentException When position is outside of the board
      */
     public void checkPosition(int position) throws NullPointerException, IllegalArgumentException {
         if (position < 0 || position > area - 1)
@@ -84,8 +95,10 @@ public class Board implements Cloneable {
     }
 
     /**
-     * Moves figure from position to target if figures rules allow it
-     *
+     * Moves figure from position to target if:
+     * 1) position is in range
+     * 2) there is a figure at the selected position
+     * 3) figure's rules allow it
      * @param position The Figure current position
      * @param target   The target position to move to
      * @throws NotMoveableException     When figures movement rules do not allow to move it into specified target
@@ -104,11 +117,11 @@ public class Board implements Cloneable {
     }
 
     /**
-     * Tries to moves figure from position to target regardless figures movement rules; takes care of special pawn's and king's rules
-     *
+     * Tries to moves figure from position to target regardless figures movement rules. Do net check position before attempting to move.
+     * Takes care of special pawn's and king's rules
      * @param position The Figure current position
      * @param target   The target position to move to
-     * @throws NullPointerException     When there is null at the selected position
+     * @throws NullPointerException When there is null at the selected position
      * @throws IllegalArgumentException When position is outside of the board
      */
     public void moveFigure(int position, int target) throws NullPointerException, IllegalArgumentException {
@@ -124,11 +137,15 @@ public class Board implements Cloneable {
     }
 
     /**
-     * Do not changes any state and returns value indicating whether or not move is possible
+     * Do not changes any state and throws an error if move is impossible for one of the reasons:
+     * 1) position is not in range
+     * 2) there is no figure at the selected position
+     * 3) figure's rules does not allow it
      * @param position The Figure current position
      * @param target   The target position to move to
      * @throws NullPointerException When there is null at the selected position
      * @throws IllegalArgumentException When position is outside of the board
+     * @throws NotMoveableException When figures movement rules do not allow to move it into specified target
      */
     public void isMovePossible(int position, int target) throws NullPointerException, IllegalArgumentException, NotMoveableException {
             checkPosition(position);
@@ -170,6 +187,10 @@ public class Board implements Cloneable {
         return grid.toString();
     }
 
+    /**
+     * Deep clone of the board. Creates new grid and list of kings positions
+     * @return New instance of the board and its components
+     */
     @Override
     public Board clone() {
         Board board = null;

@@ -5,6 +5,9 @@ import pwr.chessproject.models.functionalities.DiagonalStrategy;
 
 import java.util.List;
 
+/**
+ * Bishop implementation moves only diagonally
+ */
 public class Bishop extends Figure {
     public Bishop(Player player) {
         super(player);

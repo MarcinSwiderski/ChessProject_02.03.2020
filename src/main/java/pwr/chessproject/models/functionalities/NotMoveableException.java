@@ -3,12 +3,16 @@ package pwr.chessproject.models.functionalities;
 import pwr.chessproject.models.Figure;
 
 /**
- * Exception thrown when a figure can not move
+ * Exception thrown when a figure can not move from position to target because of figure's movement rules
  */
 public class NotMoveableException extends Exception {
 
     public NotMoveableException() {
         super("Figure's movement rules do not allow such move");
+    }
+
+    public NotMoveableException(String message) {
+        super(message);
     }
 
     /**
@@ -26,9 +30,5 @@ public class NotMoveableException extends Exception {
      */
     public NotMoveableException(String position, String target) {
         super(String.format("Can not move figure from %s to %s", position, target));
-    }
-
-    public NotMoveableException(String message) {
-        super(message);
     }
 }

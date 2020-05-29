@@ -2,6 +2,9 @@ package pwr.chessproject.logger;
 
 import java.util.Arrays;
 
+/**
+ * This class configures the static logger
+ */
 public class LoggerConfiguration {
     /**
      * Tries to read mode from java command line arguments, then tries to read it from environment variable 'MODE'.

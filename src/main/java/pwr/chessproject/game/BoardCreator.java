@@ -4,13 +4,16 @@ import pwr.chessproject.logger.Logger;
 
 import java.io.IOException;
 
+/**
+ * Class responsible for creating boards. Checks and applies basic requirements for new boards. This is the best way to create new board
+ */
 public class BoardCreator {
 
     /**
      * Creates new custom board with specified grid size
      * @param rows Number of rows
      * @param columns Number of columns
-     * @throws IllegalArgumentException - When specified parameters are below 3
+     * @throws IllegalArgumentException When specified parameters are below 3
      */
     public Board customEmptyBoard(int rows, int columns) throws IllegalArgumentException {
         if (rows < 3 || columns < 3)
@@ -20,7 +23,7 @@ public class BoardCreator {
     }
 
     /**
-     * Creates new custom board from file
+     * Creates new custom board from file in Boards folder
      * @param fileName Name of the file without .board extension
      */
     public Board boardFromFile(String fileName)  {
@@ -29,7 +32,7 @@ public class BoardCreator {
             return boardLoader.getBoardFromFile(fileName);
         } catch (IOException e) {
             Logger.debug(e);
-            Logger.answear(e.getMessage());
+            Logger.answer(e.getMessage());
         }
         return null;
     }

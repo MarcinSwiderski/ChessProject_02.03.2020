@@ -5,6 +5,9 @@ import pwr.chessproject.game.Board;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Knight implementation moves using special +2 and then +1 pattern
+ */
 public class Knight extends Figure {
 
 

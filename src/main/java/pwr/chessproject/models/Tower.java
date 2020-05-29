@@ -5,6 +5,9 @@ import pwr.chessproject.models.functionalities.PerpendicularStrategy;
 
 import java.util.List;
 
+/**
+ * Tower implementation moves perpendicularly
+ */
 public class Tower extends Figure {
     public Tower(Player player) {
         super(player);

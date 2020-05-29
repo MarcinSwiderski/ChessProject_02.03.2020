@@ -5,6 +5,9 @@ import pwr.chessproject.game.Board;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * King implementation moves one square from current positin
+ */
 public class King extends Figure  {
 
     public King(Player player) {

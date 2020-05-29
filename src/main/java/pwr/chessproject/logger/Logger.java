@@ -1,7 +1,8 @@
 package pwr.chessproject.logger;
 
-import java.util.Arrays;
-
+/**
+ * Provides methods for various types of logging into standard output
+ */
 public class Logger {
 
     public enum Mode {
@@ -36,7 +37,11 @@ public class Logger {
         }
     }
 
-    public static void answear(String message) {
+    /**
+     * Prints message into standard output with '> ' prefix
+     * @param message Message to print
+     */
+    public static void answer(String message) {
         Logger.release(">  " + message);
     }
 
