@@ -1,84 +1,83 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveable;
-import pwr.chessproject.models.functionalities.MovingStrategies;
+import pwr.chessproject.game.Board;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static pwr.chessproject.game.Board.*;
+/**
+ * Knight implementation moves using special +2 and then +1 pattern
+ */
+public class Knight extends Figure {
 
-public class Knight extends Figure implements IMoveable {
+
     public Knight(Player player) {
         super(player);
         this.figureType = FigureType.Knight;
     }
 
     /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
+     * Maps every available field that knight can move to
+     * @param position Position to map
+     * @param board Current board on which figure exists
+     * @return List of available fields
      */
     @Override
-    public boolean canMove(int position, int target) {
-        return getAvailableFields(position).contains(target);
-    }
-
-    @Override
-    public ArrayList<Integer> getAvailableFields(int position) {
-        ArrayList<Integer> availableFields = new ArrayList<Integer>() {
+    public List<Integer> getAvailableFields(int position, Board board) {
+        List<Integer> availableFields = new ArrayList<Integer>() {
             {
-                add(position-2*COLUMNS-1);
-                add(position-2*COLUMNS+1);
-                add(position+2-COLUMNS);
-                add(position+2+COLUMNS);
-                add(position+2*COLUMNS-1);
-                add(position+2*COLUMNS+1);
-                add(position-2-COLUMNS);
-                add(position-2+COLUMNS);
+                add(position-2*board.getColumns()-1);
+                add(position-2*board.getColumns()+1);
+                add(position+2-board.getColumns());
+                add(position+2+board.getColumns());
+                add(position+2*board.getColumns()-1);
+                add(position+2*board.getColumns()+1);
+                add(position-2-board.getColumns());
+                add(position-2+board.getColumns());
             }
         };
 
         //left side
-        if (position % COLUMNS <= 1) {
-            availableFields.remove(Integer.valueOf(position-2+COLUMNS));
-            availableFields.remove(Integer.valueOf(position-2-COLUMNS));
-            if (position % COLUMNS == 0) {
-                availableFields.remove(Integer.valueOf(position+2*COLUMNS-1));
-                availableFields.remove(Integer.valueOf(position-2*COLUMNS-1));
+        if (position % board.getColumns() <= 1) {
+            availableFields.remove(Integer.valueOf(position-2+board.getColumns()));
+            availableFields.remove(Integer.valueOf(position-2-board.getColumns()));
+            if (position % board.getColumns() == 0) {
+                availableFields.remove(Integer.valueOf(position+2*board.getColumns()-1));
+                availableFields.remove(Integer.valueOf(position-2*board.getColumns()-1));
             }
         }
 
         //Right side
-        if (position % COLUMNS >= COLUMNS-2) {
-            availableFields.remove(Integer.valueOf(position + 2 + COLUMNS));
-            availableFields.remove(Integer.valueOf(position + 2 - COLUMNS));
-            if (position % COLUMNS == COLUMNS-1) {
-                availableFields.remove(Integer.valueOf(position + 2 * COLUMNS + 1));
-                availableFields.remove(Integer.valueOf(position - 2 * COLUMNS + 1));
+        if (position % board.getColumns() >= board.getColumns()-2) {
+            availableFields.remove(Integer.valueOf(position + 2 + board.getColumns()));
+            availableFields.remove(Integer.valueOf(position + 2 - board.getColumns()));
+            if (position % board.getColumns() == board.getColumns()-1) {
+                availableFields.remove(Integer.valueOf(position + 2 * board.getColumns() + 1));
+                availableFields.remove(Integer.valueOf(position - 2 * board.getColumns() + 1));
             }
         }
 
         //Top side
-        if (position / COLUMNS <= 1) {
-            availableFields.remove(Integer.valueOf(position - 2 * COLUMNS + 1));
-            availableFields.remove(Integer.valueOf(position - 2 * COLUMNS - 1));
-            if (position / COLUMNS == 0) {
-                availableFields.remove(Integer.valueOf(position + 2 - COLUMNS));
-                availableFields.remove(Integer.valueOf(position - 2 - COLUMNS));
+        if (position / board.getColumns() <= 1) {
+            availableFields.remove(Integer.valueOf(position - 2 * board.getColumns() + 1));
+            availableFields.remove(Integer.valueOf(position - 2 * board.getColumns() - 1));
+            if (position / board.getColumns() == 0) {
+                availableFields.remove(Integer.valueOf(position + 2 - board.getColumns()));
+                availableFields.remove(Integer.valueOf(position - 2 - board.getColumns()));
             }
         }
 
         //Bot side
-        if (position / COLUMNS >= ROWS-2) {
-            availableFields.remove(Integer.valueOf(position + 2 * COLUMNS + 1));
-            availableFields.remove(Integer.valueOf(position + 2 * COLUMNS - 1));
-            if (position / COLUMNS == ROWS-1) {
-                availableFields.remove(Integer.valueOf(position + 2 + COLUMNS));
-                availableFields.remove(Integer.valueOf(position - 2 + COLUMNS));
+        if (position / board.getColumns() >= board.getRows()-2) {
+            availableFields.remove(Integer.valueOf(position + 2 * board.getColumns() + 1));
+            availableFields.remove(Integer.valueOf(position + 2 * board.getColumns() - 1));
+            if (position / board.getColumns() == board.getRows()-1) {
+                availableFields.remove(Integer.valueOf(position + 2 + board.getColumns()));
+                availableFields.remove(Integer.valueOf(position - 2 + board.getColumns()));
             }
         }
 
-        availableFields.removeIf(field -> Grid[field] != null && Grid[field].player == player);
+        availableFields.removeIf(field -> board.grid[field] != null && board.grid[field].player == player);
 
         return availableFields;
     }

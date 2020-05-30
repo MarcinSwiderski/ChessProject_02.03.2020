@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import pwr.chessproject.game.Board;
 import pwr.chessproject.models.*;
 
 import java.util.stream.Stream;
@@ -15,6 +16,12 @@ import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
 class MoveInRangeTest {
+
+    private Board board;
+
+    public MoveInRangeTest(Board board) {
+        this.board = board;
+    }
 
     private static Stream<Arguments> figureProvider () {
         return  Stream.of(
@@ -29,23 +36,23 @@ class MoveInRangeTest {
 
     @ParameterizedTest(name = "{arguments} can not move outside of the board range")
     @MethodSource("figureProvider")
-    void canNotMoveOutsideRange(IMoveable figure) {
-        int position = AREA-1;
-        Grid[position] = (Figure)figure;
+    void canNotMoveOutsideRange(Movable figure) {
+        int position = board.getArea()-1;
+        board.grid[position] = (Figure)figure;
         if (figure instanceof Bishop)
-        Assertions.assertAll(
-                () -> assertFalse(figure.canMove(position, position+COLUMNS-1)),
-                () -> assertFalse(figure.canMove(position, position+COLUMNS+1)),
-                () -> assertFalse(figure.canMove(position, position-COLUMNS+1))
+        assertAll(
+                () -> assertFalse(figure.canMove(position, position+board.getColumns()-1, board)),
+                () -> assertFalse(figure.canMove(position, position+board.getColumns()+1, board)),
+                () -> assertFalse(figure.canMove(position, position-board.getColumns()+1, board))
         );
         else if (figure instanceof Knight)
-            Assertions.assertAll(
-                    () -> assertFalse(figure.canMove(position, position+2*COLUMNS-1)),
-                    () -> assertFalse(figure.canMove(position, position+2*COLUMNS+1)),
-                    () -> assertFalse(figure.canMove(position, position+2-COLUMNS)),
-                    () -> assertFalse(figure.canMove(position, position+2+COLUMNS))
+            assertAll(
+                    () -> assertFalse(figure.canMove(position, position+2*board.getColumns()-1, board)),
+                    () -> assertFalse(figure.canMove(position, position+2*board.getColumns()+1, board)),
+                    () -> assertFalse(figure.canMove(position, position+2-board.getColumns(), board)),
+                    () -> assertFalse(figure.canMove(position, position+2+board.getColumns(), board))
             );
         else
-            assertFalse(figure.canMove(position, position+COLUMNS));
+            assertFalse(figure.canMove(position, position+board.getColumns(), board));
     }
 }

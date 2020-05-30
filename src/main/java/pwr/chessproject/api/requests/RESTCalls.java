@@ -18,7 +18,7 @@ class RESTCalls {
     /**
      * Sends a GET request to 'http://chess-api-chess.herokuapp.com/api/v1/chess/one'
      * @return Response body
-     * @throws IOException - when request failed due to some program independent reasons
+     * @throws IOException When request failed due to some program independent reasons
      */
     String GETCreateNewGame() throws IOException {
         Request request = new Request.Builder()
@@ -36,7 +36,7 @@ class RESTCalls {
      * @param from 'from' body parameter
      * @param to 'to' body parameter
      * @return Response body
-     * @throws IOException - when request failed due to some program independent reasons
+     * @throws IOException When request failed due to some program independent reasons
      */
     String POSTMovePlayer(String gameId, String from, String to) throws IOException {
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -57,7 +57,7 @@ class RESTCalls {
      * Sends a POST request to 'http://chess-api-chess.herokuapp.com/api/v1/chess/one/move/ai'
      * @param gameId game_id body parameter
      * @return Response body
-     * @throws IOException - when request failed due to some program independent reasons
+     * @throws IOException When request failed due to some program independent reasons
      */
     String POSTMoveVI(String gameId) throws IOException {
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");

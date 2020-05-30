@@ -1,28 +1,28 @@
 package pwr.chessproject.models;
 
-import pwr.chessproject.models.functionalities.IMoveable;
-import pwr.chessproject.models.functionalities.MovingStrategies;
+import pwr.chessproject.game.Board;
+import pwr.chessproject.models.functionalities.DiagonalStrategy;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class Bishop extends Figure implements IMoveable {
+/**
+ * Bishop implementation moves only diagonally
+ */
+public class Bishop extends Figure {
     public Bishop(Player player) {
         super(player);
         this.figureType = FigureType.Bishop;
     }
 
     /**
-     * Checks if you can move into target position
-     * @param target The target position to move to
-     * @return Value indicating if you can move into target position
+     * Returns ArrayList&lt;Integer&gt; of fields on diagonal lines crossing at specified position that a figure can move into, includes current board
+     * @param position The Figures current position
+     * @param board Current board on which figure exists
+     * @return List of available fields
      */
     @Override
-    public boolean canMove(int position, int target) {
-        return MovingStrategies.canMoveDiagonal(position, target);
-    }
-
-    @Override
-    public ArrayList<Integer> getAvailableFields(int position) {
-        return MovingStrategies.getFreeDiagonalFields(position);
+    public List<Integer> getAvailableFields(int position, Board board) {
+        DiagonalStrategy strategy = new DiagonalStrategy(board);
+        return strategy.getFreeDiagonalFields(position);
     }
 }

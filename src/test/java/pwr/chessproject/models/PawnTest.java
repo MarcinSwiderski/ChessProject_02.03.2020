@@ -3,7 +3,8 @@ package pwr.chessproject.models;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pwr.chessproject.models.functionalities.IMoveable;
+import pwr.chessproject.game.Board;
+import pwr.chessproject.models.functionalities.Movable;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pwr.chessproject.game.Board.*;
@@ -13,77 +14,83 @@ import static pwr.chessproject.models.Figure.Player.Top;
 @ExtendWith(FigureMoveExtension.class)
 class PawnTest {
 
+    private final Board board;
+
+    public PawnTest(Board board) {
+        this.board = board;
+    }
+
     @Test
     void bottomCanMoveOnlyOneOrTwoUpwards() {
-        int botPosition = AREA-1-COLUMNS;
-        Grid[botPosition] = new Pawn(Bottom);
-        IMoveable pawn = (IMoveable)Grid[botPosition];
+        int botPosition = board.getArea()-1-board.getColumns();
+        board.grid[botPosition] = new Pawn(Bottom);
+        Movable pawn = board.grid[botPosition];
         Assertions.assertAll(
-                () -> assertTrue(pawn.canMove(botPosition, botPosition-COLUMNS)),
-                () -> assertTrue(pawn.canMove(botPosition, botPosition-2*COLUMNS)),
-                () -> assertFalse(pawn.canMove(botPosition, botPosition)),
-                () -> assertFalse(pawn.canMove(botPosition, botPosition+1)),
-                () -> assertFalse(pawn.canMove(botPosition, botPosition-1)),
-                () -> assertFalse(pawn.canMove(botPosition, botPosition-3*COLUMNS)),
-                () -> assertFalse(pawn.canMove(botPosition, botPosition+COLUMNS))
+                () -> assertTrue(pawn.canMove(botPosition, botPosition-board.getColumns(), board)),
+                () -> assertTrue(pawn.canMove(botPosition, botPosition-2*board.getColumns(), board)),
+                () -> assertFalse(pawn.canMove(botPosition, botPosition, board)),
+                () -> assertFalse(pawn.canMove(botPosition, botPosition+1, board)),
+                () -> assertFalse(pawn.canMove(botPosition, botPosition-1, board)),
+                () -> assertFalse(pawn.canMove(botPosition, botPosition-3*board.getColumns(), board)),
+                () -> assertFalse(pawn.canMove(botPosition, botPosition+board.getColumns(), board))
         );
     }
 
     @Test
     void topCanMoveOnlyOneOrTwoDownwards() {
-        int topPosition = 1 + COLUMNS;
-        Grid[topPosition] = new Pawn(Top);
-        IMoveable pawn = (IMoveable)Grid[topPosition];
+        int topPosition = 1 + board.getColumns();
+        board.grid[topPosition] = new Pawn(Top);
+        Movable pawn = board.grid[topPosition];
         Assertions.assertAll(
-                () -> assertTrue(pawn.canMove(topPosition, topPosition+COLUMNS)),
-                () -> assertTrue(pawn.canMove(topPosition, topPosition+2*COLUMNS)),
-                () -> assertFalse(pawn.canMove(topPosition, topPosition)),
-                () -> assertFalse(pawn.canMove(topPosition, topPosition+1)),
-                () -> assertFalse(pawn.canMove(topPosition, topPosition-1)),
-                () -> assertFalse(pawn.canMove(topPosition, topPosition+3*COLUMNS)),
-                () -> assertFalse(pawn.canMove(topPosition, topPosition-COLUMNS))
+                () -> assertTrue(pawn.canMove(topPosition, topPosition+board.getColumns(), board)),
+                () -> assertTrue(pawn.canMove(topPosition, topPosition+2*board.getColumns(), board)),
+                () -> assertFalse(pawn.canMove(topPosition, topPosition, board)),
+                () -> assertFalse(pawn.canMove(topPosition, topPosition+1, board)),
+                () -> assertFalse(pawn.canMove(topPosition, topPosition-1, board)),
+                () -> assertFalse(pawn.canMove(topPosition, topPosition+3*board.getColumns(), board)),
+                () -> assertFalse(pawn.canMove(topPosition, topPosition-board.getColumns(), board))
         );
     }
 
     @Test
     void pawnCanNotMoveThroughObstacles() {
 
-        Grid[0] = new Pawn(Top);
-        Grid[1] = new Pawn(Top);
+        board.grid[0] = new Pawn(Top);
+        board.grid[1] = new Pawn(Top);
 
         //obstacles
-        Grid[COLUMNS] = new Pawn(Top);
-        Grid[2*COLUMNS] = new Pawn(Top);
-        Grid[1+COLUMNS] = new Pawn(Top);
+        board.grid[board.getColumns()] = new Pawn(Top);
+        board.grid[2*board.getColumns()] = new Pawn(Top);
+        board.grid[1+board.getColumns()] = new Pawn(Top);
 
-        IMoveable pawn1 = (IMoveable)Grid[0];
-        IMoveable pawn2 = (IMoveable)Grid[1];
+        Movable pawn1 = board.grid[0];
+        Movable pawn2 = board.grid[1];
 
         Assertions.assertAll(
-                () -> assertFalse(pawn1.canMove(0, COLUMNS)),
-                () -> assertFalse(pawn1.canMove(0, 2*COLUMNS)),
-                () -> assertFalse(pawn2.canMove(1, 1+2*COLUMNS))
+                () -> assertFalse(pawn1.canMove(0, board.getColumns(), board)),
+                () -> assertFalse(pawn1.canMove(0, 2*board.getColumns(), board)),
+                () -> assertFalse(pawn2.canMove(1, 1+2*board.getColumns(), board))
                 );
     }
 
     @Test
     void pawnCanKill() {
-        Grid[1] = new Pawn(Top);
-        Grid[COLUMNS] = new Pawn(Bottom);
-        Grid[COLUMNS+2] = new Pawn(Bottom);
-        IMoveable pawn = (IMoveable)Grid[1];
+        board.grid[1] = new Pawn(Top);
+        board.grid[board.getColumns()] = new Pawn(Bottom);
+        board.grid[board.getColumns()+2] = new Pawn(Bottom);
+        Movable pawn = board.grid[1];
         Assertions.assertAll(
-                () -> assertTrue(pawn.canMove(1, COLUMNS)),
-                () -> assertTrue(pawn.canMove(1, COLUMNS+2))
+                () -> assertTrue(pawn.canMove(1, board.getColumns(), board)),
+                () -> assertTrue(pawn.canMove(1, board.getColumns()+2, board))
         );
     }
 
     @Test
     void pawnCanMoveTwoOnlyOnce() {
-        Grid[0] = new Pawn(Top);
-        Pawn pawn = (Pawn) Grid[0];
+        board.grid[0] = new Pawn(Top);
+        Pawn pawn = (Pawn) board.grid[0];
         pawn.afterFirstMoveIndicator();
-        assertFalse(pawn.canMove(0, 2*COLUMNS));
+        assertFalse(pawn.canMove(0, 2*board.getColumns(), board));
     }
 
 }

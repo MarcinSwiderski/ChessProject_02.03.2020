@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import pwr.chessproject.game.Board;
 import pwr.chessproject.models.*;
 
 import java.util.stream.Stream;
@@ -15,6 +16,13 @@ import static pwr.chessproject.models.Figure.Player.Top;
 
 @ExtendWith(FigureMoveExtension.class)
 class MoveDiagonalTest {
+
+    private final Board board;
+
+    public MoveDiagonalTest(Board board) {
+        this.board = board;
+    }
+
     private static Stream<Arguments> figureProvider () {
         return  Stream.of(
                 Arguments.of(new Bishop(Top)),
@@ -24,44 +32,44 @@ class MoveDiagonalTest {
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMoveDiagonal(IMoveable figure) {
-        int position = (ROWS/2)*COLUMNS+COLUMNS/2;
-        Grid[position] = (Figure)figure;
+    void canMoveDiagonal(Movable figure) {
+        int position = (board.getRows()/2)*board.getColumns()+board.getColumns()/2;
+        board.grid[position] = (Figure)figure;
         Assertions.assertAll(
-                () -> assertTrue(figure.canMove(position, position+COLUMNS+1)),
-                () -> assertTrue(figure.canMove(position, position-COLUMNS+1)),
-                () -> assertTrue(figure.canMove(position, position+COLUMNS-1)),
-                () -> assertTrue(figure.canMove(position, position-COLUMNS-1))
+                () -> assertTrue(figure.canMove(position, position+board.getColumns()+1, board)),
+                () -> assertTrue(figure.canMove(position, position-board.getColumns()+1, board)),
+                () -> assertTrue(figure.canMove(position, position+board.getColumns()-1, board)),
+                () -> assertTrue(figure.canMove(position, position-board.getColumns()-1, board))
         );
     }
 
     @ParameterizedTest(name = "{arguments} can move perpendicularly")
     @MethodSource("figureProvider")
-    void canMoveOnlyDiagonal(IMoveable figure) {
+    void canMoveOnlyDiagonal(Movable figure) {
         if (figure instanceof Bishop) {
-            int position = COLUMNS*3-1;
-            Grid[position] = (Figure)figure;
+            int position = board.getColumns()*3-1;
+            board.grid[position] = (Figure)figure;
             Assertions.assertAll(
-                    () -> assertFalse(figure.canMove(position, position+COLUMNS+1)),
-                    () -> assertFalse(figure.canMove(position, position-COLUMNS+1)),
-                    () -> assertFalse(figure.canMove(position, position-1)),
-                    () -> assertFalse(figure.canMove(position, position+1))
+                    () -> assertFalse(figure.canMove(position, position+board.getColumns()+1, board)),
+                    () -> assertFalse(figure.canMove(position, position-board.getColumns()+1, board)),
+                    () -> assertFalse(figure.canMove(position, position-1, board)),
+                    () -> assertFalse(figure.canMove(position, position+1, board))
             );
         }
     }
 
     @ParameterizedTest(name = "{arguments} can not move through obstacles")
     @MethodSource("figureProvider")
-    void canNotMoveThroughObstacles(IMoveable figure) {
+    void canNotMoveThroughObstacles(Movable figure) {
 
-        Grid[0] = (Figure) figure;
+        board.grid[0] = (Figure) figure;
 
         //obstacle
-        Grid[COLUMNS+1] = new Pawn(Top);
+        board.grid[board.getColumns()+1] = new Pawn(Top);
 
         Assertions.assertAll(
-                () -> assertFalse(figure.canMove(0, COLUMNS+1)),
-                () -> assertFalse(figure.canMove(0, 2*(COLUMNS+1)))
+                () -> assertFalse(figure.canMove(0, board.getColumns()+1, board)),
+                () -> assertFalse(figure.canMove(0, 2*(board.getColumns()+1), board))
         );
     }
 
