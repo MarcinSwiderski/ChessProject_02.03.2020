@@ -1,0 +1,9 @@
+8	8
+Tower{player=Bottom}	null	null	null    King{player=Top}	null	null	null
+null	Bishop{player=Top}	null	null	null	null	null	Tower{player=Bottom}
+null	null	null	null	null	null	null	null
+null	null	null	null	null	null	null	null
+null	null	null	null	null	null	null	null
+null	null	null	null	null	null	null	null
+null	null	null	null	null	null	null	null
+null	null	null	null    King{player=Bottom}	null	null	null

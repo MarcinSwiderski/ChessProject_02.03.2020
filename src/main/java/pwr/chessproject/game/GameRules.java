@@ -87,8 +87,8 @@ public abstract class GameRules extends GameStatus {
                     }
                     board = beforeTheMove;
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }

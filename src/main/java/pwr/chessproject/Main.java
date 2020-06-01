@@ -15,14 +15,7 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] p ) throws IOException {
-        Board board = new Board(4, 4);
-        board.grid[0] = new King(Figure.Player.Top);
-        BoardLoader boardLoader = new BoardLoader();
-        boardLoader.saveBoard(board, "xd");
-        System.out.println(board);
-        Board another = new BoardCreator().boardFromFile("xd");
-        System.out.println(another);
-        /*LoggerConfiguration configuration = new LoggerConfiguration();
+        LoggerConfiguration configuration = new LoggerConfiguration();
         Logger.setMode(configuration.configureLogMode(p));
         Logger.debug("Mode: " + Logger.getMode());
         Logger.release("Let's play some chess\n\t1 - Two player hot-seat\n\t2 - Single player game against https://github.com/anzemur/chess-api\n\t0 - Close");
@@ -46,6 +39,6 @@ public class Main {
                 Logger.debug(ex.toString());
                 System.exit(1);
             }
-        }*/
+        }
     }
 }

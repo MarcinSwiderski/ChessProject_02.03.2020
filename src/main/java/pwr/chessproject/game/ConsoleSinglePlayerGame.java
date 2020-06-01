@@ -93,9 +93,9 @@ public class ConsoleSinglePlayerGame extends ConsoleGame {
         }
 
         if (getOpponent().equals(Figure.Player.Bottom))
-            endGame("You win against VI. Impressive!");
+            setStatus("You win against VI. Impressive!");
         else
-            endGame("VI crashes you as expected.");
+            setStatus("VI crashes you as expected.");
     }
 
     /**

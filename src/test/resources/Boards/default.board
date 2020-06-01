@@ -1,9 +1,0 @@
-8	8
-Tower{player=Top}	Knight{player=Top}	Bishop{player=Top}	Queen{player=Top}   King{player=Top}	Bishop{player=Top}	Knight{player=Top}	Tower{player=Top}
-Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	Pawn{player=Top}	
-null	null	null	null	null	null	null	null	
-null	null	null	null	null	null	null	null	
-null	null	null	null	null	null	null	null	
-null	null	null	null	null	null	null	null	
-Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}	Pawn{player=Bottom}
-Tower{player=Bottom}	Knight{player=Bottom}	Bishop{player=Bottom}	Queen{player=Bottom}   King{player=Bottom}		Bishop{player=Bottom}	Knight{player=Bottom}	Tower{player=Bottom}
