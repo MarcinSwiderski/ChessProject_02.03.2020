@@ -29,7 +29,7 @@ public class BoardCreator {
     public Board boardFromFile(String fileName)  {
         BoardLoader boardLoader = new BoardLoader();
         try {
-            return boardLoader.getBoardFromFile(fileName);
+            return boardLoader.getBoardFromInsideFile(fileName);
         } catch (IOException e) {
             Logger.debug(e);
             Logger.answer(e.getMessage());
@@ -43,7 +43,7 @@ public class BoardCreator {
      */
     public Board defaultBoard() throws IOException {
         BoardLoader boardLoader = new BoardLoader();
-        return boardLoader.getBoardFromFile("default");
+        return boardLoader.getBoardFromInsideFile("default");
 
         //Manual step by step board initializing
         /*Board board = new Board(8, 8);

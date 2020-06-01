@@ -2,7 +2,10 @@ package pwr.chessproject.game;
 
 import pwr.chessproject.models.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -97,17 +100,22 @@ public class BoardLoader {
     }
 
     /**
-     * Finds a file in Boards folder and returns board it represents
+     * Finds a file in Boards folder in program directory and returns board it represents
      * @param name Name of the file without .board extension
      * @return Representation of the board saved in specified file
      * @throws FileNotFoundException When specified name does not correspond to any file
      */
-    public Board getBoardFromFile(String name) throws IOException {
-        File file = new File(Path.of("Boards", name+".board").toString());
+    public Board getBoardFromInsideFile(String name) throws IOException {
+        URL file = this.getClass().getResource("/Boards/"+name+".board");
+        if (file == null)
+            throw new FileNotFoundException("No such file: "+name);
+        else
+            return fileToBoard(new File(file.getFile()));
 
+        /*File file = new File(Path.of("Boards", name+".board").toString());
         if (file.createNewFile())
             throw new FileNotFoundException("No such file: "+name);
         else
-            return fileToBoard(file);
+            return fileToBoard(file);*/
     }
 }

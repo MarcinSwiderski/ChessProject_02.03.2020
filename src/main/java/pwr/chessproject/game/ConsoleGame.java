@@ -130,7 +130,7 @@ public class ConsoleGame extends GameRules {
             setStatus(getPlayer() + " turn");
             executeTurn();
         }
-        endGame(getOpponent() + " wins!");
+        setStatus(getOpponent() + " wins!");
     }
 
     @Override

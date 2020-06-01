@@ -51,4 +51,24 @@ class GameRulesTest {
         game.passTurn();
         assertTrue(game.isPlayerCheckmated());
     }
+
+    @Test
+    void isPlayerNotCheckmatedIfCanHideKing() {
+        game = new ConsoleGame(new BoardCreator().boardFromFile("hide_king_test"));
+        game.passTurn();
+        assertAll(
+                () -> assertTrue(game.isPlayerUnderCheck()),
+                () -> assertFalse(game.isPlayerCheckmated())
+        );
+    }
+
+    @Test
+    void isPlayerNotCheckmatedIfCanEliminateDanger() {
+        game = new ConsoleGame(new BoardCreator().boardFromFile("eliminate_danger"));
+        game.passTurn();
+        assertAll(
+                () -> assertTrue(game.isPlayerUnderCheck()),
+                () -> assertFalse(game.isPlayerCheckmated())
+        );
+    }
 }
