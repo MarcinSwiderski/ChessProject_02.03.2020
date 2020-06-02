@@ -10,6 +10,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.Scanner;
 
+/**
+ * Loads and safes boards from into files
+ */
 public class BoardLoader {
 
     /**
