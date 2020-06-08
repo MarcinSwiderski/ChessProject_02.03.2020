@@ -1,7 +1,6 @@
 package pwr.chessproject.models.functionalities;
 
 import pwr.chessproject.game.Board;
-import pwr.chessproject.logger.Logger;
 import pwr.chessproject.models.Figure;
 
 import java.util.ArrayList;

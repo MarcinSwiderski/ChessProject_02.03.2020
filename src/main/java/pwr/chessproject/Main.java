@@ -1,10 +1,11 @@
 package pwr.chessproject;
 
-import pwr.chessproject.game.*;
+import pwr.chessproject.game.BoardCreator;
+import pwr.chessproject.game.ConsoleGame;
+import pwr.chessproject.game.ConsoleSinglePlayerGame;
+import pwr.chessproject.game.Game;
 import pwr.chessproject.logger.Logger;
 import pwr.chessproject.logger.LoggerConfiguration;
-import pwr.chessproject.models.Figure;
-import pwr.chessproject.models.King;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -14,7 +15,7 @@ import java.util.Scanner;
  * Starting point class
  */
 public class Main {
-    public static void main(String[] p ) throws IOException {
+    public static void main(String[] p ) {
         LoggerConfiguration configuration = new LoggerConfiguration();
         Logger.setMode(configuration.configureLogMode(p));
         Logger.debug("Mode: " + Logger.getMode());

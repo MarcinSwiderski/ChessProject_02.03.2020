@@ -160,7 +160,8 @@ public class Board implements Cloneable {
     public String toString() {
         StringBuilder grid = new StringBuilder();
         int currentPosition;
-        String color;
+        String color = ConsoleColors.WHITE;
+        grid.append(color);
         for (int row = -1; row < rows + 1; row++) {
             for (int column = -1; column < columns + 1; column++) {
                 if ((row == -1 || row == rows) && column != -1 && column != columns)
@@ -177,7 +178,7 @@ public class Board implements Cloneable {
                         color = this.grid[currentPosition].player == Player.Top ? ConsoleColors.BLUE : ConsoleColors.RED;
                         grid.append(color);
                         grid.append(this.grid[currentPosition].getClass().getSimpleName()).append(this.grid[currentPosition].player.toString().toCharArray()[0]);
-                        grid.append(ConsoleColors.BLACK);
+                        grid.append(ConsoleColors.WHITE);
                     }
                 }
                 grid.append("\t");

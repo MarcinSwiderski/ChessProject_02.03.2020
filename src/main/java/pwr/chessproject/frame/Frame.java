@@ -1,13 +1,11 @@
 package pwr.chessproject.frame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 /**
  *  Frame
  */
@@ -22,12 +20,9 @@ public class  Frame extends JFrame {
         int widthOfScreen = Toolkit.getDefaultToolkit().getScreenSize().width;  // pobiera szerokość ekranu
         this.setBounds(300, 300, 600, 400); // lokalizacja i wielkość okienka
         // this.setIconImage(Toolkit.getDefaultToolkit().getImage("pawelek.jpg")); // ikonka w lewym górnym rogu
-        this.setDefaultCloseOperation(3); // Dla głównego okienka najlepiej 3, Dla komponentów 2
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Dla głównego okienka najlepiej 3, Dla komponentów 2
         this.setTitle("ChessProject");
         initComponentsLayout(); // funkcja z ułożonymi guzikamiw
-        bDecline.addActionListener(e -> {
-            this.hide();
-        });
 
 
         ImagePanel img = new ImagePanel();

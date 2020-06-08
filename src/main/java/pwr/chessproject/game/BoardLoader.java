@@ -2,11 +2,7 @@ package pwr.chessproject.game;
 
 import pwr.chessproject.models.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Scanner;
 
@@ -59,13 +55,13 @@ public class BoardLoader {
 
     /**
      * Reads file content and returns equivalent board
-     * @param file *.board file containing board setup
+     * @param stream *.board file containing board setup
      * @return Grid base on provided file
-     * @throws IOException When reading from file failed
      * @throws NumberFormatException When board file is corrupted
      */
-    private Board fileToBoard(File file) throws IOException, NumberFormatException {
-        Scanner scanner = new Scanner(file);
+    private Board fileToBoard(InputStream stream) throws NumberFormatException {
+        Scanner scanner = new Scanner(stream);
+
         int rows = Integer.parseInt(scanner.next());
         int columns = Integer.parseInt(scanner.next());
 
@@ -109,16 +105,13 @@ public class BoardLoader {
      * @throws FileNotFoundException When specified name does not correspond to any file
      */
     public Board getBoardFromInsideFile(String name) throws IOException {
-        URL file = this.getClass().getResource("/Boards/"+name+".board");
-        if (file == null)
+        InputStream inputStream;
+        try {
+            inputStream = this.getClass().getResourceAsStream("/Boards/"+name+".board");
+        } catch (Exception ex) {
             throw new FileNotFoundException("No such file: "+name);
-        else
-            return fileToBoard(new File(file.getFile()));
+        }
 
-        /*File file = new File(Path.of("Boards", name+".board").toString());
-        if (file.createNewFile())
-            throw new FileNotFoundException("No such file: "+name);
-        else
-            return fileToBoard(file);*/
+        return fileToBoard(inputStream);
     }
 }
